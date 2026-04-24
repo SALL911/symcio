@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  background: #0a0a0a;
+  color: #e5e5e5;
+}
+
+body {
+  @apply font-sans antialiased;
+  font-feature-settings: "rlig" 1, "calt" 1;
+  letter-spacing: -0.005em;
+}
+
+a {
+  @apply underline-offset-4 hover:underline;
+}

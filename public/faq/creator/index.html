@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>創作者個人品牌治理 FAQ | Symcio BrandOS</title>
+<meta name="description" content="個人品牌 AI 可見度、AI 是否抄襲作品、個人 IP 保護、YouTube / Podcast / 藝術品牌管理——10 個創作者、藝術家、IP 工作者必知問題。">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://symcio.tw/faq/creator/">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QPB9W2885C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QPB9W2885C');
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "全識股份有限公司",
+  "alternateName": ["Symcio", "全識", "BrandOS"],
+  "url": "https://symcio.tw",
+  "sameAs": [
+    "https://www.wikidata.org/wiki/Q138922082",
+    "https://github.com/sall911/symcio",
+    "https://discord.gg/jGWJr2Sd"
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"個人創作者也需要 AI 可見度治理嗎？","acceptedAnswer":{"@type":"Answer","text":"需要，而且比企業更急迫。個人品牌在 AI 引擎的答案中缺席，等於新一代讀者、合作方、客戶問 ChatGPT「台灣有哪些 XX 領域的創作者」時完全找不到你。Symcio 觀察到：有 Wikidata 條目 + GitHub / Notion 公開作品集 + 穩定發文節奏的創作者，ABVI 分數顯著高於只在 Instagram 或 Facebook 活躍者。Free Scan 能在 30 秒內告訴你是否已在 AI 雷達上。"}},
+    {"@type":"Question","name":"我的作品會在 ChatGPT 被提到嗎？怎麼測試？","acceptedAnswer":{"@type":"Answer","text":"可以自測也可用 Symcio。自測方法：直接到 ChatGPT / Claude / Gemini / Perplexity 問「推薦台灣 [你的領域] 的 [類型] 創作者」「介紹 [你的本名/藝名]」「類似 [知名創作者] 的台灣創作者有誰」，比較回答中你是否被提及、如何被描述、排名在第幾位。更系統的方式是用 Symcio Free Scan 用 4 個引擎同時測試，把結果寫進 Supabase 建立基準線，日後每月追蹤變化。"}},
+    {"@type":"Question","name":"AI 會不會拿我的作品去訓練、變相抄襲？","acceptedAnswer":{"@type":"Answer","text":"已公開發表的內容（網站、部落格、YouTube、Medium）有可能被 AI 公司納入訓練資料——這是法律灰色地帶，目前多國正在立法。三個面向應對：(1) 防禦——在 robots.txt 加 GPTBot、ClaudeBot、Google-Extended 的 Disallow，可以表態不同意被訓練；(2) 利用——反過來主動優化內容結構，讓 AI 引用時正確署名你（這是 GEO 的精神）；(3) 法律——已發表作品仍受著作權保護，發現 AI 生成物近似你的作品時可提訴訟主張（參考 NYT v. OpenAI 2023）。"}},
+    {"@type":"Question","name":"如何讓 AI 引用我的名字和作品時不出錯？","acceptedAnswer":{"@type":"Answer","text":"四個結構化資料來源要做對：(1) Wikidata 條目——建立個人條目並加入 sitelinks、occupation、notable works 三個欄位；(2) 個人官網——加入 schema.org Person + CreativeWork JSON-LD 標記；(3) Wikipedia 條目（若符合獨立關注性標準）——是 AI 最信任的來源之一；(4) GitHub / Behance / Dribbble / IMDb 等行業權威平台。這四者齊備後，AI 敘事的準確度會顯著提升。"}},
+    {"@type":"Question","name":"個人 IP（Intellectual Property）如何用 BrandOS 管理？","acceptedAnswer":{"@type":"Answer","text":"BrandOS 的 Layer 4（knowledge_nodes）與 Layer 7（IP assets）原本就為 IP 管理設計，可儲存：作品清單、授權紀錄、註冊商標、合作合約里程碑。個人創作者典型用法：用 Notion 做每天創作記錄 + 合作草稿，每天由 notion-sync.yml 自動同步進 knowledge_nodes 表，作為 IP 歷史的結構化紀錄。這份紀錄同時是你對 AI 證明原創性的資料庫（時序戳 + SHA-256 內容 hash）。"}},
+    {"@type":"Question","name":"創作者方案和企業方案有什麼差別？","acceptedAnswer":{"@type":"Answer","text":"目前 Symcio 的定價以企業為主（Free Scan $0 / Audit $299 / Optimization $1,999 / Subscription $12k），創作者方案在 2026 Q3 推出，預期結構：(1) Creator Free——1 個個人品牌、每月重測 1 次 ABVI；(2) Creator Pro $29/月——3 個品牌、每週重測、包含 Wikidata 條目建立協助；(3) Creator Studio $99/月——10 個品牌、日追蹤、含作品集結構化服務。若你想搶先試用，可在 Discord 社群提出申請。"}},
+    {"@type":"Question","name":"YouTube、Podcast 節目會被 AI 搜尋到嗎？","acceptedAnswer":{"@type":"Answer","text":"會，但程度不一。YouTube 由 Google 擁有，Gemini 的 grounding 優先整合 YouTube 內容（標題、描述、字幕）。Podcast 則依平台有差：Apple Podcasts 的 RSS 可被爬，Spotify 閉源度較高需官方合作。提升 AI 可見度三招：(1) 逐字稿上傳 Whisper 轉譯後貼在節目頁，AI 會把逐字稿當文字來源抓取；(2) 每集建立獨立的 Schema.org PodcastEpisode 標記；(3) 在 Wikidata 建立節目條目並加入 episode list claims。"}},
+    {"@type":"Question","name":"如果 AI 把我的創作者身份或作品說錯了怎麼辦？","acceptedAnswer":{"@type":"Answer","text":"標準四步：(1) 截圖記錄錯誤（prompt + 引擎 + 時間），這是後續證據；(2) 透過各 AI 平台的「Report response」管道回報錯誤（OpenAI 的 thumbs-down + 留言、Anthropic 的 feedback form、Google 的 feedback、Perplexity 的 regenerate + flag）；(3) 主動建立正確資訊來源：Wikidata、個人官網 schema、新聞稿（使用 PRNewswire 等高權重平台），AI 重訓後會更新；(4) 使用 Symcio 監測 30-90 天，驗證敘事是否修正。"}},
+    {"@type":"Question","name":"我可以用 BrandOS 幫我的藝術創作做品牌治理嗎？","acceptedAnswer":{"@type":"Answer","text":"可以。視覺藝術家、音樂人、獨立遊戲開發者、獨立出版者的共同需求是：如何在 AI 回答「推薦獨立 XX」類查詢時被提及。BrandOS 的工具對藝術創作特別有幫助：(1) Figma sync 把作品集設計系統版本化；(2) 自動化定期測試作品在 AI 的敘事一致性；(3) 開源 methodology 讓你能用可驗證的數據向畫廊、策展人、合作方展示品牌曝光成果。這是傳統藝術行銷缺少的量化層。"}},
+    {"@type":"Question","name":"如何定期監測個人品牌在 AI 的曝光變化？","acceptedAnswer":{"@type":"Answer","text":"建議每月第一個週一固定做一次 ABVI 測試（用 Symcio Free Scan 或自跑 scripts/geo_audit.py），記錄分數變化、提及脈絡、情感走向，建立 12 個月滾動趨勢圖。重大事件前後（新作品發布、重要訪談、媒體報導）加測一次，觀察事件是否成功進入 AI 語料。把測試紀錄公開在個人網站 /brand-visibility/ 頁面，本身就是強而有力的專業信號——對合作方、品牌贊助方、經紀公司來說，這類可量化的品牌治理是少數人具備的能力。"}}
+  ]
+}
+</script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #0a0a0a; color: #e5e5e5; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .container { max-width: 880px; margin: 0 auto; padding: 64px 24px; }
+  header { border-bottom: 1px solid #222; padding-bottom: 32px; margin-bottom: 48px; }
+  .breadcrumb { font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #888; }
+  .breadcrumb a { color: #888; text-decoration: none; }
+  .breadcrumb a:hover { color: #c8f55a; }
+  h1 { font-size: 36px; font-weight: 600; margin-top: 8px; color: #fff; letter-spacing: -0.01em; }
+  .lead { color: #aaa; margin-top: 16px; font-size: 16px; max-width: 640px; }
+  article.faq { border-top: 1px solid #222; padding: 28px 0; }
+  article.faq:first-of-type { border-top: none; }
+  article.faq h2 { font-size: 20px; font-weight: 600; color: #fff; margin-bottom: 12px; }
+  article.faq h2::before { content: "Q. "; color: #c8f55a; font-family: 'DM Mono', ui-monospace, monospace; font-weight: 400; }
+  article.faq p { color: #cfcfcf; font-size: 15px; }
+  footer { border-top: 1px solid #222; margin-top: 64px; padding-top: 32px; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .cta a { display: inline-block; padding: 12px 20px; border: 1px solid #333; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; transition: border-color 0.15s; }
+  .cta a:hover { border-color: #c8f55a; color: #c8f55a; }
+  .cta a.primary { background: #c8f55a; color: #0a0a0a; border-color: #c8f55a; }
+  .cta a.primary:hover { opacity: 0.9; color: #0a0a0a; }
+  .meta { font-size: 12px; color: #666; margin-top: 24px; font-family: 'DM Mono', ui-monospace, monospace; }
+  .meta a { color: #888; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <p class="breadcrumb"><a href="/">Symcio</a> · <a href="/faq/">FAQ</a> · 創作者</p>
+    <h1>創作者個人品牌治理</h1>
+    <p class="lead">10 個創作者、藝術家、YouTuber、Podcaster、獨立出版者關於個人品牌 AI 可見度、IP 保護、AI 誤引用的問題與解答。</p>
+  </header>
+
+  <main>
+    <article class="faq" id="q1"><h2>個人創作者也需要 AI 可見度治理嗎？</h2>
+    <p>需要，而且比企業更急迫。個人品牌在 AI 引擎的答案中缺席，等於新一代讀者、合作方、客戶問 ChatGPT「台灣有哪些 XX 領域的創作者」時完全找不到你。Symcio 觀察到：有 Wikidata 條目 + GitHub / Notion 公開作品集 + 穩定發文節奏的創作者，ABVI 分數顯著高於只在 Instagram 或 Facebook 活躍者。Free Scan 能在 30 秒內告訴你是否已在 AI 雷達上。</p></article>
+
+    <article class="faq" id="q2"><h2>我的作品會在 ChatGPT 被提到嗎？怎麼測試？</h2>
+    <p>可以自測也可用 Symcio。自測方法：直接到 ChatGPT / Claude / Gemini / Perplexity 問「推薦台灣 [你的領域] 的 [類型] 創作者」「介紹 [你的本名/藝名]」「類似 [知名創作者] 的台灣創作者有誰」，比較回答中你是否被提及、如何被描述、排名在第幾位。更系統的方式是用 Symcio Free Scan 用 4 個引擎同時測試，把結果寫進 Supabase 建立基準線，日後每月追蹤變化。</p></article>
+
+    <article class="faq" id="q3"><h2>AI 會不會拿我的作品去訓練、變相抄襲？</h2>
+    <p>已公開發表的內容（網站、部落格、YouTube、Medium）有可能被 AI 公司納入訓練資料——這是法律灰色地帶，目前多國正在立法。三個面向應對：(1) 防禦——在 robots.txt 加 GPTBot、ClaudeBot、Google-Extended 的 Disallow，可以表態不同意被訓練；(2) 利用——反過來主動優化內容結構，讓 AI 引用時正確署名你（這是 GEO 的精神）；(3) 法律——已發表作品仍受著作權保護，發現 AI 生成物近似你的作品時可提訴訟主張（參考 NYT v. OpenAI 2023）。</p></article>
+
+    <article class="faq" id="q4"><h2>如何讓 AI 引用我的名字和作品時不出錯？</h2>
+    <p>四個結構化資料來源要做對：(1) Wikidata 條目——建立個人條目並加入 sitelinks、occupation、notable works 三個欄位；(2) 個人官網——加入 schema.org Person + CreativeWork JSON-LD 標記；(3) Wikipedia 條目（若符合獨立關注性標準）——是 AI 最信任的來源之一；(4) GitHub / Behance / Dribbble / IMDb 等行業權威平台。這四者齊備後，AI 敘事的準確度會顯著提升。</p></article>
+
+    <article class="faq" id="q5"><h2>個人 IP（Intellectual Property）如何用 BrandOS 管理？</h2>
+    <p>BrandOS 的 Layer 4（knowledge_nodes）與 Layer 7（IP assets）原本就為 IP 管理設計，可儲存：作品清單、授權紀錄、註冊商標、合作合約里程碑。個人創作者典型用法：用 Notion 做每天創作記錄 + 合作草稿，每天由 notion-sync.yml 自動同步進 knowledge_nodes 表，作為 IP 歷史的結構化紀錄。這份紀錄同時是你對 AI 證明原創性的資料庫（時序戳 + SHA-256 內容 hash）。</p></article>
+
+    <article class="faq" id="q6"><h2>創作者方案和企業方案有什麼差別？</h2>
+    <p>目前 Symcio 的定價以企業為主（Free Scan $0 / Audit $299 / Optimization $1,999 / Subscription $12k），創作者方案在 2026 Q3 推出，預期結構：(1) Creator Free——1 個個人品牌、每月重測 1 次 ABVI；(2) Creator Pro $29/月——3 個品牌、每週重測、包含 Wikidata 條目建立協助；(3) Creator Studio $99/月——10 個品牌、日追蹤、含作品集結構化服務。若你想搶先試用，可在 Discord 社群提出申請。</p></article>
+
+    <article class="faq" id="q7"><h2>YouTube、Podcast 節目會被 AI 搜尋到嗎？</h2>
+    <p>會，但程度不一。YouTube 由 Google 擁有，Gemini 的 grounding 優先整合 YouTube 內容（標題、描述、字幕）。Podcast 則依平台有差：Apple Podcasts 的 RSS 可被爬，Spotify 閉源度較高需官方合作。提升 AI 可見度三招：(1) 逐字稿上傳 Whisper 轉譯後貼在節目頁，AI 會把逐字稿當文字來源抓取；(2) 每集建立獨立的 Schema.org PodcastEpisode 標記；(3) 在 Wikidata 建立節目條目並加入 episode list claims。</p></article>
+
+    <article class="faq" id="q8"><h2>如果 AI 把我的創作者身份或作品說錯了怎麼辦？</h2>
+    <p>標準四步：(1) 截圖記錄錯誤（prompt + 引擎 + 時間），這是後續證據；(2) 透過各 AI 平台的「Report response」管道回報錯誤（OpenAI 的 thumbs-down + 留言、Anthropic 的 feedback form、Google 的 feedback、Perplexity 的 regenerate + flag）；(3) 主動建立正確資訊來源：Wikidata、個人官網 schema、新聞稿（使用 PRNewswire 等高權重平台），AI 重訓後會更新；(4) 使用 Symcio 監測 30-90 天，驗證敘事是否修正。</p></article>
+
+    <article class="faq" id="q9"><h2>我可以用 BrandOS 幫我的藝術創作做品牌治理嗎？</h2>
+    <p>可以。視覺藝術家、音樂人、獨立遊戲開發者、獨立出版者的共同需求是：如何在 AI 回答「推薦獨立 XX」類查詢時被提及。BrandOS 的工具對藝術創作特別有幫助：(1) Figma sync 把作品集設計系統版本化；(2) 自動化定期測試作品在 AI 的敘事一致性；(3) 開源 methodology 讓你能用可驗證的數據向畫廊、策展人、合作方展示品牌曝光成果。這是傳統藝術行銷缺少的量化層。</p></article>
+
+    <article class="faq" id="q10"><h2>如何定期監測個人品牌在 AI 的曝光變化？</h2>
+    <p>建議每月第一個週一固定做一次 ABVI 測試（用 Symcio Free Scan 或自跑 scripts/geo_audit.py），記錄分數變化、提及脈絡、情感走向，建立 12 個月滾動趨勢圖。重大事件前後（新作品發布、重要訪談、媒體報導）加測一次，觀察事件是否成功進入 AI 語料。把測試紀錄公開在個人網站 /brand-visibility/ 頁面，本身就是強而有力的專業信號——對合作方、品牌贊助方、經紀公司來說，這類可量化的品牌治理是少數人具備的能力。</p></article>
+  </main>
+
+  <footer>
+    <h2 style="color:#fff;font-size:18px;margin-bottom:16px;">加入創作者社群</h2>
+    <div class="cta">
+      <a class="primary" href="https://discord.gg/jGWJr2Sd">Discord 創作者社群 →</a>
+      <a href="https://symcio.tw/#scan">測試我的個人品牌</a>
+      <a href="https://github.com/sall911/symcio">GitHub 追蹤</a>
+    </div>
+    <p class="meta">Symcio · 全識股份有限公司 · <a href="https://symcio.tw">symcio.tw</a><br>Last updated: 2026-04-18</p>
+  </footer>
+</div>
+</body>
+</html>

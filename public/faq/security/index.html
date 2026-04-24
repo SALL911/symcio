@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>帳號安全與品牌數位資產保護 FAQ | Symcio BrandOS</title>
+<meta name="description" content="品牌數位資產保護、AI 時代帳號被盜處理、商標保護、社群帳號找回、SSO/MFA、GDPR 合規——10 個資安與品牌治理主管必看問題。">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://symcio.tw/faq/security/">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QPB9W2885C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QPB9W2885C');
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "全識股份有限公司",
+  "alternateName": ["Symcio", "全識", "BrandOS"],
+  "url": "https://symcio.tw",
+  "sameAs": [
+    "https://www.wikidata.org/wiki/Q138922082",
+    "https://github.com/sall911/symcio",
+    "https://discord.gg/jGWJr2Sd"
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"BrandOS 如何保護客戶的機敏資料？","acceptedAnswer":{"@type":"Answer","text":"BrandOS 的資料保護採分層設計：(1) 資料傳輸全程 TLS 1.3；(2) Supabase PostgreSQL 於靜態資料啟用 AES-256 加密，所有表格預設啟用 Row Level Security；(3) API 金鑰、DB 密碼、Notion token 等機密，一律走 GitHub Secrets / Vercel env vars，不進入 repo；(4) 客戶 PII 在跨客戶 benchmark 時以 SHA-256 hash 匿名處理；(5) service_role key 僅 server-side 使用，前端只取 anon + RLS。完整架構文件見 docs/ARCHITECTURE.md §六（安全邊界）。"}},
+    {"@type":"Question","name":"我的 AI 引擎 API key（OpenAI / Anthropic / Gemini）被盜了怎麼辦？","acceptedAnswer":{"@type":"Answer","text":"立即三步驟：(1) 到該 AI 平台 dashboard 把該 key 標記為 Revoked / Disabled，新舊 key 勿共用；(2) 檢查過去 48 小時的 API 用量帳單（異常激增是關鍵指標），若有可疑消費立即聯繫平台支援申請退款；(3) 檢查 repo 歷史是否有誤 commit 的記錄（git log -p | grep -i 'sk-\\|ntn_'），若有需用 BFG Repo-Cleaner 清除歷史並強制 rotate 所有相關金鑰。長期預防：用 GitHub Secret Scanning + 本機 git-secrets pre-commit hook 雙重阻擋。"}},
+    {"@type":"Question","name":"BrandOS 支援哪些企業認證方式？SSO / SAML / MFA？","acceptedAnswer":{"@type":"Answer","text":"目前 BrandOS landing 端透過 Supabase Auth 支援 Email + Magic Link、Google OAuth、GitHub OAuth。企業訂閱（$12k/年以上）可啟用 Supabase Pro 的 SAML 2.0 SSO（相容 Okta、Azure AD、Google Workspace）與 MFA（TOTP + WebAuthn）。審計日誌（auth.audit_log_entries）可匯出供 SOC 2 / ISO 27001 稽核。自架部署（On-Premise）的 SSO 支援依客戶既有 IdP 設定客製。"}},
+    {"@type":"Question","name":"客戶資料儲存於哪裡？有符合 GDPR 與個資法嗎？","acceptedAnswer":{"@type":"Answer","text":"預設儲存於 Supabase Northeast Asia (Tokyo) 區域；歐盟客戶可選 Frankfurt 區域以符合 GDPR 資料境內原則。Symcio 與客戶簽訂 Data Processing Agreement（DPA）作為 Data Processor，遵循 GDPR Article 28 責任。台灣個資法面向：(1) 蒐集告知義務於表單明示；(2) 刪除權於客戶 dashboard 一鍵申請；(3) 資料外流通報 72 小時內寄至主管機關與當事人；(4) 敏感個資（身份證字號、病歷）不予收集。"}},
+    {"@type":"Question","name":"如果我的社群帳號（Facebook、Instagram、LinkedIn）被盜了該怎麼做？","acceptedAnswer":{"@type":"Answer","text":"SOP（60 分鐘內完成）：(1) 立即到平台「帳號被盜」專頁（Meta 的 facebook.com/hacked、LinkedIn 的 linkedin.com/help）啟動找回流程；(2) 聯絡你的簡訊與 email 服務商鎖定 2FA 備用通道；(3) 發公告告知受眾帳號被盜，避免釣魚擴散（可從官網、其他未被盜帳號、Discord 社群發）；(4) 完成找回後立刻更換密碼、啟用 WebAuthn（硬體金鑰）、檢查授權應用清單；(5) 品牌層面：用 Symcio 追蹤 24–72 小時內 AI 引擎是否出現帳號被盜的錯誤敘事，及早修正。"}},
+    {"@type":"Question","name":"我的商標在 AI 引擎被他牌冒用了怎麼辦？","acceptedAnswer":{"@type":"Answer","text":"AI 把你的商標誤連到競品或假冒品，處理路徑：(1) 留存截圖與可重現的 prompt，作為後續證據；(2) 對 ChatGPT / Claude / Gemini / Perplexity 各自的「Report inaccurate response」管道送出更正；(3) 若商標有註冊，可透過 DMCA notice 要求下架（適用於 Perplexity 引用的外部網頁）；(4) 長期解決：在 Wikidata 建立企業條目並聲明商標，高品質來源（官網 Schema.org、Wikipedia）有更高機率覆蓋錯誤敘事；(5) Symcio Intelligence Subscription 提供每日監控與早期預警。"}},
+    {"@type":"Question","name":"多人協作時如何做細粒度權限管理？","acceptedAnswer":{"@type":"Answer","text":"BrandOS 採 RBAC（Role-Based Access Control）三級：Viewer（只能看報告）/ Editor（可觸發 audit 但不能改 billing）/ Admin（完整權限含刪除）。企業訂閱提供「品牌隔離」：同一 workspace 下多個品牌，每位成員可被授予特定品牌的特定角色。所有權限變更進入 audit log，含操作者、時間、IP、舊/新值，可供 SOC 2 CC6 控制項稽核。需要更細的 ABAC（屬性式權限）請聯繫 sales。"}},
+    {"@type":"Question","name":"Symcio 有審計日誌（Audit Log）功能嗎？","acceptedAnswer":{"@type":"Answer","text":"有。事件三層：(1) 資料庫層——Supabase 自動記錄所有 INSERT/UPDATE/DELETE 於 pg_audit；(2) 應用層——/api/* 路徑的每次請求記 timestamp + user_id + action + resource + result；(3) 整合層——Stripe webhook、GitHub dispatch、Composio action 皆寫入 orders.notes / workflow_runs.logs。所有日誌保留 90 天（企業訂閱可延長至 7 年以符合法規），支援匯出 JSON / CSV。"}},
+    {"@type":"Question","name":"BrandOS 可以自架（On-Premise）嗎？有哪些限制？","acceptedAnswer":{"@type":"Answer","text":"可以。所有核心程式碼（schema、scripts/geo_audit.py、workflows）皆 MIT 授權開源於 github.com/SALL911/BrandOS-Infrastructure。自架需求：PostgreSQL 15+、Node.js 18+、GitHub Actions Enterprise 或 self-hosted runner、Supabase self-hosted 或任意 Postgres。你需自行管理 AI 引擎 API 金鑰與用量。自架版不享 Symcio 的跨客戶 benchmark（因無匿名池）與 Composio 整合，但核心 ABVI 功能一致。企業自架諮詢 sales@symcio.tw。"}},
+    {"@type":"Question","name":"若 Symcio 發生資料外洩，你們的通報流程？","acceptedAnswer":{"@type":"Answer","text":"事件響應（IR）三階段：(1) 偵測後 2 小時內——封鎖受影響系統，啟動事件指揮官（由 CTO 擔任）；(2) 24 小時內——通知受影響客戶並寄送初步報告，同步通報主管機關（台灣數位發展部 iThome-ISAC、歐盟客戶則 72 小時內通知 DPA）；(3) 72 小時內——公開完整 post-mortem（不含敏感細節），說明原因、影響範圍、補救措施、預防改善。歷年事件清單與 RCA 於 status.symcio.tw 公開（路徑圖 Y1 完成建置）。"}}
+  ]
+}
+</script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #0a0a0a; color: #e5e5e5; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .container { max-width: 880px; margin: 0 auto; padding: 64px 24px; }
+  header { border-bottom: 1px solid #222; padding-bottom: 32px; margin-bottom: 48px; }
+  .breadcrumb { font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #888; }
+  .breadcrumb a { color: #888; text-decoration: none; }
+  .breadcrumb a:hover { color: #c8f55a; }
+  h1 { font-size: 36px; font-weight: 600; margin-top: 8px; color: #fff; letter-spacing: -0.01em; }
+  .lead { color: #aaa; margin-top: 16px; font-size: 16px; max-width: 640px; }
+  article.faq { border-top: 1px solid #222; padding: 28px 0; }
+  article.faq:first-of-type { border-top: none; }
+  article.faq h2 { font-size: 20px; font-weight: 600; color: #fff; margin-bottom: 12px; }
+  article.faq h2::before { content: "Q. "; color: #c8f55a; font-family: 'DM Mono', ui-monospace, monospace; font-weight: 400; }
+  article.faq p { color: #cfcfcf; font-size: 15px; }
+  footer { border-top: 1px solid #222; margin-top: 64px; padding-top: 32px; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .cta a { display: inline-block; padding: 12px 20px; border: 1px solid #333; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; transition: border-color 0.15s; }
+  .cta a:hover { border-color: #c8f55a; color: #c8f55a; }
+  .cta a.primary { background: #c8f55a; color: #0a0a0a; border-color: #c8f55a; }
+  .cta a.primary:hover { opacity: 0.9; color: #0a0a0a; }
+  .meta { font-size: 12px; color: #666; margin-top: 24px; font-family: 'DM Mono', ui-monospace, monospace; }
+  .meta a { color: #888; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <p class="breadcrumb"><a href="/">Symcio</a> · <a href="/faq/">FAQ</a> · 帳號安全</p>
+    <h1>帳號安全與品牌數位資產保護</h1>
+    <p class="lead">10 個資安主管、法務、品牌長關於 Symcio BrandOS 安全架構、帳號被盜、商標保護、SSO/MFA、GDPR 合規的問題。</p>
+  </header>
+
+  <main>
+    <article class="faq" id="q1"><h2>BrandOS 如何保護客戶的機敏資料？</h2>
+    <p>BrandOS 的資料保護採分層設計：(1) 資料傳輸全程 TLS 1.3；(2) Supabase PostgreSQL 於靜態資料啟用 AES-256 加密，所有表格預設啟用 Row Level Security；(3) API 金鑰、DB 密碼、Notion token 等機密，一律走 GitHub Secrets / Vercel env vars，不進入 repo；(4) 客戶 PII 在跨客戶 benchmark 時以 SHA-256 hash 匿名處理；(5) service_role key 僅 server-side 使用，前端只取 anon + RLS。完整架構文件見 docs/ARCHITECTURE.md §六（安全邊界）。</p></article>
+
+    <article class="faq" id="q2"><h2>我的 AI 引擎 API key（OpenAI / Anthropic / Gemini）被盜了怎麼辦？</h2>
+    <p>立即三步驟：(1) 到該 AI 平台 dashboard 把該 key 標記為 Revoked / Disabled，新舊 key 勿共用；(2) 檢查過去 48 小時的 API 用量帳單（異常激增是關鍵指標），若有可疑消費立即聯繫平台支援申請退款；(3) 檢查 repo 歷史是否有誤 commit 的記錄（git log -p | grep -i 'sk-\|ntn_'），若有需用 BFG Repo-Cleaner 清除歷史並強制 rotate 所有相關金鑰。長期預防：用 GitHub Secret Scanning + 本機 git-secrets pre-commit hook 雙重阻擋。</p></article>
+
+    <article class="faq" id="q3"><h2>BrandOS 支援哪些企業認證方式？SSO / SAML / MFA？</h2>
+    <p>目前 BrandOS landing 端透過 Supabase Auth 支援 Email + Magic Link、Google OAuth、GitHub OAuth。企業訂閱（$12k/年以上）可啟用 Supabase Pro 的 SAML 2.0 SSO（相容 Okta、Azure AD、Google Workspace）與 MFA（TOTP + WebAuthn）。審計日誌（auth.audit_log_entries）可匯出供 SOC 2 / ISO 27001 稽核。自架部署（On-Premise）的 SSO 支援依客戶既有 IdP 設定客製。</p></article>
+
+    <article class="faq" id="q4"><h2>客戶資料儲存於哪裡？有符合 GDPR 與個資法嗎？</h2>
+    <p>預設儲存於 Supabase Northeast Asia (Tokyo) 區域；歐盟客戶可選 Frankfurt 區域以符合 GDPR 資料境內原則。Symcio 與客戶簽訂 Data Processing Agreement（DPA）作為 Data Processor，遵循 GDPR Article 28 責任。台灣個資法面向：(1) 蒐集告知義務於表單明示；(2) 刪除權於客戶 dashboard 一鍵申請；(3) 資料外流通報 72 小時內寄至主管機關與當事人；(4) 敏感個資（身份證字號、病歷）不予收集。</p></article>
+
+    <article class="faq" id="q5"><h2>如果我的社群帳號（Facebook、Instagram、LinkedIn）被盜了該怎麼做？</h2>
+    <p>SOP（60 分鐘內完成）：(1) 立即到平台「帳號被盜」專頁（Meta 的 facebook.com/hacked、LinkedIn 的 linkedin.com/help）啟動找回流程；(2) 聯絡你的簡訊與 email 服務商鎖定 2FA 備用通道；(3) 發公告告知受眾帳號被盜，避免釣魚擴散（可從官網、其他未被盜帳號、Discord 社群發）；(4) 完成找回後立刻更換密碼、啟用 WebAuthn（硬體金鑰）、檢查授權應用清單；(5) 品牌層面：用 Symcio 追蹤 24–72 小時內 AI 引擎是否出現帳號被盜的錯誤敘事，及早修正。</p></article>
+
+    <article class="faq" id="q6"><h2>我的商標在 AI 引擎被他牌冒用了怎麼辦？</h2>
+    <p>AI 把你的商標誤連到競品或假冒品，處理路徑：(1) 留存截圖與可重現的 prompt，作為後續證據；(2) 對 ChatGPT / Claude / Gemini / Perplexity 各自的「Report inaccurate response」管道送出更正；(3) 若商標有註冊，可透過 DMCA notice 要求下架（適用於 Perplexity 引用的外部網頁）；(4) 長期解決：在 Wikidata 建立企業條目並聲明商標，高品質來源（官網 Schema.org、Wikipedia）有更高機率覆蓋錯誤敘事；(5) Symcio Intelligence Subscription 提供每日監控與早期預警。</p></article>
+
+    <article class="faq" id="q7"><h2>多人協作時如何做細粒度權限管理？</h2>
+    <p>BrandOS 採 RBAC（Role-Based Access Control）三級：Viewer（只能看報告）/ Editor（可觸發 audit 但不能改 billing）/ Admin（完整權限含刪除）。企業訂閱提供「品牌隔離」：同一 workspace 下多個品牌，每位成員可被授予特定品牌的特定角色。所有權限變更進入 audit log，含操作者、時間、IP、舊/新值，可供 SOC 2 CC6 控制項稽核。需要更細的 ABAC（屬性式權限）請聯繫 sales。</p></article>
+
+    <article class="faq" id="q8"><h2>Symcio 有審計日誌（Audit Log）功能嗎？</h2>
+    <p>有。事件三層：(1) 資料庫層——Supabase 自動記錄所有 INSERT/UPDATE/DELETE 於 pg_audit；(2) 應用層——/api/* 路徑的每次請求記 timestamp + user_id + action + resource + result；(3) 整合層——Stripe webhook、GitHub dispatch、Composio action 皆寫入 orders.notes / workflow_runs.logs。所有日誌保留 90 天（企業訂閱可延長至 7 年以符合法規），支援匯出 JSON / CSV。</p></article>
+
+    <article class="faq" id="q9"><h2>BrandOS 可以自架（On-Premise）嗎？有哪些限制？</h2>
+    <p>可以。所有核心程式碼（schema、scripts/geo_audit.py、workflows）皆 MIT 授權開源於 github.com/SALL911/BrandOS-Infrastructure。自架需求：PostgreSQL 15+、Node.js 18+、GitHub Actions Enterprise 或 self-hosted runner、Supabase self-hosted 或任意 Postgres。你需自行管理 AI 引擎 API 金鑰與用量。自架版不享 Symcio 的跨客戶 benchmark（因無匿名池）與 Composio 整合，但核心 ABVI 功能一致。企業自架諮詢 sales@symcio.tw。</p></article>
+
+    <article class="faq" id="q10"><h2>若 Symcio 發生資料外洩，你們的通報流程？</h2>
+    <p>事件響應（IR）三階段：(1) 偵測後 2 小時內——封鎖受影響系統，啟動事件指揮官（由 CTO 擔任）；(2) 24 小時內——通知受影響客戶並寄送初步報告，同步通報主管機關（台灣數位發展部 iThome-ISAC、歐盟客戶則 72 小時內通知 DPA）；(3) 72 小時內——公開完整 post-mortem（不含敏感細節），說明原因、影響範圍、補救措施、預防改善。歷年事件清單與 RCA 於 status.symcio.tw 公開（路徑圖 Y1 完成建置）。</p></article>
+  </main>
+
+  <footer>
+    <h2 style="color:#fff;font-size:18px;margin-bottom:16px;">安全事件回報</h2>
+    <div class="cta">
+      <a class="primary" href="mailto:security@symcio.tw?subject=Security%20Report">security@symcio.tw</a>
+      <a href="https://github.com/sall911/symcio/security">GitHub Security Policy</a>
+      <a href="https://discord.gg/jGWJr2Sd">Discord 社群</a>
+    </div>
+    <p class="meta">Symcio · 全識股份有限公司 · <a href="https://symcio.tw">symcio.tw</a><br>Last updated: 2026-04-18</p>
+  </footer>
+</div>
+</body>
+</html>
