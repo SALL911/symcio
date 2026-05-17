@@ -47,16 +47,19 @@ export function FreeScanForm() {
     }
   }
 
+  const inputClass =
+    "mt-1 block w-full rounded-card border border-line bg-surface px-4 py-3 text-ink placeholder-muted-dim focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/15";
+
   if (status === "success") {
     return (
-      <div className="border border-accent bg-accent/10 p-8">
+      <div className="rounded-card border border-accent bg-accent-soft p-8">
         <p className="font-mono text-xs uppercase tracking-widest text-accent">
           已收到
         </p>
-        <h3 className="mt-2 text-2xl font-semibold text-white">
-          掃描排程中，30 秒內寄出報告。
+        <h3 className="mt-2 text-2xl font-semibold text-ink">
+          掃描排程中,30 秒內寄出報告。
         </h3>
-        <p className="mt-3 text-sm text-white/70">
+        <p className="mt-3 text-sm text-muted">
           請檢查信箱（含垃圾信夾）。沒收到請來信 info@symcio.tw。
         </p>
       </div>
@@ -67,28 +70,28 @@ export function FreeScanForm() {
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="grid gap-3">
         <label className="block">
-          <span className="text-xs text-white/60">品牌名稱 *</span>
+          <span className="text-xs text-muted">品牌名稱 *</span>
           <input
             name="brand_name"
             required
             placeholder="Symcio"
-            className="mt-1 block w-full border border-white/20 bg-transparent px-4 py-3 text-white placeholder-white/40 focus:border-accent focus:outline-none"
+            className={inputClass}
           />
         </label>
         <label className="block">
-          <span className="text-xs text-white/60">品牌網域（選）</span>
+          <span className="text-xs text-muted">品牌網域（選）</span>
           <input
             name="brand_domain"
             placeholder="symcio.tw"
-            className="mt-1 block w-full border border-white/20 bg-transparent px-4 py-3 text-white placeholder-white/40 focus:border-accent focus:outline-none"
+            className={inputClass}
           />
         </label>
         <label className="block">
-          <span className="text-xs text-white/60">產業</span>
+          <span className="text-xs text-muted">產業</span>
           <select
             name="industry"
             defaultValue="technology"
-            className="mt-1 block w-full border border-white/20 bg-ink px-4 py-3 text-white focus:border-accent focus:outline-none"
+            className={inputClass}
           >
             <option value="technology">Technology / SaaS</option>
             <option value="finance">Finance / Fintech</option>
@@ -97,21 +100,21 @@ export function FreeScanForm() {
           </select>
         </label>
         <label className="block">
-          <span className="text-xs text-white/60">公司名稱（選）</span>
+          <span className="text-xs text-muted">公司名稱（選）</span>
           <input
             name="company"
             placeholder="Symcio Inc."
-            className="mt-1 block w-full border border-white/20 bg-transparent px-4 py-3 text-white placeholder-white/40 focus:border-accent focus:outline-none"
+            className={inputClass}
           />
         </label>
         <label className="block">
-          <span className="text-xs text-white/60">Email *</span>
+          <span className="text-xs text-muted">Email *</span>
           <input
             name="email"
             type="email"
             required
             placeholder="you@company.com"
-            className="mt-1 block w-full border border-white/20 bg-transparent px-4 py-3 text-white placeholder-white/40 focus:border-accent focus:outline-none"
+            className={inputClass}
           />
         </label>
       </div>
@@ -119,16 +122,16 @@ export function FreeScanForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="w-full bg-accent px-6 py-4 text-base font-semibold text-ink hover:bg-accent/90 disabled:opacity-50"
+        className="w-full rounded-card bg-accent px-6 py-4 text-base font-semibold text-white hover:bg-accent-dim disabled:opacity-50"
       >
         {status === "submitting" ? "送出中..." : "免費掃描我的品牌 →"}
       </button>
 
       {status === "error" && (
-        <p className="text-sm text-red-300">錯誤：{error}</p>
+        <p className="text-sm text-danger">錯誤：{error}</p>
       )}
 
-      <p className="text-xs text-white/40">
+      <p className="text-xs text-muted-dim">
         送出即表示同意 Symcio 將你的 email 用於寄送掃描報告。我們不轉售名單。
       </p>
     </form>

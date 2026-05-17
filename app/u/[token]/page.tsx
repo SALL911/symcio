@@ -45,7 +45,7 @@ export default async function OptOutPage({ params }: { params: { token: string }
   const result = await applyOptOut(params.token);
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-bg text-ink">
       <div className="mx-auto max-w-xl px-6 py-20">
         {result.ok ? (
           <>

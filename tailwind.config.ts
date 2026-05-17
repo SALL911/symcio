@@ -5,31 +5,43 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#0a0a0a",
-        accent: "#c8f55a",
-        "accent-dim": "#a8d140",
-        muted: "#9ca3af",
-        "muted-dim": "#6b7280",
-        line: "#262626",
-        "line-soft": "#2a2a2a",
-        surface: "#111111",
-        "surface-2": "#161616",
-        excellent: "#2dd4a0",
-        good: "#378ADD",
-        warning: "#fbbf24",
-        danger: "#f87171",
+        // Page background — warm off-white
+        bg: "#F7F6F3",
+        // Primary dark text / deepest brand tone
+        ink: "#1A2E22",
+        // Symcio brand green — primary CTA
+        accent: "#2A4D3A",
+        "accent-dim": "#1F3A2C",
+        "accent-soft": "#E6EEE8",
+        // Body text de-emphasized
+        muted: "#6B7B6F",
+        "muted-dim": "#94A29A",
+        // Hairlines and dividers
+        line: "#E5E2D9",
+        "line-soft": "#EFEDE5",
+        // Card surfaces
+        surface: "#FFFFFF",
+        "surface-2": "#FAFAF9",
+        // Status colors
+        excellent: "#2A8C5F",
+        good: "#3B7AD9",
+        warning: "#D99A1F",
+        danger: "#D14848",
+        // Editorial gold — demo data, draft, advisory callouts
+        gold: "#7A5C08",
+        "gold-soft": "#F5EBC4",
       },
       fontFamily: {
         sans: [
-          "Inter",
+          "IBM Plex Sans",
+          "Noto Sans TC",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
-          "Noto Sans TC",
           "sans-serif",
         ],
         mono: [
-          "DM Mono",
+          "IBM Plex Mono",
           "ui-monospace",
           "SFMono-Regular",
           "Menlo",

@@ -14,7 +14,7 @@ const PLANS = [
     name: "免費版 Free",
     price: "NTD 0",
     period: "永久免費",
-    tagline: "驗證品牌在 AI 的基準分數。",
+    tagline: "30 秒看見 AI 怎麼描述你。",
     items: [
       "BCI 品牌可見度快速診斷（1 次/月）",
       "ChatGPT / Claude / Gemini / Perplexity 四引擎",
@@ -22,64 +22,63 @@ const PLANS = [
       "Discord 社群參與",
       "Entity Builder 工具使用",
     ],
-    missing: ["PDF 完整報告", "競品追蹤", "顧問諮詢"],
+    missing: ["PDF 完整報告", "競品對比圖表", "策略 office hour"],
     cta: "立即試用",
     ctaHref: "/audit",
     featured: false,
   },
   {
-    name: "專業版 Professional",
-    price: "NTD 100,000",
-    period: "/ 年（月付 NTD 9,000）",
-    tagline: "成長型品牌的實戰主力。",
+    name: "單次報告 Audit",
+    price: "NTD 9,800",
+    period: "/ 份（一次性付款）",
+    tagline: "你的 CMO 上週又被問「為什麼 ChatGPT 沒提到我們?」",
     items: [
       "免費版全部功能",
-      "每月 BCI 完整報告（含 PDF）",
-      "Wikidata + Schema.org 實體建置與管理",
-      "GEO 內容策略規劃",
-      "四大 AI 平台持續追蹤",
-      "5 個競品 AI 可見度月報",
-      "季度策略會議（線上）",
+      "20 prompt × 4 引擎完整掃描",
+      "BCI 完整報告（含 PDF,10–12 頁）",
+      "5 個競品 AI 可見度對比",
+      "Wikidata + Schema.org 實體建議草稿",
+      "GEO 改善建議（3 項具體 Action）",
+      "30 天內免費重測一次",
     ],
-    missing: ["ESG / TNFD 報告", "Brand Capital API"],
-    cta: "聯繫我們",
-    ctaHref: "mailto:sall@symcio.tw?subject=%E5%B0%88%E6%A5%AD%E7%89%88%E6%96%B9%E6%A1%88%E8%A9%A2%E5%95%8F",
+    missing: ["持續追蹤", "季度策略 office hour"],
+    cta: "購買單次報告",
+    ctaHref: "/audit",
     featured: true,
   },
   {
-    name: "企業版 Enterprise",
-    price: "NTD 250–500k",
-    period: "/ 年（依規模）",
-    tagline: "上市櫃公司、金融機構、跨國品牌。",
+    name: "企業合作 Enterprise",
+    price: "Contact",
+    period: "報價依規模與需求客製",
+    tagline: "上市櫃公司、跨國品牌、ESG 撰寫團隊。",
     items: [
-      "專業版全部功能",
-      "ESG / TNFD 永續報告自動化",
-      "Brand Capital API 授權",
-      "BCI 品牌資本指數完整分析",
-      "運動產業發展條例 175% 抵稅方案支援",
-      "專屬品牌治理顧問（每月 2 次）",
-      "金融機構品牌數據授權",
-      "SLA 99.5% + 24 小時支援",
+      "單次報告全部功能",
+      "永續報告書素材結構化整理（TNFD / GRI / IFRS S1S2 框架對齊)",
+      "Brand Capital API 接入（資料格式 JSON / CSV）",
+      "競品集合追蹤與走勢分析",
+      "贊助/行銷投資的品牌曝光成效量化資料",
+      "策略 office hour（雙月一次,線上）",
+      "資料治理與 opt-out 流程支援",
     ],
     missing: [],
-    cta: "預約 Demo",
-    ctaHref: "mailto:sall@symcio.tw?subject=%E4%BC%81%E6%A5%AD%E7%89%88Demo%E9%A0%90%E7%B4%84",
+    cta: "聯繫我們",
+    ctaHref: "mailto:sall@symcio.tw?subject=%E4%BC%81%E6%A5%AD%E5%90%88%E4%BD%9C%E6%B4%BD%E8%A9%A2",
     featured: false,
   },
 ];
 
 const FAQ = [
   {
-    q: "BCI 的方法論是什麼？",
-    a: "BCI (Brand Capital Index) 依循 ISO 10668 國際品牌評價標準，整合財務品牌價值 (FBV)、自然資本價值 (NCV) 和 AI 可見度價值 (AIV) 三個維度。FBV 參考 Interbrand 方法論、NCV 基於 TNFD LEAP 框架、AIV 為 Symcio 獨創的跨四引擎（ChatGPT / Perplexity / Google AI / Claude）加權提及率。",
+    q: "BCI 的方法論是什麼?",
+    a: "BCI (Brand Capital Index) 框架參考 ISO 10668 國際品牌評價標準精神（非該標準合規認證）,整合財務視角品牌強度 (FBV)、自然資本觀察值 (NCV) 和 AI 可見度觀察值 (AIV) 三個維度。FBV 觀察邏輯參考 Interbrand 等公開方法論的因子拆解、NCV 對齊 TNFD LEAP 框架欄位、AIV 為 Symcio 提出的跨四引擎（ChatGPT / Perplexity / Google AI / Claude）加權提及率。BCI 為觀察性指標,不構成品牌估值意見書、投資建議或財務報告。",
   },
   {
-    q: "免費版和付費版的主要差異？",
-    a: "免費版提供一次性的快速診斷，適合初步了解品牌在 AI 的表現。付費版提供持續追蹤、競品分析、GEO 策略規劃和專屬顧問服務，幫助品牌在 AI 時代持續提升可見度。企業版額外包含 ESG/TNFD 報告自動化與 Brand Capital API 授權。",
+    q: "免費版和單次報告的主要差異?",
+    a: "免費版提供 1 個 prompt 的快速掃描,適合初步看見品牌在 AI 的基準表現。單次報告（Audit）跑 20 個產業標準化 prompt × 4 引擎,輸出完整 BCI 報告 PDF、5 個競品對比、3 項具體 GEO 改善建議,並包含 30 天內免費重測一次。企業合作為自訂方案,適合需要 API 接入或 ESG 報告書素材整理的團隊。",
   },
   {
-    q: "多久可以看到 AI 可見度提升？",
-    a: "基礎建設（Wikidata + Schema.org）上線後約 2–4 週開始見效；AI 引擎重新爬取後，Knowledge Graph 會開始「認識」您的品牌。持續的 GEO 內容策略通常在 3–6 個月內帶來顯著的 AI 可見度提升，並反映在 BCI 分數上。",
+    q: "AI 可見度多久可以看到改善?",
+    a: "基礎建設（Wikidata + Schema.org）上線後,既有客戶的觀察大多在 2–4 週內可在 AI 引擎重新爬取後看見初步變化。完整的 GEO 內容策略執行,過往案例觀察 ABVI 分數於 3–6 個月內有 8–20 分的變動區間。每個品牌的起始基準、產業競爭密度、語料品質不同,改善幅度因案而異,Symcio 不保證特定數字結果。",
   },
 ];
 
@@ -95,7 +94,7 @@ export default function PricingPage() {
   };
 
   return (
-    <main className="min-h-screen bg-ink text-white">
+    <main className="min-h-screen bg-bg text-ink">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -114,8 +113,12 @@ export default function PricingPage() {
             品牌治理方案
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-muted">
-            從免費健檢到全方位品牌資本管理 — 依循 ISO 10668。
+            從免費掃描到企業合作 — 方法論參考 ISO 10668 精神,完整公式開源於 GitHub。
           </p>
+          <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-gold-soft px-3 py-1 text-xs text-gold">
+            <span className="font-mono font-bold uppercase tracking-[1px]">Beta · 籌備期</span>
+            <span>付款由 Stripe 處理,法人成立後年訂閱方案上架</span>
+          </div>
 
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             {PLANS.map((p) => (
@@ -124,11 +127,11 @@ export default function PricingPage() {
                 className={`relative rounded-card border ${p.featured ? "border-accent bg-accent/5" : "border-line bg-surface"} p-6 md:p-8`}
               >
                 {p.featured && (
-                  <span className="absolute -top-3 right-6 rounded-full bg-accent px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[1px] text-ink">
+                  <span className="absolute -top-3 right-6 rounded-full bg-accent px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[1px] text-white">
                     最受歡迎
                   </span>
                 )}
-                <h3 className="text-xl font-bold text-white">{p.name}</h3>
+                <h3 className="text-xl font-bold text-ink">{p.name}</h3>
                 <p className="mt-3 font-mono text-3xl font-bold md:text-4xl">
                   {p.price}
                 </p>
@@ -138,7 +141,7 @@ export default function PricingPage() {
                   {p.items.map((i) => (
                     <li key={i} className="flex gap-2">
                       <span className="text-excellent">✓</span>
-                      <span className="text-white/90">{i}</span>
+                      <span className="text-ink/90">{i}</span>
                     </li>
                   ))}
                   {p.missing.map((i) => (
@@ -152,8 +155,8 @@ export default function PricingPage() {
                   href={p.ctaHref}
                   className={`mt-8 inline-block w-full rounded-card px-5 py-3 text-center text-sm font-semibold no-underline transition ${
                     p.featured
-                      ? "bg-accent text-ink hover:scale-[1.02]"
-                      : "border border-line-soft text-white hover:border-accent hover:text-accent"
+                      ? "bg-accent text-white hover:bg-accent-dim"
+                      : "border border-line text-ink hover:border-accent hover:text-accent"
                   }`}
                 >
                   {p.cta} →
@@ -169,7 +172,7 @@ export default function PricingPage() {
               {FAQ.map((f, i) => (
                 <details key={i} className="group py-5" open={i === 0}>
                   <summary className="flex cursor-pointer items-start justify-between gap-4 list-none">
-                    <h3 className="text-base font-semibold text-white md:text-lg">
+                    <h3 className="text-base font-semibold text-ink md:text-lg">
                       {f.q}
                     </h3>
                     <span className="mt-1 font-mono text-lg text-accent group-open:rotate-45 transition-transform">

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function BrandCheckPage() {
   return (
-    <main className="min-h-screen bg-ink text-white">
+    <main className="min-h-screen bg-bg text-ink">
       <header className="border-b border-line">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
           <Link href="/" className="font-mono text-sm font-medium no-underline">

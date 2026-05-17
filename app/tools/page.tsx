@@ -46,7 +46,7 @@ const TOOLS = [
 
 export default function ToolsPage() {
   return (
-    <main className="min-h-screen bg-ink text-white">
+    <main className="min-h-screen bg-bg text-ink">
       <Navigation />
 
       <section className="border-b border-line">
@@ -86,7 +86,7 @@ export default function ToolsPage() {
                     </span>
                   )}
                 </div>
-                <h3 className="mt-3 text-xl font-bold text-white">{t.name}</h3>
+                <h3 className="mt-3 text-xl font-bold text-ink">{t.name}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted">
                   {t.desc}
                 </p>

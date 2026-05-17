@@ -63,11 +63,11 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
         {
           label: result.brandName,
           data: [result.FBV, result.NCV, result.AIV],
-          backgroundColor: "rgba(200, 245, 90, 0.18)",
-          borderColor: "#c8f55a",
+          backgroundColor: "rgba(42, 77, 58, 0.18)",
+          borderColor: "#2A4D3A",
           borderWidth: 2,
-          pointBackgroundColor: "#c8f55a",
-          pointBorderColor: "#0a0a0a",
+          pointBackgroundColor: "#2A4D3A",
+          pointBorderColor: "#FFFFFF",
           pointRadius: 5,
         },
       ],
@@ -85,15 +85,15 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
       r: {
         min: 0,
         max: 100,
-        angleLines: { color: "rgba(255,255,255,0.08)" },
-        grid: { color: "rgba(255,255,255,0.08)" },
+        angleLines: { color: "rgba(26,46,34,0.10)" },
+        grid: { color: "rgba(26,46,34,0.10)" },
         ticks: {
-          color: "#9ca3af",
+          color: "#6B7B6F",
           backdropColor: "transparent",
           stepSize: 20,
         },
         pointLabels: {
-          color: "#f5f5f5",
+          color: "#1A2E22",
           font: { size: 13, weight: 600 as const },
         },
       },
@@ -114,10 +114,10 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
       {
         data: competitorScores,
         backgroundColor: competitorLabels.map((_, i) =>
-          i === 0 ? "#c8f55a" : "rgba(200,200,200,0.35)",
+          i === 0 ? "#2A4D3A" : "rgba(107,123,111,0.30)",
         ),
         borderColor: competitorLabels.map((_, i) =>
-          i === 0 ? "#c8f55a" : "rgba(200,200,200,0.55)",
+          i === 0 ? "#2A4D3A" : "rgba(107,123,111,0.50)",
         ),
         borderWidth: 1,
         borderRadius: 6,
@@ -133,13 +133,13 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
       x: {
         min: 0,
         max: 100,
-        grid: { color: "rgba(255,255,255,0.08)" },
-        ticks: { color: "#9ca3af" },
+        grid: { color: "rgba(26,46,34,0.08)" },
+        ticks: { color: "#6B7B6F" },
       },
       y: {
         grid: { display: false },
         ticks: {
-          color: "#f5f5f5",
+          color: "#1A2E22",
           font: { size: 13, weight: 600 as const },
         },
       },
@@ -200,7 +200,7 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
           <div className="font-mono text-xs text-muted">
             報告日期 {today()} · 產業 {result.industry}
           </div>
-          <h2 className="mt-2 text-2xl font-bold text-white md:text-3xl">
+          <h2 className="mt-2 text-2xl font-bold text-ink md:text-3xl">
             {result.brandName} 品牌 AI 可見度診斷報告
           </h2>
           <div className="mt-1 font-mono text-[11px] uppercase tracking-[1.5px] text-muted">
@@ -214,25 +214,21 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
             <div
               className="relative flex h-60 w-60 items-center justify-center rounded-full"
               style={{
-                background: `conic-gradient(${tier.color} ${result.BCI}%, #262626 0)`,
+                background: `conic-gradient(${tier.color} ${result.BCI}%, #EFEDE5 0)`,
               }}
             >
-              <div className="absolute inset-[14px] rounded-full bg-ink" />
+              <div className="absolute inset-[14px] rounded-full bg-surface" />
               <div className="relative z-10 text-center">
-                <div className="font-mono text-5xl font-bold text-white">
+                <div className="font-mono text-5xl font-bold text-ink">
                   {result.BCI}
                 </div>
                 <div className="mt-1 text-sm text-muted">/ 100</div>
               </div>
             </div>
             <div
-              className="rounded-full px-5 py-2 text-xs font-bold uppercase tracking-[1px]"
+              className="rounded-full px-5 py-2 text-xs font-bold uppercase tracking-[1px] text-white"
               style={{
                 background: tier.color,
-                color:
-                  tier.key === "good" || tier.key === "danger"
-                    ? "#fff"
-                    : "#0a0a0a",
               }}
             >
               {tier.label}
@@ -242,7 +238,7 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
 
         {/* Section 2 — Radar */}
         <Section num={2} title="BCI 三維分析">
-          <h3 className="mb-4 text-xl font-bold text-white">
+          <h3 className="mb-4 text-xl font-bold text-ink">
             FBV · NCV · AIV 三軸雷達
           </h3>
           <div className="mx-auto h-[360px] max-w-lg rounded-card border border-line bg-surface p-5">
@@ -252,7 +248,7 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
 
         {/* Section 3 — Engines */}
         <Section num={3} title="四大 AI 引擎評分">
-          <h3 className="mb-4 text-xl font-bold text-white">
+          <h3 className="mb-4 text-xl font-bold text-ink">
             跨引擎可見度分佈
           </h3>
           <div className="max-w-2xl space-y-4">
@@ -283,7 +279,7 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
 
         {/* Section 4 — GEO */}
         <Section num={4} title="GEO 基礎建設檢查">
-          <h3 className="mb-4 text-xl font-bold text-white">
+          <h3 className="mb-4 text-xl font-bold text-ink">
             AI 看得懂你的品牌嗎？
           </h3>
           <ul className="grid gap-2.5">
@@ -294,7 +290,7 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
               >
                 <span
                   className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                    ok ? "bg-excellent text-ink" : "bg-line text-muted"
+                    ok ? "bg-excellent text-white" : "bg-line text-muted"
                   }`}
                 >
                   {ok ? "✓" : "×"}
@@ -317,7 +313,7 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
 
         {/* Section 6 — Recommendations */}
         <Section num={6} title="改善建議與行動計畫">
-          <h3 className="mb-4 text-xl font-bold text-white">
+          <h3 className="mb-4 text-xl font-bold text-ink">
             優先順序由 BCI 算法排序
           </h3>
           <div className="grid gap-4 md:grid-cols-3">
@@ -326,7 +322,7 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
                 r.priority === "高"
                   ? "bg-danger text-white"
                   : r.priority === "中"
-                    ? "bg-warning text-ink"
+                    ? "bg-warning text-white"
                     : "bg-good text-white";
               return (
                 <div
@@ -338,7 +334,7 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
                   >
                     優先度：{r.priority}
                   </span>
-                  <h4 className="text-base font-bold text-white">{r.title}</h4>
+                  <h4 className="text-base font-bold text-ink">{r.title}</h4>
                   <p className="mt-2 text-sm text-muted">{r.desc}</p>
                   <div className="mt-3 text-sm font-semibold text-accent">
                     → {r.action}
@@ -352,31 +348,31 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
         {/* Section 7 — Methodology */}
         <Section num={7} title="方法論說明">
           <details className="rounded-card border border-line bg-surface p-6">
-            <summary className="cursor-pointer font-semibold text-white">
+            <summary className="cursor-pointer font-semibold text-ink">
               BCI 方法論、權重與依據
             </summary>
             <div className="mt-4 space-y-3 text-sm text-muted">
-              <div className="rounded-lg bg-ink p-4 font-mono text-sm text-accent">
+              <div className="rounded-lg bg-accent-soft p-4 font-mono text-sm text-accent">
                 BCI = α · FBV + β · NCV + γ · AIV &nbsp; (α=0.50, β=0.25,
                 γ=0.25)
               </div>
               <p>
-                <b className="text-white">FBV · Financial Brand Value</b>：依循
-                ISO 10668 財務精神，整合營收、公司規模、產業品牌角色指數 (Brand
-                Role Index)、品牌強度。
+                <b className="text-ink">FBV · Financial Brand Value</b>:框架精神參考
+                ISO 10668(非該標準合規認證),整合營收、公司規模、產業品牌角色
+                指數 (Brand Role Index)、品牌強度等公開因子。
               </p>
               <p>
-                <b className="text-white">NCV · Nature Capital Value</b>：基於
-                TNFD LEAP 框架，結合產業自然依賴度基準與 biocredit 估算。
+                <b className="text-ink">NCV · Nature Capital Value</b>:對齊
+                TNFD LEAP 框架欄位,結合產業自然依賴度基準與 biocredit 估算邏輯。
               </p>
               <p>
-                <b className="text-white">AIV · AI Visibility Value</b>：Symcio
-                獨創；跨 ChatGPT (35%) / Perplexity (25%) / Google AI (25%) /
+                <b className="text-ink">AIV · AI Visibility Value</b>:Symcio
+                提出;跨 ChatGPT (35%) / Perplexity (25%) / Google AI (25%) /
                 Claude (15%) 加權提及率。
               </p>
               <p>
-                本頁分數為 MVP v2 演算生成；生產環境會串接真實 API 結果。
-                方法論見{" "}
+                本頁分數為 MVP v2 演算示範;生產環境將串接真實 API 結果。
+                完整方法論見{" "}
                 <a
                   href="https://github.com/sall911/symcio"
                   target="_blank"
@@ -389,6 +385,20 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
               </p>
             </div>
           </details>
+
+          <div className="mt-6 rounded-card border-l-4 border-gold bg-surface p-5 text-xs leading-relaxed text-muted">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[1px] text-gold">
+              免責聲明 · Disclaimer
+            </p>
+            <p className="mt-2">
+              本報告所載 BCI、ABVI 分數與競品比較,為基於公開可查詢的 AI 引擎輸出
+              觀察性指標,不構成投資建議、採購建議、品牌估值意見書或法律意見。
+              指標結果可能因 AI 引擎模型更新而變動。Symcio 不對任何依本報告所作
+              之商業決策承擔責任。提及之 Bloomberg、SimilarWeb、SEMrush、Interbrand、
+              ChatGPT、Claude、Gemini、Perplexity 等名稱僅作為類比座標或技術指稱
+              (nominative fair use),Symcio 不主張任何授權、合作、代表或背書關係。
+            </p>
+          </div>
         </Section>
 
         {/* Section 8 — CTA */}
@@ -396,13 +406,13 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
           <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4">
             <button
               onClick={downloadPdf}
-              className="rounded-card bg-accent px-6 py-3 text-sm font-semibold text-ink hover:scale-[1.02]"
+              className="rounded-card bg-accent px-6 py-3 text-sm font-semibold text-white hover:bg-accent-dim"
             >
               📄 下載 PDF 報告
             </button>
             <a
               href="/pricing"
-              className="rounded-card border border-line-soft px-6 py-3 text-center text-sm font-semibold text-white no-underline hover:border-accent hover:text-accent"
+              className="rounded-card border border-line px-6 py-3 text-center text-sm font-semibold text-ink no-underline hover:border-accent hover:text-accent"
             >
               🔓 解鎖進階分析
             </a>
@@ -410,13 +420,13 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
               href="https://discord.gg/jGWJr2Sd"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-card border border-line-soft px-6 py-3 text-center text-sm font-semibold text-white no-underline hover:border-accent hover:text-accent"
+              className="rounded-card border border-line px-6 py-3 text-center text-sm font-semibold text-ink no-underline hover:border-accent hover:text-accent"
             >
               💬 加入 Discord
             </a>
             <a
               href="mailto:sall@symcio.tw?subject=品牌AI可見度諮詢"
-              className="rounded-card border border-line-soft px-6 py-3 text-center text-sm font-semibold text-white no-underline hover:border-accent hover:text-accent"
+              className="rounded-card border border-line px-6 py-3 text-center text-sm font-semibold text-ink no-underline hover:border-accent hover:text-accent"
             >
               📞 預約顧問諮詢
             </a>
@@ -434,9 +444,9 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
           top: 0,
           width: "794px",
           background: "#fff",
-          color: "#0a0a0a",
+          color: "#1A2E22",
           padding: "40px",
-          fontFamily: "Inter, sans-serif",
+          fontFamily: "'IBM Plex Sans', 'Noto Sans TC', sans-serif",
         }}
       >
         <PdfContent result={result} />
@@ -480,7 +490,7 @@ function PdfContent({ result }: { result: ScoringResult }) {
           style={{
             fontSize: 48,
             fontWeight: 800,
-            color: "#0a0a0a",
+            color: "#2A4D3A",
             marginBottom: 8,
           }}
         >
@@ -519,7 +529,7 @@ function PdfContent({ result }: { result: ScoringResult }) {
             BCI TOTAL SCORE
           </div>
           <div
-            style={{ fontSize: 64, fontWeight: 700, color: "#0a0a0a" }}
+            style={{ fontSize: 64, fontWeight: 700, color: "#2A4D3A" }}
           >
             {result.BCI}
             <span style={{ fontSize: 24, color: "#666" }}>/100</span>
@@ -534,7 +544,7 @@ function PdfContent({ result }: { result: ScoringResult }) {
         <h2
           style={{
             fontSize: 18,
-            borderBottom: "2px solid #0a0a0a",
+            borderBottom: "2px solid #2A4D3A",
             paddingBottom: 6,
             marginBottom: 16,
           }}
@@ -573,7 +583,7 @@ function PdfContent({ result }: { result: ScoringResult }) {
         <h2
           style={{
             fontSize: 18,
-            borderBottom: "2px solid #0a0a0a",
+            borderBottom: "2px solid #2A4D3A",
             paddingBottom: 6,
             marginBottom: 16,
           }}
@@ -614,7 +624,7 @@ function PdfContent({ result }: { result: ScoringResult }) {
         <h2
           style={{
             fontSize: 18,
-            borderBottom: "2px solid #0a0a0a",
+            borderBottom: "2px solid #2A4D3A",
             paddingBottom: 6,
             margin: "24px 0 16px",
           }}
@@ -637,7 +647,7 @@ function PdfContent({ result }: { result: ScoringResult }) {
         <h2
           style={{
             fontSize: 18,
-            borderBottom: "2px solid #0a0a0a",
+            borderBottom: "2px solid #2A4D3A",
             paddingBottom: 6,
             marginBottom: 16,
           }}
@@ -666,7 +676,7 @@ function PdfContent({ result }: { result: ScoringResult }) {
         <h2
           style={{
             fontSize: 18,
-            borderBottom: "2px solid #0a0a0a",
+            borderBottom: "2px solid #2A4D3A",
             paddingBottom: 6,
             marginBottom: 16,
           }}
@@ -679,7 +689,7 @@ function PdfContent({ result }: { result: ScoringResult }) {
             style={{
               marginBottom: 16,
               padding: 12,
-              borderLeft: "3px solid #c8f55a",
+              borderLeft: "3px solid #2A4D3A",
             }}
           >
             <div
@@ -706,7 +716,7 @@ function PdfContent({ result }: { result: ScoringResult }) {
             >
               {r.desc}
             </div>
-            <div style={{ fontSize: 12, color: "#0a0a0a" }}>
+            <div style={{ fontSize: 12, color: "#1A2E22" }}>
               <b>行動建議：</b>
               {r.action}
             </div>
@@ -716,13 +726,23 @@ function PdfContent({ result }: { result: ScoringResult }) {
         <div
           style={{
             marginTop: 24,
-            textAlign: "center",
-            fontSize: 10,
+            paddingTop: 16,
+            borderTop: "1px solid #ccc",
+            fontSize: 9,
             color: "#666",
+            lineHeight: 1.6,
           }}
         >
-          本報告由 Symcio Brand Capital Index (BCI) 方法論生成 · 依循 ISO 10668
-          · CONFIDENTIAL
+          <p style={{ textAlign: "center", marginBottom: 8 }}>
+            本報告由 Symcio Brand Capital Index (BCI) 方法論生成 · 框架精神參考 ISO 10668 · CONFIDENTIAL
+          </p>
+          <p>
+            <b>免責聲明:</b> 本報告所載 BCI、ABVI 分數與競品比較為基於公開可查詢的 AI 引擎輸出觀察性指標,
+            不構成投資建議、採購建議、品牌估值意見書或法律意見。指標結果可能因 AI 引擎模型更新而變動。
+            Symcio 不對任何依本報告所作之商業決策承擔責任。Bloomberg、SimilarWeb、SEMrush、Interbrand、
+            ChatGPT、Claude、Gemini、Perplexity 等名稱僅作為類比座標或技術指稱 (nominative fair use),
+            Symcio 不主張任何授權、合作、代表或背書關係。
+          </p>
         </div>
       </div>
     </div>

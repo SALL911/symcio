@@ -239,7 +239,7 @@ export function SchemaWikidataGenerator() {
         </Field>
 
         {output.warnings.length > 0 && (
-          <ul className="space-y-1 border border-line bg-white p-3 text-xs text-muted">
+          <ul className="space-y-1 rounded-card border border-line bg-surface p-3 text-xs text-muted">
             {output.warnings.map((w) => (
               <li key={w}>· {w}</li>
             ))}
@@ -249,18 +249,18 @@ export function SchemaWikidataGenerator() {
         <button
           type="submit"
           disabled={submit === "submitting"}
-          className="w-full bg-ink px-6 py-4 text-base font-semibold text-white hover:bg-ink/90 disabled:opacity-50"
+          className="w-full rounded-card bg-accent px-6 py-4 text-base font-semibold text-white hover:bg-accent-dim disabled:opacity-50"
         >
           {submit === "submitting" ? "送出中..." : "寄給我 + 加入 Free Scan 排程 →"}
         </button>
 
         {submit === "success" && (
-          <p className="border border-accent bg-accent/10 p-3 text-sm">
-            已收到。我們會把 JSON-LD + QuickStatements 寄到 {input.email}，並把 {input.brandName} 加進四引擎曝光掃描佇列。
+          <p className="rounded-card border border-accent bg-accent-soft p-3 text-sm text-ink">
+            已收到。我們會把 JSON-LD + QuickStatements 寄到 {input.email},並把 {input.brandName} 加進四引擎曝光掃描佇列。
           </p>
         )}
         {submit === "error" && submitError && (
-          <p className="border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+          <p className="rounded-card border border-danger/40 bg-danger/10 p-3 text-sm text-danger">
             錯誤：{submitError}
           </p>
         )}
@@ -285,15 +285,21 @@ export function SchemaWikidataGenerator() {
         .input {
           display: block;
           width: 100%;
-          border: 1px solid #e5e7eb;
-          background: white;
+          border: 1px solid #E5E2D9;
+          border-radius: 8px;
+          background: #FFFFFF;
           padding: 0.625rem 0.875rem;
-          color: #0b0f19;
+          color: #1A2E22;
           font-size: 0.875rem;
+          transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .input::placeholder {
+          color: #94A29A;
         }
         .input:focus {
           outline: none;
-          border-color: #0b0f19;
+          border-color: #2A4D3A;
+          box-shadow: 0 0 0 3px rgba(42, 77, 58, 0.12);
         }
       `}</style>
     </div>
@@ -321,20 +327,20 @@ function Panel({
   onCopy: () => void;
 }) {
   return (
-    <div className="border border-line">
-      <div className="flex items-center justify-between border-b border-line bg-white px-4 py-3">
+    <div className="overflow-hidden rounded-card border border-line">
+      <div className="flex items-center justify-between border-b border-line bg-surface px-4 py-3">
         <div>
           <p className="font-mono text-xs uppercase tracking-widest text-muted">{title}</p>
         </div>
         <button
           type="button"
           onClick={onCopy}
-          className="border border-ink px-3 py-1 text-xs hover:bg-ink hover:text-white"
+          className="rounded-md border border-accent px-3 py-1 text-xs text-accent hover:bg-accent hover:text-white"
         >
           Copy
         </button>
       </div>
-      <p className="border-b border-line bg-white px-4 py-2 text-xs text-muted">{note}</p>
+      <p className="border-b border-line bg-surface px-4 py-2 text-xs text-muted">{note}</p>
       <pre className="max-h-96 overflow-auto bg-ink p-4 text-xs leading-relaxed text-white">
         {body}
       </pre>

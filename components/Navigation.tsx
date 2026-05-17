@@ -5,6 +5,7 @@ import { useState } from "react";
 
 const LINKS: { href: string; label: string }[] = [
   { href: "/", label: "首頁" },
+  { href: "/dashboard", label: "排行榜" },
   { href: "/audit", label: "診斷" },
   { href: "/pricing", label: "方案" },
   { href: "/faq/enterprise", label: "知識庫" },
@@ -16,18 +17,18 @@ export function Navigation() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-ink/85 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-line bg-bg/85 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link
           href="/"
           className="flex items-center gap-3 no-underline"
           onClick={() => setOpen(false)}
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent font-mono text-xl font-extrabold text-ink">
+          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent font-mono text-xl font-extrabold text-white">
             S
           </span>
           <span className="flex flex-col leading-none">
-            <span className="text-base font-bold text-white">Symcio</span>
+            <span className="text-base font-bold text-ink">Symcio</span>
             <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
               BrandOS
             </span>
@@ -48,7 +49,7 @@ export function Navigation() {
             href="https://discord.gg/jGWJr2Sd"
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-card bg-accent px-4 py-2 text-sm font-semibold text-ink no-underline hover:opacity-90"
+            className="rounded-card bg-accent px-4 py-2 text-sm font-semibold text-white no-underline hover:bg-accent-dim"
           >
             加入社群
           </a>
@@ -59,7 +60,7 @@ export function Navigation() {
           aria-label="開啟選單"
           aria-expanded={open}
           onClick={() => setOpen((s) => !s)}
-          className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg border border-line-soft text-white"
+          className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg border border-line text-ink"
         >
           <span className="sr-only">menu</span>
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -80,7 +81,7 @@ export function Navigation() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="rounded-card px-3 py-3 text-sm text-white no-underline hover:bg-surface"
+                className="rounded-card px-3 py-3 text-sm text-ink no-underline hover:bg-surface-2"
               >
                 {l.label}
               </Link>
@@ -90,7 +91,7 @@ export function Navigation() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setOpen(false)}
-              className="mt-2 rounded-card bg-accent px-4 py-3 text-center text-sm font-semibold text-ink no-underline"
+              className="mt-2 rounded-card bg-accent px-4 py-3 text-center text-sm font-semibold text-white no-underline"
             >
               加入社群
             </a>

@@ -1,16 +1,16 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html, body {
-  background: #0a0a0a;
-  color: #e5e5e5;
+  background: #F7F6F3;
+  color: #1A2E22;
 }
 
 body {
@@ -21,4 +21,9 @@ body {
 
 a {
   @apply underline-offset-4 hover:underline;
+}
+
+::selection {
+  background: #2A4D3A;
+  color: #F7F6F3;
 }

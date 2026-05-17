@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function AuditPage() {
   return (
-    <main className="min-h-screen bg-ink text-white">
+    <main className="min-h-screen bg-bg text-ink">
       <Navigation />
 
       <section className="border-b border-line">

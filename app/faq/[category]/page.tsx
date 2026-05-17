@@ -45,7 +45,7 @@ export default function FaqCategoryPage({ params }: Props) {
   };
 
   return (
-    <main className="min-h-screen bg-ink text-white">
+    <main className="min-h-screen bg-bg text-ink">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -70,8 +70,8 @@ export default function FaqCategoryPage({ params }: Props) {
                 href={`/faq/${c.key}`}
                 className={`rounded-full border px-4 py-1.5 font-mono text-xs no-underline transition ${
                   c.key === cat.key
-                    ? "border-accent bg-accent text-ink"
-                    : "border-line-soft text-muted hover:border-accent hover:text-accent"
+                    ? "border-accent bg-accent text-white"
+                    : "border-line text-muted hover:border-accent hover:text-accent"
                 }`}
               >
                 {c.label}
@@ -92,10 +92,10 @@ export default function FaqCategoryPage({ params }: Props) {
               >
                 <summary className="flex cursor-pointer items-start justify-between gap-4 list-none">
                   <div className="flex gap-3">
-                    <span className="flex h-7 min-w-7 items-center justify-center rounded-full bg-surface font-mono text-xs font-bold text-accent">
+                    <span className="flex h-7 min-w-7 items-center justify-center rounded-full bg-accent-soft font-mono text-xs font-bold text-accent">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <h3 className="text-base font-semibold leading-relaxed text-white md:text-lg">
+                    <h3 className="text-base font-semibold leading-relaxed text-ink md:text-lg">
                       {e.q}
                     </h3>
                   </div>

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function CheckoutSuccess() {
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-bg text-ink">
       <section className="mx-auto max-w-2xl px-6 py-24">
         <p className="font-mono text-xs uppercase tracking-widest text-muted">
           Symcio · AI Visibility Intelligence
@@ -18,7 +18,7 @@ export default function CheckoutSuccess() {
           我們已收到你的訂單。Symcio 團隊會在 <strong className="text-ink">24 小時內</strong>
           交付完整的 AI Visibility Audit（20 prompts × 4 engines + 競品對比 + 改善建議 PDF）。
         </p>
-        <div className="mt-10 border-l-4 border-accent bg-gray-50 p-6">
+        <div className="mt-10 rounded-card border-l-4 border-accent bg-surface-2 p-6">
           <p className="font-mono text-xs uppercase tracking-widest text-muted">
             接下來會發生什麼
           </p>
@@ -32,7 +32,7 @@ export default function CheckoutSuccess() {
         <div className="mt-10">
           <Link
             href="/"
-            className="inline-block border border-ink px-4 py-2 text-sm no-underline hover:bg-ink hover:text-white"
+            className="inline-block rounded-card border border-accent px-4 py-2 text-sm text-accent no-underline hover:bg-accent hover:text-white"
           >
             ← 回到 symcio.tw
           </Link>

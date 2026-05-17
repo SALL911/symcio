@@ -37,7 +37,7 @@ const STEPS = [
 
 export default function EntityBuilderPage() {
   return (
-    <main className="min-h-screen bg-ink text-white">
+    <main className="min-h-screen bg-bg text-ink">
       <header className="border-b border-line">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
           <Link href="/" className="font-mono text-sm font-medium no-underline">
@@ -67,7 +67,7 @@ export default function EntityBuilderPage() {
           <div className="mt-10 flex flex-wrap gap-3">
             <Link
               href="/tools/brand-check"
-              className="inline-block bg-accent px-6 py-3 text-sm font-semibold text-ink no-underline hover:opacity-90"
+              className="inline-block rounded-card bg-accent px-6 py-3 text-sm font-semibold text-white no-underline hover:bg-accent-dim"
             >
               先做 Free Scan →
             </Link>
@@ -75,7 +75,7 @@ export default function EntityBuilderPage() {
               href="https://github.com/sall911/symcio"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block border border-line px-6 py-3 text-sm font-semibold no-underline hover:border-accent hover:text-accent"
+              className="inline-block rounded-card border border-line px-6 py-3 text-sm font-semibold no-underline hover:border-accent hover:text-accent"
             >
               GitHub 開源範本
             </a>

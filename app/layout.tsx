@@ -6,13 +6,13 @@ import { PostHogProvider } from "@/components/PostHogProvider";
 import { UtmCapture } from "@/components/UtmCapture";
 
 export const metadata: Metadata = {
-  title: "Symcio — BrandOS 量化品牌 AI 基礎設施系統",
+  title: "Symcio · BrandOS — AI 能見度的量化標準",
   description:
-    "為品牌和自營商打造的 BrandOS。用 AI 追蹤品牌在 ChatGPT、Perplexity 的可見度，自動化降低 80% ESG 報告成本。",
+    "3 分鐘看見 AI 怎麼描述你的品牌。跨 ChatGPT / Claude / Gemini / Perplexity 四引擎品牌曝光量化,ABVI 方法論開源公開。",
   metadataBase: new URL("https://symcio.tw"),
   openGraph: {
-    title: "Symcio — BrandOS",
-    description: "量化品牌在 AI 引擎的曝光、排名與影響力。",
+    title: "Symcio · BrandOS",
+    description: "AI 能見度的量化標準。跨四引擎品牌曝光觀察指標,開源方法論。",
     type: "website",
     locale: "zh_TW",
   },
@@ -21,13 +21,12 @@ export const metadata: Metadata = {
 const ORGANIZATION_SCHEMA = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "全識股份有限公司",
-  alternateName: ["Symcio", "全識", "BrandOS"],
+  name: "Symcio · BrandOS",
+  alternateName: ["Symcio", "BrandOS"],
   url: "https://symcio.tw",
-  description: "台灣 AI 驅動的 ESG 品牌治理 SaaS 平台",
-  foundingDate: "2026",
+  description:
+    "AI 品牌曝光量化方法論與工具集。跨四引擎觀察性指標,開源公開。",
   sameAs: [
-    "https://www.wikidata.org/wiki/Q138922082",
     "https://github.com/sall911/symcio",
     "https://discord.gg/jGWJr2Sd",
   ],
