@@ -21,17 +21,18 @@ export function Navigation() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link
           href="/"
+          aria-label="Symcio · BrandOS — 首頁"
           className="flex items-center gap-3 no-underline"
           onClick={() => setOpen(false)}
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent font-mono text-xl font-extrabold text-white">
-            S
-          </span>
-          <span className="flex flex-col leading-none">
-            <span className="text-base font-bold text-ink">Symcio</span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
-              BrandOS
-            </span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/symcio-logo.svg"
+            alt="Symcio"
+            className="h-7 w-auto md:h-8"
+          />
+          <span className="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-muted sm:inline-block">
+            BrandOS
           </span>
         </Link>
 

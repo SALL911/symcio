@@ -486,16 +486,17 @@ function PdfContent({ result }: { result: ScoringResult }) {
   return (
     <div>
       <div style={{ textAlign: "center", padding: "80px 0" }}>
-        <div
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/symcio-logo.svg"
+          alt="Symcio"
           style={{
-            fontSize: 48,
-            fontWeight: 800,
-            color: "#2A4D3A",
-            marginBottom: 8,
+            height: 56,
+            width: "auto",
+            display: "inline-block",
+            marginBottom: 16,
           }}
-        >
-          SYMCIO
-        </div>
+        />
         <div
           style={{
             fontSize: 14,

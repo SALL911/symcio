@@ -7,12 +7,15 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-3">
           <div>
             <div className="flex items-center gap-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent font-mono text-xl font-extrabold text-white">
-                S
-              </span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/symcio-logo.svg"
+                alt="Symcio"
+                className="h-8 w-auto"
+              />
               <div className="leading-tight">
-                <div className="font-bold tracking-[0.04em] text-ink">
-                  SYMCIO · 全識
+                <div className="text-sm font-medium tracking-[0.04em] text-ink">
+                  全識 · BrandOS
                 </div>
                 <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
                   AI 能見度的量化標準 · 開源方法論
