@@ -10,6 +10,14 @@ export const metadata: Metadata = {
   description:
     "3 分鐘看見 AI 怎麼描述你的品牌。跨 ChatGPT / Claude / Gemini / Perplexity 四引擎品牌曝光量化,ABVI 方法論開源公開。",
   metadataBase: new URL("https://symcio.tw"),
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+  },
   openGraph: {
     title: "Symcio · BrandOS",
     description: "AI 能見度的量化標準。跨四引擎品牌曝光觀察指標,開源方法論。",

@@ -6,22 +6,17 @@ export function Footer() {
       <div className="mx-auto max-w-6xl px-6 py-12">
         <div className="grid gap-10 md:grid-cols-3">
           <div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/symcio-logo.svg"
                 alt="Symcio"
                 className="h-8 w-auto"
               />
-              <div className="leading-tight">
-                <div className="text-sm font-medium tracking-[0.04em] text-ink">
-                  全識 · BrandOS
-                </div>
-                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
-                  AI 能見度的量化標準 · 開源方法論
-                </div>
-              </div>
             </div>
+            <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
+              AI 能見度的量化標準 · 開源方法論
+            </p>
             <p className="mt-4 text-sm leading-relaxed text-muted">
               Symcio · BrandOS 是專注於 AI 品牌曝光量化的方法論與工具集,
               跨 ChatGPT、Claude、Gemini、Perplexity 四引擎輸出可重現的觀察指標。

@@ -21,8 +21,8 @@ export function Navigation() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link
           href="/"
-          aria-label="Symcio · BrandOS — 首頁"
-          className="flex items-center gap-3 no-underline"
+          aria-label="Symcio — 首頁"
+          className="flex items-center no-underline"
           onClick={() => setOpen(false)}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -31,9 +31,6 @@ export function Navigation() {
             alt="Symcio"
             className="h-7 w-auto md:h-8"
           />
-          <span className="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-muted sm:inline-block">
-            BrandOS
-          </span>
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
