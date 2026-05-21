@@ -1,0 +1,19 @@
+# pywikibot 本機設定 — 絕對不能 commit
+user-config.py
+user-password.py
+.pywikibot/
+throttle.ctrl
+apicache-py3/
+
+# 環境變數
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 實際資料（保留 example）
+data/items.json
+data/*.local.json

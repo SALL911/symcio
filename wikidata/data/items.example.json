@@ -1,0 +1,41 @@
+{
+  "items": [
+    {
+      "id": null,
+      "labels": {
+        "en": "Symcio",
+        "zh-tw": "Symcio"
+      },
+      "descriptions": {
+        "en": "AI brand visibility platform measuring how brands appear in AI-generated answers",
+        "zh-tw": "衡量品牌在 AI 生成內容中出現情形的可見度平台"
+      },
+      "aliases": {
+        "en": ["Symcio Inc", "Symcio Platform"]
+      },
+      "statements": [
+        {
+          "property": "P31",
+          "value": { "type": "item", "id": "Q4830453" },
+          "qualifiers": [
+            { "property": "P580", "value": { "type": "time", "value": "+2024-01-01T00:00:00Z", "precision": 9 } }
+          ]
+        },
+        {
+          "property": "P856",
+          "value": { "type": "url", "value": "https://symcio.com" },
+          "references": [
+            [
+              { "property": "P854", "value": { "type": "url", "value": "https://symcio.com" } },
+              { "property": "P813", "value": { "type": "time", "value": "+2026-05-21T00:00:00Z", "precision": 11 } }
+            ]
+          ]
+        },
+        {
+          "property": "P1448",
+          "value": { "type": "monolingual", "text": "Symcio", "language": "en" }
+        }
+      ]
+    }
+  ]
+}

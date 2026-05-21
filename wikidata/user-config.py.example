@@ -1,0 +1,26 @@
+# pywikibot 設定檔範本
+# 使用前請複製成 user-config.py 並填入帳號
+# 文件: https://www.mediawiki.org/wiki/Manual:Pywikibot/user-config.py
+
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+family = 'wikidata'
+mylang = 'wikidata'
+
+usernames['wikidata']['wikidata'] = os.getenv('WIKIDATA_USERNAME', 'Symcio')
+
+# 寫入節流（秒），避免觸發 rate limit
+put_throttle = 5
+maxlag = 5
+
+# User agent（Wikimedia 政策要求）
+user_agent_format = os.getenv(
+    'WIKIDATA_USER_AGENT',
+    'symcio-bot/1.0 (https://github.com/sall911/symcio)'
+)
+
+# 密碼檔（若使用 BotPassword）
+password_file = 'user-password.py'
