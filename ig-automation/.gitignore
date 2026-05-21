@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.env
+/tmp/
+*.png
+node_modules/
