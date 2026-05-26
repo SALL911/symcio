@@ -2,9 +2,17 @@
  * Symcio BCI Scoring Engine v2 — TypeScript port of apps/symcio-brand-audit/js/scoring-v2.js
  *
  * Client-side, deterministic (hash-seeded PRNG), ISO 10668-aligned.
- * Three layers: FBV + NCV + AIV → BCI total.
+ * Three layers: FBV + SCV + AIV → BCI total.
  *
- * BCI = α · FBV + β · NCV + γ · AIV   (α = 0.50, β = 0.25, γ = 0.25)
+ * BCI = α · FBV + β · SCV + γ · AIV   (α = 0.50, β = 0.25, γ = 0.25)
+ *
+ * Note on SCV (Sustainability Compliance Value):
+ * Per BCI v1.0 (Symcio Research SSRN paper), full SCV =
+ *   w₁·RCS + w₂·EDS + w₃·NCS = 0.40·RCS + 0.40·EDS + 0.20·NCS
+ * The audit MVP below uses a TNFD LEAP nature-capital proxy only
+ * (corresponds to the NCS sub-indicator, ~20% of full SCV). The full
+ * RCS / EDS / NCS data pipeline lives in the server-side bci_engine,
+ * not in this client-side scorer.
  */
 
 export type Industry =
@@ -65,7 +73,7 @@ export interface Recommendation {
 export interface ScoringResult {
   BCI: number;
   FBV: number;
-  NCV: number;
+  SCV: number;
   AIV: number;
   chatgptScore: number;
   perplexityScore: number;
@@ -121,6 +129,8 @@ const INDUSTRY_BRAND_ROLE: Record<Industry, number> = {
   其他: 0.5,
 };
 
+// TNFD LEAP industry baselines — used as NCS sub-indicator proxy within
+// the SCV layer until the full RCS/EDS/NCS pipeline is online.
 const INDUSTRY_LEAP: Record<Industry, number> = {
   食品飲料: 72,
   科技軟體: 25,
@@ -159,7 +169,7 @@ export const COMPETITORS: Record<Industry, Competitor[]> = {
   製造業: [
     { name: "鴻海", score: 90 },
     { name: "巨大", score: 68 },
-    { name: "上銀", score: 52 },
+    { name: "上銘", score: 52 },
   ],
   醫療健康: [
     { name: "長庚", score: 75 },
@@ -223,7 +233,11 @@ export function calculateBCI(data: ScoringInput): ScoringResult {
 
   const seed = hashCode(brandNameZh + brandNameEn);
 
-  // FBV
+  // FBV (Financial Brand Value) — v1.0 formal definition is ISO 10668
+  // income method (Brand Revenue × Role-of-Brand × Brand Strength ÷ Discount
+  // Rate). The audit MVP below uses self-reported revenue + size buckets
+  // as a proxy for Brand Revenue × Role-of-Brand, plus a seeded brand-strength
+  // surrogate for Brand Strength Score.
   const revenueMultiplier = REVENUE_MULT[revenue] ?? 0.5;
   const sizeMultiplier = SIZE_MULT[companySize] ?? 0.5;
   const brandRole = INDUSTRY_BRAND_ROLE[industry] ?? 0.5;
@@ -235,7 +249,12 @@ export function calculateBCI(data: ScoringInput): ScoringResult {
       brandStrength * 0.1) *
     (brandStrength / 100);
 
-  // NCV
+  // SCV (Sustainability Compliance Value) — v1.0 formal definition is
+  // 0.40·RCS + 0.40·EDS + 0.20·NCS (regulation-neutral). The audit MVP
+  // below uses TNFD LEAP industry baseline + biocredit estimate as a
+  // proxy for the NCS sub-indicator only. RCS and EDS require server-side
+  // pipelines into MOPS / EFRAG ESRS / GRI / SASB / IFRS S1·S2 and are
+  // not computed in this client-side scorer.
   const leapBase = INDUSTRY_LEAP[industry] ?? 30;
   const leapScore = seededRandom(
     seed + 2,
@@ -243,9 +262,11 @@ export function calculateBCI(data: ScoringInput): ScoringResult {
     Math.min(leapBase + 15, 100),
   );
   const biocreditEstimate = leapScore * revenueMultiplier * 10;
-  const NCV = leapScore * 0.6 + biocreditEstimate * 0.02;
+  const SCV = leapScore * 0.6 + biocreditEstimate * 0.02;
 
-  // AIV
+  // AIV (AI Visibility Value) — cross-engine weighted citation rate.
+  // Platform weights match BCI v1.0: ChatGPT 0.35, Perplexity 0.25,
+  // Google AI Overview 0.25, Claude 0.15.
   const hasWebsite = website && /^https?:\/\//i.test(website) ? 15 : 0;
   const baseAI = seededRandom(seed + 3, 15, 55);
   const chatgptScore = Math.min(
@@ -270,14 +291,14 @@ export function calculateBCI(data: ScoringInput): ScoringResult {
     googleAIScore * 0.25 +
     claudeScore * 0.15;
 
-  // Total
+  // Total — α=0.50, β=0.25, γ=0.25 (BCI v1.0 2026 baseline)
   const alpha = 0.5,
     beta = 0.25,
     gamma = 0.25;
   const FBV_norm = Math.min(100, FBV * 2.5);
-  const NCV_norm = Math.min(100, NCV * 1.5);
+  const SCV_norm = Math.min(100, SCV * 1.5);
   const AIV_norm = AIV;
-  const BCI = Math.round(alpha * FBV_norm + beta * NCV_norm + gamma * AIV_norm);
+  const BCI = Math.round(alpha * FBV_norm + beta * SCV_norm + gamma * AIV_norm);
 
   // GEO checks
   const geoChecks: GeoChecks = {
@@ -309,15 +330,15 @@ export function calculateBCI(data: ScoringInput): ScoringResult {
     recommendations.push({
       priority: "中",
       title: "提升 ChatGPT 引用率",
-      desc: "品牌在 ChatGPT 的提及率偏低。建議在 LinkedIn、Medium 等平台發布更多與品牌相關的公開內容。",
-      action: "每週發布 2-3 篇與品牌專業領域相關的文章",
+      desc: "品牌在 ChatGPT 的提及率偏低。建議在 LinkedIn、Medium 等平台發佈更多與品牌相關的公開內容。",
+      action: "每週發佈 2-3 篇與品牌專業領域相關的文章",
     });
-  if (NCV_norm < 30)
+  if (SCV_norm < 30)
     recommendations.push({
       priority: "中",
-      title: "啟動 TNFD 自然資本評估",
-      desc: "品牌的自然資本價值評分偏低。建議使用 TNFD LEAP 框架進行初步的自然依賴度評估。",
-      action: "使用 TNFD LEAP 工具進行免費評估",
+      title: "啟動永續合規評估 (SCV)",
+      desc: "品牌的永續合規價值偏低。BCI v1.0 SCV = 0.40·法規合規 (RCS) + 0.40·ESG 揭露 (EDS) + 0.20·自然資本 (NCS)。建議先走完 TNFD LEAP 自然依賴評估(NCS 子指標),同步規劃 CSRD / IFRS S1·S2 揭露路徑。",
+      action: "使用 TNFD LEAP 工具進行免費評估(NCS 起點)",
     });
   if (recommendations.length < 3)
     recommendations.push({
@@ -332,7 +353,7 @@ export function calculateBCI(data: ScoringInput): ScoringResult {
   return {
     BCI,
     FBV: Math.round(FBV_norm),
-    NCV: Math.round(NCV_norm),
+    SCV: Math.round(SCV_norm),
     AIV: Math.round(AIV_norm),
     chatgptScore: Math.round(chatgptScore),
     perplexityScore: Math.round(perplexityScore),
