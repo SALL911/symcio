@@ -84,27 +84,28 @@ export default function AboutPage() {
 
             <div className="border-l-2 border-accent pl-6">
               <h2 className="font-mono text-xs uppercase tracking-widest text-accent">
-                BCI · Brand Capital Index
+                BCI · 品牌資本指數
               </h2>
               <p className="mt-4 text-ink">
-                Symcio 提出的綜合指標,把金融視角的品牌強度、AI 可見度、
-                品牌參與度三條原本獨立的觀察軸放進同一個時序:
-              </p>
-              <p className="mt-3 font-mono text-sm text-accent">
-                BCI = w_F · F + w_V · V + w_E · E
+                Symcio 提出的三維品牌資本量化指標,把
+                <strong className="text-ink">財務品牌價值（FBV）</strong>、
+                <strong className="text-ink">永續合規價值（SCV）</strong>與
+                <strong className="text-ink">AI 可見度價值（AIV）</strong>
+                三條原本獨立的觀察軸,整合為單一時序指標。
               </p>
               <p className="mt-3 text-ink">
-                公式與權重向量於 GitHub 公開。框架精神參考 ISO 10668 國際品牌評價標準,
-                並非該標準的合規認證。BCI 為觀察性指標,不構成品牌估值意見書或財務建議。
+                方法論精神參考 ISO 10668 國際品牌評價標準,並非該標準的合規認證。
+                BCI 為觀察性指標,不構成品牌估值意見書或財務建議。
+                完整公式、權重結構與校準邏輯於獨立研究論文公開。
               </p>
               <p className="mt-4">
                 <a
-                  href="https://github.com/SALL911/BrandOS-Infrastructure/blob/main/docs/BCI_METHODOLOGY.md"
+                  href="https://symcio-research.netlify.app"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-accent"
                 >
-                  方法論白皮書（GitHub）→
+                  Symcio Research · 方法論白皮書 →
                 </a>
                 <span className="mx-2 text-muted">·</span>
                 <a
