@@ -6,7 +6,7 @@ import AuditForm from "@/components/AuditForm";
 export const metadata: Metadata = {
   title: "Brand AI Audit — 3 分鐘免費品牌 AI 可見度診斷 | Symcio",
   description:
-    "跨 ChatGPT / Perplexity / Google AI / Claude 的 BCI 品牌資本指數診斷。依循 ISO 10668，含 FBV + NCV + AIV 三維分析、GEO 檢查、競品比較、PDF 報告。",
+    "跨 ChatGPT / Perplexity / Google AI / Claude 的 BCI 品牌資本指數診斷。依循 ISO 10668，含 FBV + SCV + AIV 三維分析、GEO 檢查、競品比較、PDF 報告。",
   openGraph: {
     title: "Symcio Brand AI Audit",
     description:

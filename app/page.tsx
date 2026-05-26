@@ -68,8 +68,8 @@ const MODULES = [
   {
     code: "05",
     name: "TNFD / Biocredit",
-    desc: "基於 TNFD LEAP 框架自動化自然資本評估、biocredit 估算、產業依賴度基準,整合進 NCV 分軸。",
-    metrics: ["LEAP 四階段", "Biocredit", "NCV 評分", "自然資本時序"],
+    desc: "基於 TNFD LEAP 框架自動化自然資本評估、biocredit 估算、產業依賴度基準,整合進 SCV 永續合規價值分軸的 NCS 子指標。",
+    metrics: ["LEAP 四階段", "Biocredit", "NCS 子指標", "SCV 時序"],
   },
   {
     code: "06",
@@ -268,17 +268,8 @@ export default function HomePage() {
             BCI · 品牌資本指數
           </h2>
           <p className="mt-3 max-w-2xl text-muted">
-            Symcio 定義的核心指標 — 把金融資本、AI 可見度、品牌參與度三個原本不相關的市場統一成單一時序。
+            Symcio 提出的三維品牌資本量化指標 — 把財務、永續合規、AI 可見度三條原本獨立的觀察軸,整合為單一時序。
           </p>
-
-          <div className="mt-8 rounded-card border border-accent/30 bg-accent p-8 md:p-10">
-            <div className="text-center font-mono text-xl md:text-2xl text-white">
-              BCI = α · FBV + β · NCV + γ · AIV
-            </div>
-            <div className="mt-3 text-center font-mono text-xs text-white/70">
-              α = 0.50 · β = 0.25 · γ = 0.25
-            </div>
-          </div>
 
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             <div className="rounded-card border border-line bg-surface p-6">
@@ -286,21 +277,21 @@ export default function HomePage() {
                 FBV
               </div>
               <h3 className="mt-2 text-lg font-bold">
-                Financial Brand Value
+                財務品牌價值
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-muted">
-                依循 ISO 10668 財務精神;整合營收、公司規模、產業品牌角色指數、品牌強度。
+                Financial Brand Value · 方法論精神參考 ISO 10668 國際品牌評價標準(非該標準合規認證)。
               </p>
             </div>
             <div className="rounded-card border border-line bg-surface p-6">
               <div className="font-mono text-[11px] uppercase tracking-[2px] text-excellent">
-                NCV
+                SCV
               </div>
               <h3 className="mt-2 text-lg font-bold">
-                Nature Capital Value
+                永續合規價值
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-muted">
-                基於 TNFD LEAP 框架;結合產業自然依賴度基準與 Biocredit 估算。
+                Sustainability Compliance Value · 法規中立設計,涵蓋目標市場永續法規合規準備度、ESG 揭露品質與自然資本評估。
               </p>
             </div>
             <div className="rounded-card border border-line bg-surface p-6">
@@ -308,23 +299,23 @@ export default function HomePage() {
                 AIV
               </div>
               <h3 className="mt-2 text-lg font-bold">
-                AI Visibility Value
+                AI 可見度價值
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-muted">
-                Symcio 獨創;跨 ChatGPT (35%) / Perplexity (25%) / Google AI (25%) / Claude (15%) 加權提及率。
+                AI Visibility Value · Symcio 獨創;跨 ChatGPT、Perplexity、Google AI Overview、Claude 四引擎的引用頻率與品質。
               </p>
             </div>
           </div>
 
           <p className="mt-6 font-mono text-xs text-muted">
-            框架精神參考 ISO 10668 國際品牌評價標準 · 方法論開源於{" "}
+            完整公式、權重結構與校準邏輯於獨立研究論文公開 ·{" "}
             <a
-              href="https://github.com/sall911/symcio"
+              href="https://symcio-research.netlify.app"
               target="_blank"
               rel="noopener noreferrer"
               className="text-accent"
             >
-              github.com/sall911/symcio
+              Symcio Research →
             </a>
             <br />
             BCI 為觀察性指標,不構成品牌估值意見書、投資建議或財務報告。
@@ -590,7 +581,7 @@ export default function HomePage() {
               <div className="text-3xl">📚</div>
               <h3 className="mt-3 text-lg font-bold text-ink">ESGpedia</h3>
               <p className="mt-2 text-sm text-muted">
-                亞太 ESG 資料庫合作夥伴（洽談中）;資料層整合進 NCV 分軸。
+                亞太 ESG 資料庫合作夥伴（洽談中）;資料層整合進 SCV 永續合規分軸。
               </p>
               <div className="mt-4 font-mono text-xs text-accent">
                 esgpedia.io →
