@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Symcio BrandOS — 量化品牌 AI 基礎設施系統",
   description:
-    "為品牌和自營商打造的 BrandOS。整合 TNFD 框架、Biocredit 自然資本、AI 可見度追蹤 — 讓品牌資本可量化、可追蹤、可治理。依循 ISO 10668。",
+    "為有外銷、有品牌、缺合規資源的中小企業設計。三階段流程 — 診斷 (BCI 免費)、治理 (ESG 內容自動化 30,000/月起)、資產化 (品牌估值 + DPP 合規)。",
 };
 
 const STAGES = [
@@ -26,99 +26,114 @@ const STAGES = [
   },
   {
     idx: "III",
-    title: "板塊三 · 資產化與 ESG 治理",
-    sub: "Stage 4 流量 · Stage 5 綠色",
-    desc: "四引擎 AI 可見度追蹤、TNFD LEAP 自然資本評估、BCI 時序化資產量化。",
+    title: "板塊三 · 資產化與合規治理",
+    sub: "Stage 4 流量 · Stage 5 合規",
+    desc: "四引擎 AI 可見度追蹤、ESG 內容自動化、DPP 欄位對接、BCI 時序化資產量化。",
     tone: "excellent",
   },
   {
     idx: "IV",
     title: "板塊四 · 商模重構與資本化",
     sub: "Stage 6 商模 · Stage 7/8 資本與併購",
-    desc: "Brand Capital API 授權、金融機構數據接入、運動產業 175% 抵稅方案、併購估值支援。",
+    desc: "ISO 10668 品牌估值、政府補助申請支援、融資洽談文件包、併購估值支援。",
     tone: "warning",
   },
 ];
 
-const MODULES = [
+const PHASES = [
   {
-    code: "01",
-    name: "AI Visibility Index",
-    desc: "追蹤品牌在 ChatGPT、Claude、Gemini、Perplexity 四引擎的曝光率、排名位置與情感趨勢。每日更新,可回溯 12 個月。",
-    metrics: ["Mention Rate", "Average Rank", "Competitor Gap", "Sentiment"],
+    code: "Phase 1",
+    label: "診斷",
+    tagline: "獲客 · 免費/低門檻",
+    pricing: "免費",
+    pricingNote: "轉換工具",
+    title: "BCI 品牌能見度診斷",
+    desc: "輸入品牌名稱,3 分鐘出 PDF 報告。ChatGPT / Perplexity / Google AI / Claude 四引擎能見度量化,附改善建議。",
+    deliverables: [
+      "BCI 分數與四引擎能見度報告",
+      "競品同框分析",
+      "GEO 改善建議（3 項具體 Action）",
+      "可下載 PDF",
+    ],
+    ctaLabel: "免費試用診斷",
+    ctaHref: "/audit",
   },
   {
-    code: "02",
-    name: "ESG 報告素材整理",
-    desc: "把 TNFD / GRI / IFRS S1-S2 / LEAP 框架欄位對應到結構化資料,讓你的永續報告書撰寫團隊省下 60–80% 素材整理時間。(非簽證服務)",
-    metrics: ["Scope 1/2/3 欄位對齊", "TNFD Aligned", "GRI 2021", "IFRS S1/S2"],
+    code: "Phase 2",
+    label: "治理",
+    tagline: "留客 · 月費制",
+    pricing: "NTD 30,000 起",
+    pricingNote: "/月 · 核心營收",
+    title: "ESG 內容自動化 + 資料治理",
+    desc: "為有外銷、品牌、合規壓力的中小企業導入完整的數位治理與內容自動化系統。每月 30 則 ESG 自動內容,並接通 DPP 所需欄位結構。",
+    deliverables: [
+      "30 則/月 ESG 自動內容",
+      "單一平台發布 + 產業自動篩選",
+      "品牌數位資產盤點（官網/社群/產品頁）",
+      "DPP 數據欄位對接與結構化",
+    ],
+    ctaLabel: "預約治理 Demo",
+    ctaHref: "mailto:sall@symcio.tw?subject=Phase%202%20%E6%B2%BB%E7%90%86%20Demo",
   },
   {
-    code: "03",
-    name: "GEO Entity Builder",
-    desc: "自動生成 Wikidata entity、Schema.org Organization JSON-LD、FAQPage Schema,讓 AI 引擎的知識圖譜正確認識你的品牌。",
-    metrics: ["Wikidata", "Schema.org", "Knowledge Panel", "Entity Linking"],
-  },
-  {
-    code: "04",
-    name: "Brand Capital API",
-    desc: "將品牌 AI 可見度、BCI 子分數、ESG 合規打包為 REST API,供內部 CRM、投資研究平台、Tableau / Power BI 直接取用。",
-    metrics: ["REST API", "Webhook", "CSV Export", "SAML SSO"],
-  },
-  {
-    code: "05",
-    name: "TNFD / Biocredit",
-    desc: "基於 TNFD LEAP 框架自動化自然資本評估、biocredit 估算、產業依賴度基準,整合進 SCV 永續合規價值分軸的 NCS 子指標。",
-    metrics: ["LEAP 四階段", "Biocredit", "NCS 子指標", "SCV 時序"],
-  },
-  {
-    code: "06",
-    name: "贊助成效量化資料",
-    desc: "贊助運動賽事、藝文活動、ESG 議題前後的品牌 AI 曝光變化量化,提供結構化資料供你的會計師、稅務顧問申報運動產業發展條例第 26-2 條等抵稅項目使用。(Symcio 不提供稅務意見)",
-    metrics: ["贊助前後 ABVI", "競品同框分析", "議題關聯度", "資料可追溯"],
+    code: "Phase 3",
+    label: "資產化",
+    tagline: "擴客 · 年約",
+    pricing: "客製報價",
+    pricingNote: "高價值鎖定",
+    title: "品牌估值 + DPP 合規 + 內容資產",
+    desc: "Phase 2 的擴展版本:多平台 ESG 內容 + 品牌 CI 套版 + 客製議題管線,加上 ISO 10668 精神之品牌估值與融資/補助文件包,把品牌轉成可入帳的無形資產。",
+    deliverables: [
+      "30 則/月 ESG 內容 + 專業解讀",
+      "多平台分發（官網/社群/電子報）+ CI 套版",
+      "ISO 10668 精神之品牌估值報告 + DPP 合規報告",
+      "嵌入客戶 CMS API · 耀飛/SITI 補助文件",
+    ],
+    ctaLabel: "聯繫資產化規劃",
+    ctaHref: "mailto:sall@symcio.tw?subject=Phase%203%20%E5%93%81%E7%89%8C%E8%B3%87%E7%94%A2%E5%8C%96",
   },
 ];
 
 const PLANS = [
   {
-    name: "免費版 Free",
+    name: "Phase 1 · 診斷",
     price: "NTD 0",
-    period: "永久免費",
+    period: "免費 · 3 分鐘",
     items: [
-      "1 品牌 × 4 引擎",
-      "每月 1 次掃描",
-      "基礎 GEO 建議",
-      "Discord 社群",
+      "BCI 品牌可見度診斷",
+      "四引擎能見度報告",
+      "GEO 改善建議",
+      "PDF 報告下載",
     ],
-    cta: "免費試用",
+    cta: "立即試用",
     href: "/audit",
   },
   {
-    name: "專業版 Professional",
-    price: "NTD 100,000",
-    period: "每年（或月付 9,000）",
+    name: "Phase 2 · 治理",
+    price: "NTD 30,000 起",
+    period: "/月 · 月費制",
     items: [
-      "每月完整 BCI 報告（含 PDF）",
-      "5 個競品追蹤",
-      "GEO 實體建置",
-      "季度策略會議",
+      "30 則/月 ESG 自動內容",
+      "單一平台發布 + 產業篩選",
+      "DPP 欄位對接",
+      "雙月策略 office hour",
     ],
-    cta: "聯繫我們",
-    href: "mailto:sall@symcio.tw?subject=%E5%B0%88%E6%A5%AD%E7%89%88%E6%96%B9%E6%A1%88",
+    cta: "預約 Demo",
+    href: "mailto:sall@symcio.tw?subject=Phase%202%20%E6%B2%BB%E7%90%86%20Demo",
     featured: true,
   },
   {
-    name: "企業版 Enterprise",
-    price: "NTD 250–500k",
-    period: "每年（依規模）",
+    name: "Phase 3 · 資產化",
+    price: "客製報價",
+    period: "年約",
     items: [
-      "Brand Capital API 授權",
-      "ESG / TNFD 自動化",
-      "175% 抵稅方案支援",
-      "專屬治理顧問",
+      "多平台 ESG 內容 + CI 套版",
+      "ISO 10668 品牌估值報告",
+      "DPP 合規完整報告",
+      "融資/補助文件包",
     ],
-    cta: "預約 Demo",
-    href: "mailto:sall@symcio.tw?subject=%E4%BC%81%E6%A5%AD%E7%89%88Demo",
+    cta: "聯繫規劃",
+    href: "mailto:sall@symcio.tw?subject=Phase%203%20%E5%93%81%E7%89%8C%E8%B3%87%E7%94%A2%E5%8C%96",
   },
 ];
 
@@ -209,11 +224,11 @@ export default function HomePage() {
 
           {/* Eco-tagline strip — echoes the PDF's "Modern Eco Solutions" tone */}
           <div className="mt-14 flex flex-wrap items-center gap-x-8 gap-y-2 font-mono text-[11px] uppercase tracking-[0.25em] text-white/60">
-            <span>TNFD LEAP Aligned</span>
+            <span>BCI 品牌資本指數</span>
             <span className="hidden h-px w-8 bg-white/30 md:inline-block" />
             <span>ISO 10668 Spirit</span>
             <span className="hidden h-px w-8 bg-white/30 md:inline-block" />
-            <span>Biocredit · NCV</span>
+            <span>EU DPP Ready</span>
             <span className="hidden h-px w-8 bg-white/30 md:inline-block" />
             <span>4-Engine AI Visibility</span>
           </div>
@@ -350,44 +365,76 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Service modules */}
+      {/* Service Flow — 3 Phases */}
       <section className="border-b border-line">
         <div className="mx-auto max-w-6xl px-6 py-20">
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
-            Service Modules
+            Service Flow · 三階段服務流程
           </p>
           <h2 className="mt-4 text-3xl font-extrabold md:text-4xl">
-            六個核心服務模組
+            診斷 → 治理 → 資產化
           </h2>
+          <p className="mt-3 max-w-3xl text-muted">
+            不是幫你做行銷,是幫你的品牌
+            <span className="font-semibold text-ink">數據合規、AI 可見、資產可估</span>
+            。三階段對應外銷中小企業的真實需求曲線:從免費診斷,到月費治理,再到品牌資產化。
+          </p>
 
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {MODULES.map((m) => (
-              <div
-                key={m.code}
-                className="rounded-card border border-line bg-surface p-6 transition hover:border-accent hover:shadow-sm"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-[11px] uppercase tracking-[2px] text-muted">
-                    Module {m.code}
-                  </span>
+          <div className="relative mt-10 grid gap-5 md:grid-cols-3">
+            {PHASES.map((p, i) => (
+              <div key={p.code} className="relative flex">
+                <div className="flex w-full flex-col rounded-card border border-accent/30 bg-surface p-6 transition hover:border-accent hover:shadow-sm md:p-7">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[11px] uppercase tracking-[2px] text-accent">
+                      {p.code} · {p.label}
+                    </span>
+                    <span className="font-mono text-[10px] uppercase tracking-[1px] text-muted">
+                      {p.tagline}
+                    </span>
+                  </div>
+                  <h3 className="mt-3 text-xl font-bold">{p.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-muted">
+                    {p.desc}
+                  </p>
+                  <ul className="mt-5 space-y-2 text-sm">
+                    {p.deliverables.map((d) => (
+                      <li key={d} className="flex gap-2 text-ink/90">
+                        <span className="text-accent">✓</span>
+                        <span>{d}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-6 border-t border-line pt-4">
+                    <div className="font-mono text-2xl font-bold text-ink">
+                      {p.pricing}
+                    </div>
+                    <div className="mt-1 font-mono text-[11px] uppercase tracking-[1px] text-muted">
+                      {p.pricingNote}
+                    </div>
+                  </div>
+                  <a
+                    href={p.ctaHref}
+                    className="mt-6 inline-flex items-center justify-center rounded-card border border-accent px-5 py-2.5 text-sm font-bold text-accent no-underline hover:bg-accent hover:text-white transition"
+                  >
+                    {p.ctaLabel} →
+                  </a>
                 </div>
-                <h3 className="mt-2 text-xl font-bold">{m.name}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted">
-                  {m.desc}
-                </p>
-                <ul className="mt-4 flex flex-wrap gap-2 text-xs">
-                  {m.metrics.map((x) => (
-                    <li
-                      key={x}
-                      className="rounded-full border border-line px-3 py-1 font-mono text-muted"
-                    >
-                      {x}
-                    </li>
-                  ))}
-                </ul>
+                {i < PHASES.length - 1 && (
+                  <span
+                    aria-hidden
+                    className="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 z-10 h-6 w-6 items-center justify-center rounded-full border border-accent/40 bg-bg text-accent text-sm font-bold"
+                  >
+                    →
+                  </span>
+                )}
               </div>
             ))}
           </div>
+
+          <p className="mt-8 font-mono text-xs text-muted">
+            外銷中小企業的合規時程已啟動:EU DPP 即將上路,通路商開始要求 ESG 資料 ·
+            Phase 1 → 2 → 3 為觀察性流程,實際對應依個案需求調整。
+          </p>
         </div>
       </section>
 
@@ -632,8 +679,8 @@ export default function HomePage() {
                 <span className="text-accent">政策、白皮書、量化研究</span>
               </h2>
               <p className="mt-5 text-base leading-relaxed text-muted md:text-lg">
-                BCI 方法論白皮書、TNFD / LEAP 在地化框架、AI 治理立法觀察、
-                ESG 揭露時程分析。所有研究產出以 CC BY 4.0 授權,供主管機關、
+                BCI 方法論白皮書、EU DPP 在地化框架、AI 治理立法觀察、
+                外銷中小企業合規時程分析。所有研究產出以 CC BY 4.0 授權,供主管機關、
                 學術單位、媒體免費引用。
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
@@ -675,7 +722,7 @@ export default function HomePage() {
                 },
                 {
                   tag: "Framework",
-                  title: "TNFD LEAP 在地化指南（製造業）",
+                  title: "EU DPP 在地化指南（外銷製造業）",
                   meta: "預計 2026 Q3",
                 },
               ].map((item) => (
