@@ -4,7 +4,7 @@
  * Client-side, deterministic (hash-seeded PRNG), ISO 10668-aligned.
  * Three layers: FBV + SCV + AIV → BCI total.
  *
- * BCI = α · FBV + β · SCV + γ · AIV   (α = 0.50, β = 0.25, γ = 0.25)
+ * Weights imported from `lib/bci/constants.ts` (single source of truth).
  *
  * Note on SCV (Sustainability Compliance Value):
  * Per BCI v1.0 (Symcio Research SSRN paper), full SCV =
@@ -14,6 +14,8 @@
  * RCS / EDS / NCS data pipeline lives in the server-side bci_engine,
  * not in this client-side scorer.
  */
+
+import { BCI_CURRENT_WEIGHTS, AIV_PLATFORM_WEIGHTS } from "@/lib/bci/constants";
 
 export type Industry =
   | "食品飲料"
@@ -286,15 +288,13 @@ export function calculateBCI(data: ScoringInput): ScoringResult {
     baseAI + hasWebsite + seededRandom(seed + 13, -10, 10),
   );
   const AIV =
-    chatgptScore * 0.35 +
-    perplexityScore * 0.25 +
-    googleAIScore * 0.25 +
-    claudeScore * 0.15;
+    chatgptScore * AIV_PLATFORM_WEIGHTS.ChatGPT +
+    perplexityScore * AIV_PLATFORM_WEIGHTS.Perplexity +
+    googleAIScore * AIV_PLATFORM_WEIGHTS.GoogleAIOverview +
+    claudeScore * AIV_PLATFORM_WEIGHTS.Claude;
 
-  // Total — α=0.50, β=0.25, γ=0.25 (BCI v1.0 2026 baseline)
-  const alpha = 0.5,
-    beta = 0.25,
-    gamma = 0.25;
+  // Total — α/β/γ from BCI v1.0 current weights (lib/bci/constants.ts)
+  const { alpha, beta, gamma } = BCI_CURRENT_WEIGHTS;
   const FBV_norm = Math.min(100, FBV * 2.5);
   const SCV_norm = Math.min(100, SCV * 1.5);
   const AIV_norm = AIV;
