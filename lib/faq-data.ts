@@ -7,7 +7,6 @@
 
 export type FaqCategoryKey =
   | "enterprise"
-  | "esg"
   | "investor"
   | "security"
   | "creator";
@@ -45,10 +44,6 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
         a: "免費健檢 3 分鐘即可完成。專業版啟動約需 2 週（Wikidata + Schema.org 基礎建設上線後，AI 引擎重新爬取）。完整的 GEO 策略效果通常 3–6 個月內見效。",
       },
       {
-        q: "運動產業 175% 抵稅適用條件是什麼？",
-        a: "依《運動產業發展條例》第 26-2 條，企業投資合作運動產業（含運動行銷、賽事贊助、運動科技）可抵減當年度應納營利事業所得稅至 175%。Symcio 企業版可協助完成投資量化佐證與成效追蹤，符合抵稅申請要求。",
-      },
-      {
         q: "企業版的 Brand Capital API 可以做什麼？",
         a: "Brand Capital API 提供程式化存取 BCI 子分數、競品時序、AI 語料 snippets、產業 benchmark。適用於嵌入既有 BI（Tableau / Power BI）、投資者關係頁面、CRM 品牌健康 dashboard。",
       },
@@ -71,54 +66,6 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
       {
         q: "採購流程？",
         a: "寫信到 info@symcio.tw，我們 24 小時內回覆。專業版簽 1 年合約、企業版可客製化條款。支援美金電匯、新台幣月付、credit card recurring（經 Stripe）。",
-      },
-    ],
-  },
-  {
-    key: "esg",
-    label: "ESG / 永續",
-    tagline: "TNFD / IFRS S1-S2 / LEAP 框架",
-    audience: "ESG · 永續長",
-    entries: [
-      {
-        q: "TNFD 要求的聲譽風險揭露，Symcio 可以怎麼協助？",
-        a: "TNFD Reputational Risk 揭露需要客觀、量化、前瞻性訊號。Symcio 的四引擎 AI 可見度資料直接對應此要求，比傳統媒體 sentiment 早 6–12 個月反映聲譽變化，可作為 TNFD 報告的 supporting evidence。",
-      },
-      {
-        q: "BCI 的 SCV（永續合規價值）是什麼？",
-        a: "SCV = Sustainability Compliance Value，BCI v1.0 第二維。完整公式：SCV = 0.40·RCS（法規合規分數）+ 0.40·EDS（ESG 揭露分數）+ 0.20·NCS（自然資本分數，對應 TNFD LEAP）。設計為法規中立——衡量合規成果而非對任何特定框架（CSRD / TNFD / 金管會）的依附。台灣上市櫃公司的 SCV 反映金管會分階段 ESG 揭露要求；出口歐盟的製造商額外反映 ESPR 與 CBAM 準備度。詳見 SSRN 獨立研究論文 v1.0。",
-      },
-      {
-        q: "IFRS S1 / S2 的揭露，Symcio 可以產出哪些資料？",
-        a: "S1 要求「材料性風險」揭露 — Symcio 提供品牌聲譽風險時序；S2 要求氣候相關風險 — Symcio 的 SCV 子指標 NCS 整合 TNFD LEAP，可作為氣候 × 品牌的交集層資料，並對齊 IFRS S1·S2 揭露結構。",
-      },
-      {
-        q: "報告輸出格式支援哪些？",
-        a: "PDF（符合 GRI / SASB / IFRS S 架構）、CSV、JSON（給 Bloomberg ESG / S&P Global / MSCI 第三方資料串接）。企業版可自訂模板。",
-      },
-      {
-        q: "有跟會計事務所合作嗎？",
-        a: "我們是 ESG 審計公司的資料供應層（Big 4 / SGS / DNV / BV / TÜV Rheinland），不搶他們的 advisory 生意。可配合你們的現有簽證流程。",
-      },
-      {
-        q: "Biocredit 怎麼計算？",
-        a: "Biocredit 為 SCV 第三子指標 NCS（自然資本，權重 0.20）的計算組件之一，基於 LEAP 評估分數 × 產業營收倍數 × 自然依賴度權重。詳細公式見 docs/BCI_METHODOLOGY.md SCV / NCS 小節；client-side proxy 程式碼見 lib/scoring.ts。完整 RCS（法規合規 0.40）+ EDS（ESG 揭露 0.40）+ NCS（自然資本 0.20）的 SCV 計算實作於 server-side bci_engine（scripts/bci_engine.py）。",
-      },
-      {
-        q: "小型品牌也需要做 TNFD 嗎？",
-        a: "大型上市公司 2025 年起強制；中型企業 2026–2027 逐步；供應鏈連帶受影響。Symcio 免費版即可做基礎 LEAP 評估（對應 SCV 的 NCS 子指標起點），不必一開始就企業版。",
-      },
-      {
-        q: "碳排（CO2）有在 BCI 裡嗎？",
-        a: "BCI 本體不直接算碳排，但 SCV 的 EDS 子指標包含 GHG Protocol Scope 1/2/3 報告品質評分，NCS 的產業 LEAP 基準也隱含碳密度因子（能源 85、製造 65、科技 25）。完整碳排請串接客戶既有的 LCA 工具，Symcio 提供接口。",
-      },
-      {
-        q: "TNFD LEAP 四階段，Symcio 在哪幾階段支援？",
-        a: "L（Locate）— 產業基準對應；E（Evaluate）— 品牌 NCS 評分（feed into SCV）；A（Assess）— 自動化報告產出；P（Prepare）— AI 可見度訊號作為聲譽風險指標。四個階段都有覆蓋。",
-      },
-      {
-        q: "與其他 ESG 平台（如 Watershed、Persefoni）的差異？",
-        a: "Watershed / Persefoni 專注在碳核算。Symcio 補上「品牌聲譽 × 永續合規」交集層（BCI 的 AIV × SCV 維度），兩者不衝突，可並行使用。",
       },
     ],
   },
