@@ -148,20 +148,36 @@ export default function HomePage() {
     <main className="min-h-screen bg-bg text-ink">
       <Navigation />
 
-      {/* Hero */}
-      <section className="border-b border-line">
-        <div className="mx-auto max-w-5xl px-6 py-20 md:py-28">
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
+      {/* Hero — eco-themed dark cinematic */}
+      <section className="relative isolate overflow-hidden border-b border-line bg-black text-white">
+        {/* Background: dark tropical-leaf image */}
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 bg-cover bg-center"
+          style={{ backgroundImage: "url('/hero-leaves.jpg')" }}
+        />
+        {/* Tint + readability gradient */}
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-black/85 via-black/55 to-black/35"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 bg-gradient-to-t from-black/70 via-transparent to-black/30"
+        />
+
+        <div className="mx-auto max-w-5xl px-6 py-24 md:py-32">
+          <p className="font-mono text-xs uppercase tracking-[0.3em] text-emerald-300/90">
             Symcio · BrandOS
           </p>
-          <h1 className="mt-5 text-4xl font-extrabold leading-[1.15] md:text-6xl">
+          <h1 className="mt-5 text-4xl font-extrabold leading-[1.15] text-white md:text-6xl">
             為品牌和自營商打造的
             <br />
-            <span className="text-accent">BrandOS</span>
+            <span className="text-emerald-300">BrandOS</span>
             <br />
             量化品牌 AI 基礎設施系統
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted md:text-xl">
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/80 md:text-xl">
             你的 CMO 上週又被問「為什麼 ChatGPT 沒提到我們?」嗎?
             <br />
             Symcio 跨四引擎量化品牌曝光,3 分鐘看見 AI 怎麼描述你。
@@ -169,7 +185,7 @@ export default function HomePage() {
           <div className="mt-10 flex flex-wrap gap-3">
             <Link
               href="/audit"
-              className="inline-flex items-center justify-center rounded-card bg-accent px-7 py-3.5 text-sm font-bold text-white no-underline hover:bg-accent-dim transition"
+              className="inline-flex items-center justify-center rounded-card bg-emerald-400 px-7 py-3.5 text-sm font-bold text-black no-underline hover:bg-emerald-300 transition"
             >
               免費品牌 AI 健檢 →
             </Link>
@@ -177,7 +193,7 @@ export default function HomePage() {
               href="https://discord.gg/jGWJr2Sd"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-card border border-line px-7 py-3.5 text-sm font-bold text-ink no-underline hover:border-accent hover:text-accent"
+              className="inline-flex items-center justify-center rounded-card border border-white/30 bg-white/5 px-7 py-3.5 text-sm font-bold text-white no-underline backdrop-blur hover:border-emerald-300 hover:text-emerald-300"
             >
               💬 Discord 社群
             </a>
@@ -185,10 +201,21 @@ export default function HomePage() {
               href="https://github.com/sall911/symcio"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-card border border-line px-7 py-3.5 text-sm font-bold text-ink no-underline hover:border-accent hover:text-accent"
+              className="inline-flex items-center justify-center rounded-card border border-white/30 bg-white/5 px-7 py-3.5 text-sm font-bold text-white no-underline backdrop-blur hover:border-emerald-300 hover:text-emerald-300"
             >
               🐙 GitHub 協作
             </a>
+          </div>
+
+          {/* Eco-tagline strip — echoes the PDF's "Modern Eco Solutions" tone */}
+          <div className="mt-14 flex flex-wrap items-center gap-x-8 gap-y-2 font-mono text-[11px] uppercase tracking-[0.25em] text-white/60">
+            <span>TNFD LEAP Aligned</span>
+            <span className="hidden h-px w-8 bg-white/30 md:inline-block" />
+            <span>ISO 10668 Spirit</span>
+            <span className="hidden h-px w-8 bg-white/30 md:inline-block" />
+            <span>Biocredit · NCV</span>
+            <span className="hidden h-px w-8 bg-white/30 md:inline-block" />
+            <span>4-Engine AI Visibility</span>
           </div>
         </div>
       </section>
