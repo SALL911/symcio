@@ -85,12 +85,12 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
         a: "TNFD Reputational Risk 揭露需要客觀、量化、前瞻性訊號。Symcio 的四引擎 AI 可見度資料直接對應此要求，比傳統媒體 sentiment 早 6–12 個月反映聲譽變化，可作為 TNFD 報告的 supporting evidence。",
       },
       {
-        q: "BCI 的 NCV（自然資本價值）是什麼？",
-        a: "NCV = Nature Capital Value，基於 TNFD LEAP 框架設計，整合產業自然依賴度基準（INDUSTRY_LEAP）與生物信用（Biocredit）估算。反映品牌對自然資本的依賴與影響。",
+        q: "BCI 的 SCV（永續合規價值）是什麼？",
+        a: "SCV = Sustainability Compliance Value，BCI v1.0 第二維。完整公式：SCV = 0.40·RCS（法規合規分數）+ 0.40·EDS（ESG 揭露分數）+ 0.20·NCS（自然資本分數，對應 TNFD LEAP）。設計為法規中立——衡量合規成果而非對任何特定框架（CSRD / TNFD / 金管會）的依附。台灣上市櫃公司的 SCV 反映金管會分階段 ESG 揭露要求；出口歐盟的製造商額外反映 ESPR 與 CBAM 準備度。詳見 SSRN 獨立研究論文 v1.0。",
       },
       {
         q: "IFRS S1 / S2 的揭露，Symcio 可以產出哪些資料？",
-        a: "S1 要求「材料性風險」揭露 — Symcio 提供品牌聲譽風險時序；S2 要求氣候相關風險 — Symcio 的 NCV 軸整合 TNFD LEAP 可作為氣候 × 品牌的交集層資料。",
+        a: "S1 要求「材料性風險」揭露 — Symcio 提供品牌聲譽風險時序；S2 要求氣候相關風險 — Symcio 的 SCV 子指標 NCS 整合 TNFD LEAP，可作為氣候 × 品牌的交集層資料，並對齊 IFRS S1·S2 揭露結構。",
       },
       {
         q: "報告輸出格式支援哪些？",
@@ -102,23 +102,23 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
       },
       {
         q: "Biocredit 怎麼計算？",
-        a: "基於 LEAP 評估分數 × 產業營收倍數 × 自然依賴度權重。詳細公式見 docs/BCI_METHODOLOGY.md NCV 小節；程式碼見 lib/scoring.ts。",
+        a: "Biocredit 為 SCV 第三子指標 NCS（自然資本，權重 0.20）的計算組件之一，基於 LEAP 評估分數 × 產業營收倍數 × 自然依賴度權重。詳細公式見 docs/BCI_METHODOLOGY.md SCV / NCS 小節；client-side proxy 程式碼見 lib/scoring.ts。完整 RCS（法規合規 0.40）+ EDS（ESG 揭露 0.40）+ NCS（自然資本 0.20）的 SCV 計算實作於 server-side bci_engine（scripts/bci_engine.py）。",
       },
       {
         q: "小型品牌也需要做 TNFD 嗎？",
-        a: "大型上市公司 2025 年起強制；中型企業 2026–2027 逐步；供應鏈連帶受影響。Symcio 免費版即可做基礎 LEAP 評估，不必一開始就企業版。",
+        a: "大型上市公司 2025 年起強制；中型企業 2026–2027 逐步；供應鏈連帶受影響。Symcio 免費版即可做基礎 LEAP 評估（對應 SCV 的 NCS 子指標起點），不必一開始就企業版。",
       },
       {
         q: "碳排（CO2）有在 BCI 裡嗎？",
-        a: "BCI 本體不直接算碳排，但 NCV 的產業 LEAP 基準隱含碳密度因子（能源 85、製造 65、科技 25）。完整碳排請串接客戶既有的 LCA 工具，Symcio 提供接口。",
+        a: "BCI 本體不直接算碳排，但 SCV 的 EDS 子指標包含 GHG Protocol Scope 1/2/3 報告品質評分，NCS 的產業 LEAP 基準也隱含碳密度因子（能源 85、製造 65、科技 25）。完整碳排請串接客戶既有的 LCA 工具，Symcio 提供接口。",
       },
       {
         q: "TNFD LEAP 四階段，Symcio 在哪幾階段支援？",
-        a: "L（Locate）— 產業基準對應；E（Evaluate）— 品牌 NCV 評分；A（Assess）— 自動化報告產出；P（Prepare）— AI 可見度訊號作為風險指標。四個階段都有覆蓋。",
+        a: "L（Locate）— 產業基準對應；E（Evaluate）— 品牌 NCS 評分（feed into SCV）；A（Assess）— 自動化報告產出；P（Prepare）— AI 可見度訊號作為聲譽風險指標。四個階段都有覆蓋。",
       },
       {
         q: "與其他 ESG 平台（如 Watershed、Persefoni）的差異？",
-        a: "Watershed / Persefoni 專注在碳核算。Symcio 補上「品牌聲譽 × 自然資本」交集層，兩者不衝突，可並行使用。",
+        a: "Watershed / Persefoni 專注在碳核算。Symcio 補上「品牌聲譽 × 永續合規」交集層（BCI 的 AIV × SCV 維度），兩者不衝突，可並行使用。",
       },
     ],
   },
@@ -206,7 +206,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
       },
       {
         q: "API rate limit？",
-        a: "免費版 100 req/hour；專業版 10,000 req/hour；企業版可客製化（含專屬 IP allowlist + private endpoint）。",
+        a: "免費版 100 req/hour；專業版 10,000 req/hour；企業版可客製化(含專屬 IP allowlist + private endpoint)。",
       },
       {
         q: "漏洞通報（Responsible disclosure）？",

@@ -70,7 +70,7 @@ const PLANS = [
 const FAQ = [
   {
     q: "BCI 的方法論是什麼?",
-    a: "BCI (Brand Capital Index) 框架參考 ISO 10668 國際品牌評價標準精神（非該標準合規認證）,整合財務視角品牌強度 (FBV)、自然資本觀察值 (NCV) 和 AI 可見度觀察值 (AIV) 三個維度。FBV 觀察邏輯參考 Interbrand 等公開方法論的因子拆解、NCV 對齊 TNFD LEAP 框架欄位、AIV 為 Symcio 提出的跨四引擎（ChatGPT / Perplexity / Google AI / Claude）加權提及率。BCI 為觀察性指標,不構成品牌估值意見書、投資建議或財務報告。",
+    a: "BCI (Brand Capital Index) 框架參考 ISO 10668 國際品牌評價標準精神（非該標準合規認證）,整合財務品牌價值 (FBV)、永續合規價值 (SCV) 與 AI 可見度價值 (AIV) 三個維度。FBV 觀察邏輯參考 Interbrand 等公開方法論的因子拆解;SCV 為法規中立設計,涵蓋法規合規分數、ESG 揭露分數與自然資本分數;AIV 為 Symcio 提出的跨四引擎（ChatGPT / Perplexity / Google AI Overview / Claude）加權提及率。完整方法論於獨立研究論文公開。BCI 為觀察性指標,不構成品牌估值意見書、投資建議或財務報告。",
   },
   {
     q: "免費版和單次報告的主要差異?",

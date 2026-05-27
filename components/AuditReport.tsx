@@ -56,13 +56,13 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
     () => ({
       labels: [
         "財務品牌價值 (FBV)",
-        "自然資本價值 (NCV)",
+        "永續合規價值 (SCV)",
         "AI 可見度 (AIV)",
       ],
       datasets: [
         {
           label: result.brandName,
-          data: [result.FBV, result.NCV, result.AIV],
+          data: [result.FBV, result.SCV, result.AIV],
           backgroundColor: "rgba(42, 77, 58, 0.18)",
           borderColor: "#2A4D3A",
           borderWidth: 2,
@@ -204,7 +204,7 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
             {result.brandName} 品牌 AI 可見度診斷報告
           </h2>
           <div className="mt-1 font-mono text-[11px] uppercase tracking-[1.5px] text-muted">
-            依循 ISO 10668 · BCI v2 methodology
+            依循 ISO 10668 · BCI v1.0 methodology
           </div>
         </div>
 
@@ -239,7 +239,7 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
         {/* Section 2 — Radar */}
         <Section num={2} title="BCI 三維分析">
           <h3 className="mb-4 text-xl font-bold text-ink">
-            FBV · NCV · AIV 三軸雷達
+            FBV · SCV · AIV 三軸雷達
           </h3>
           <div className="mx-auto h-[360px] max-w-lg rounded-card border border-line bg-surface p-5">
             <Radar data={radarData} options={radarOptions} />
@@ -353,33 +353,36 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
             </summary>
             <div className="mt-4 space-y-3 text-sm text-muted">
               <div className="rounded-lg bg-accent-soft p-4 font-mono text-sm text-accent">
-                BCI = α · FBV + β · NCV + γ · AIV &nbsp; (α=0.50, β=0.25,
-                γ=0.25)
+                BCI = α · FBV + β · SCV + γ · AIV &nbsp; (α=0.50, β=0.25,
+                γ=0.25 · BCI v1.0 2026 baseline)
               </div>
               <p>
-                <b className="text-ink">FBV · Financial Brand Value</b>:框架精神參考
-                ISO 10668(非該標準合規認證),整合營收、公司規模、產業品牌角色
-                指數 (Brand Role Index)、品牌強度等公開因子。
+                <b className="text-ink">FBV · Financial Brand Value</b>:依循 ISO 10668
+                所得法 (品牌營收 × 品牌角色指數 × 品牌強度評分 ÷ 折現率)。
+                本 audit MVP 以營收 / 規模 / 產業品牌角色指數與品牌強度代理計算。
               </p>
               <p>
-                <b className="text-ink">NCV · Nature Capital Value</b>:對齊
-                TNFD LEAP 框架欄位,結合產業自然依賴度基準與 biocredit 估算邏輯。
+                <b className="text-ink">SCV · Sustainability Compliance Value</b>:
+                BCI v1.0 完整定義 = 0.40·RCS (法規合規) + 0.40·EDS (ESG 揭露) +
+                0.20·NCS (自然資本，TNFD LEAP)，法規中立設計。
+                <span className="text-accent">本 audit MVP 目前只計算 NCS 子指標代理</span>
+                ;RCS / EDS 需連 MOPS TW · EFRAG ESRS · GRI / SASB / IFRS S1·S2 資料管線,
+                在 Symcio 企業版提供。
               </p>
               <p>
-                <b className="text-ink">AIV · AI Visibility Value</b>:Symcio
-                提出;跨 ChatGPT (35%) / Perplexity (25%) / Google AI (25%) /
-                Claude (15%) 加權提及率。
+                <b className="text-ink">AIV · AI Visibility Value</b>:Symcio Research
+                定義;跨 ChatGPT (35%) / Perplexity (25%) / Google AI Overview (25%) /
+                Claude (15%) 加權提及率 × GEO 覆蓋率 × 敘事品質。
               </p>
               <p>
-                本頁分數為 MVP v2 演算示範;生產環境將串接真實 API 結果。
-                完整方法論見{" "}
+                本頁分數為 MVP v2 演算示範;完整方法論見{" "}
                 <a
-                  href="https://github.com/sall911/symcio"
+                  href="https://symcio-research.netlify.app"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-accent"
                 >
-                  github.com/sall911/symcio
+                  Symcio Research · BCI v1.0 白皮書
                 </a>
                 。
               </p>
@@ -564,17 +567,17 @@ function PdfContent({ result }: { result: ScoringResult }) {
             <tr>
               <td style={td()}>FBV · 財務品牌價值</td>
               <td style={td()}>{result.FBV}/100</td>
-              <td style={td()}>ISO 10668 財務法；整合營收、規模、品牌角色。</td>
+              <td style={td()}>ISO 10668 所得法;品牌營收 × 角色指數 × 強度評分 ÷ 折現率。</td>
             </tr>
             <tr>
-              <td style={td()}>NCV · 自然資本價值</td>
-              <td style={td()}>{result.NCV}/100</td>
-              <td style={td()}>TNFD LEAP 框架；產業自然依賴 + biocredit。</td>
+              <td style={td()}>SCV · 永續合規價值</td>
+              <td style={td()}>{result.SCV}/100</td>
+              <td style={td()}>v1.0 = 0.40·RCS + 0.40·EDS + 0.20·NCS(本 MVP 以 NCS / TNFD LEAP 代理)。</td>
             </tr>
             <tr>
               <td style={td()}>AIV · AI 可見度價值</td>
               <td style={td()}>{result.AIV}/100</td>
-              <td style={td()}>跨四引擎加權提及率。</td>
+              <td style={td()}>跨四引擎加權提及率(ChatGPT 0.35 / Perplexity 0.25 / Google AI 0.25 / Claude 0.15)。</td>
             </tr>
           </tbody>
         </table>
@@ -735,7 +738,7 @@ function PdfContent({ result }: { result: ScoringResult }) {
           }}
         >
           <p style={{ textAlign: "center", marginBottom: 8 }}>
-            本報告由 Symcio Brand Capital Index (BCI) 方法論生成 · 框架精神參考 ISO 10668 · CONFIDENTIAL
+            本報告由 Symcio Brand Capital Index (BCI) v1.0 方法論生成 · 依循 ISO 10668 · CONFIDENTIAL
           </p>
           <p>
             <b>免責聲明:</b> 本報告所載 BCI、ABVI 分數與競品比較為基於公開可查詢的 AI 引擎輸出觀察性指標,
