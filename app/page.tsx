@@ -44,9 +44,9 @@ const PHASES = [
   {
     code: "Phase 1",
     label: "診斷",
-    tagline: "獲客 · 免費/低門檻",
+    tagline: "免費 · 3 分鐘",
     pricing: "免費",
-    pricingNote: "轉換工具",
+    pricingNote: "PDF 報告下載",
     title: "BCI 品牌能見度診斷",
     desc: "輸入品牌名稱,3 分鐘出 PDF 報告。ChatGPT / Perplexity / Google AI / Claude 四引擎能見度量化,附改善建議。",
     deliverables: [
@@ -61,9 +61,9 @@ const PHASES = [
   {
     code: "Phase 2",
     label: "治理",
-    tagline: "留客 · 月費制",
+    tagline: "月費制 · 持續交付",
     pricing: "NTD 30,000 起",
-    pricingNote: "/月 · 核心營收",
+    pricingNote: "/月 · 月費制",
     title: "ESG 內容自動化 + 資料治理",
     desc: "為有外銷、品牌、合規壓力的中小企業導入完整的數位治理與內容自動化系統。每月 30 則 ESG 自動內容,並接通 DPP 所需欄位結構。",
     deliverables: [
@@ -78,9 +78,9 @@ const PHASES = [
   {
     code: "Phase 3",
     label: "資產化",
-    tagline: "擴客 · 年約",
+    tagline: "年約 · 客製規模",
     pricing: "客製報價",
-    pricingNote: "高價值鎖定",
+    pricingNote: "年約 · 客製方案",
     title: "品牌估值 + DPP 合規 + 內容資產",
     desc: "Phase 2 的擴展版本:多平台 ESG 內容 + 品牌 CI 套版 + 客製議題管線,加上 ISO 10668 精神之品牌估值與融資/補助文件包,把品牌轉成可入帳的無形資產。",
     deliverables: [

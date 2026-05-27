@@ -15,7 +15,6 @@ const PLANS = [
     price: "NTD 0",
     period: "免費試用 · 3 分鐘",
     tagline: "輸入品牌名稱,3 分鐘出 BCI 報告。",
-    audience: "獲客入口",
     items: [
       "BCI 品牌可見度快速診斷",
       "ChatGPT / Claude / Gemini / Perplexity 四引擎",
@@ -33,7 +32,6 @@ const PLANS = [
     price: "NTD 30,000 起",
     period: "/月 · 月費制",
     tagline: "為外銷中小企業導入 ESG 內容自動化與資料治理。",
-    audience: "核心營收",
     items: [
       "Phase 1 全部功能",
       "30 則/月 ESG 自動內容",
@@ -53,7 +51,6 @@ const PLANS = [
     price: "客製報價",
     period: "年約 · 客製規模",
     tagline: "品牌變成可入帳的無形資產。",
-    audience: "高價值鎖定",
     items: [
       "Phase 2 全部功能",
       "30 則/月 ESG 自動內容 + 專業解讀",
