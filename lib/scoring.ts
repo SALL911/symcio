@@ -169,7 +169,7 @@ export const COMPETITORS: Record<Industry, Competitor[]> = {
   製造業: [
     { name: "鴻海", score: 90 },
     { name: "巨大", score: 68 },
-    { name: "上銘", score: 52 },
+    { name: "上銀", score: 52 },
   ],
   醫療健康: [
     { name: "長庚", score: 75 },
