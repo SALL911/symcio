@@ -7,6 +7,7 @@ const LINKS: { href: string; label: string }[] = [
   { href: "/", label: "首頁" },
   { href: "/dashboard", label: "排行榜" },
   { href: "/audit", label: "診斷" },
+  { href: "/service", label: "成交系統" },
   { href: "/pricing", label: "方案" },
   { href: "/ebook", label: "電子書" },
   { href: "/faq/enterprise", label: "知識庫" },
