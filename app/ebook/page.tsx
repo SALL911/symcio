@@ -88,10 +88,16 @@ export default function EbookPage() {
                 href={buyHref}
                 className="mt-4 inline-block w-full rounded-card bg-accent px-6 py-3 text-center text-base font-semibold text-white no-underline hover:bg-accent-dim"
               >
-                立即購買並下載 →
+                信用卡 / 海外付款（Stripe）→
+              </Link>
+              <Link
+                href={"/api/ecpay/checkout?product=ebook" as Route}
+                className="mt-3 inline-block w-full rounded-card border border-accent px-6 py-3 text-center text-base font-semibold text-accent no-underline hover:bg-accent hover:text-white"
+              >
+                台幣付款 · 信用卡 / ATM / 超商（綠界）→
               </Link>
               <p className="mt-3 text-xs text-muted">
-                透過 Stripe 安全結帳。付款完成後立即取得 PDF 下載連結，並寄送到你的 email。
+                安全結帳。付款完成後立即取得 PDF 下載連結，並寄送到你的 email。
               </p>
             </div>
           </div>
