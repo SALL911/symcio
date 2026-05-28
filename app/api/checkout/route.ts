@@ -8,18 +8,28 @@ export const dynamic = "force-dynamic";
 const ORIGIN = process.env.NEXT_PUBLIC_SITE_URL || "https://symcio.tw";
 
 const QuerySchema = z.object({
-  product: z.enum(["audit", "optimization"] as const).default("audit"),
+  product: z.enum(["audit", "optimization", "ebook"] as const).default("audit"),
   email: z.string().email().optional(),
   brand: z.string().trim().max(200).optional(),
 });
+
+const PAYMENT_LINK_ENV: Record<StripeProduct, string> = {
+  audit: "STRIPE_AUDIT_PAYMENT_LINK",
+  optimization: "STRIPE_OPTIMIZATION_PAYMENT_LINK",
+  ebook: "STRIPE_EBOOK_PAYMENT_LINK",
+};
+
+const PRICE_ID_ENV: Record<StripeProduct, string> = {
+  audit: "STRIPE_AUDIT_PRICE_ID",
+  optimization: "STRIPE_OPTIMIZATION_PRICE_ID",
+  ebook: "STRIPE_EBOOK_PRICE_ID",
+};
 
 // Fast path: a Stripe Payment Link is a pre-created static buy.stripe.com URL.
 // Redirecting to it needs zero Stripe API calls, so the checkout response stays
 // well under 0.2s instead of waiting on a server-side sessions.create roundtrip.
 function paymentLinkFor(product: StripeProduct): string | undefined {
-  const raw = product === "audit"
-    ? process.env.STRIPE_AUDIT_PAYMENT_LINK
-    : process.env.STRIPE_OPTIMIZATION_PAYMENT_LINK;
+  const raw = process.env[PAYMENT_LINK_ENV[product]];
   const trimmed = raw?.trim();
   return trimmed && /^https:\/\//i.test(trimmed) ? trimmed : undefined;
 }
@@ -50,9 +60,7 @@ async function createSession(params: {
   }
 
   const product = STRIPE_PRODUCTS[params.product];
-  const priceId = params.product === "audit"
-    ? process.env.STRIPE_AUDIT_PRICE_ID
-    : process.env.STRIPE_OPTIMIZATION_PRICE_ID;
+  const priceId = process.env[PRICE_ID_ENV[params.product]];
 
   const lineItems = priceId
     ? [{ price: priceId, quantity: 1 as const }]
