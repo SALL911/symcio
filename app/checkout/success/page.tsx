@@ -111,9 +111,14 @@ function AuditSuccess() {
 export default async function CheckoutSuccess({
   searchParams,
 }: {
-  searchParams: { session_id?: string };
+  searchParams: { session_id?: string; product?: string; gw?: string };
 }) {
   const sessionId = searchParams.session_id;
+  // Stripe passes session_id (gated download possible); ECPay/PayPal pass
+  // product=ebook (delivery is via email, so just show the confirmation).
+  if (searchParams.product === "ebook" && !sessionId) {
+    return <EbookSuccess paid={false} />;
+  }
   const { product, paid } = await resolveProduct(sessionId);
   if (product === "ebook") {
     return <EbookSuccess sessionId={sessionId} paid={paid} />;

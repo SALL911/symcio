@@ -7,6 +7,13 @@ import { STRIPE_PRODUCTS } from "@/lib/stripe/client";
 
 const PRICE_TWD = Math.round(STRIPE_PRODUCTS.ebook.amount / 100);
 
+// Taiwan ebook marketplaces (Pubu / Readmoo) have no upload API — list them as
+// external store links once the listing URLs are set via env.
+const EXTERNAL_STORES = [
+  { label: "Pubu", href: process.env.NEXT_PUBLIC_EBOOK_PUBU_URL },
+  { label: "Readmoo 讀墨", href: process.env.NEXT_PUBLIC_EBOOK_READMOO_URL },
+].filter((s): s is { label: string; href: string } => Boolean(s.href));
+
 export const metadata: Metadata = {
   title: "BCI 品牌資本指數方法論 電子書 — Symcio",
   description:
@@ -96,9 +103,28 @@ export default function EbookPage() {
               >
                 台幣付款 · 信用卡 / ATM / 超商（綠界）→
               </Link>
+              <Link
+                href={"/api/paypal/checkout?product=ebook" as Route}
+                className="mt-3 inline-block w-full rounded-card border border-line px-6 py-3 text-center text-base font-semibold text-ink no-underline hover:border-accent hover:text-accent"
+              >
+                PayPal 付款 →
+              </Link>
               <p className="mt-3 text-xs text-muted">
                 安全結帳。付款完成後立即取得 PDF 下載連結，並寄送到你的 email。
               </p>
+              {(EXTERNAL_STORES.length > 0) && (
+                <p className="mt-4 text-xs text-muted">
+                  也可在這些平台購買：
+                  {EXTERNAL_STORES.map((s, i) => (
+                    <span key={s.label}>
+                      {i > 0 ? " · " : " "}
+                      <a href={s.href} target="_blank" rel="noopener noreferrer" className="text-accent underline">
+                        {s.label}
+                      </a>
+                    </span>
+                  ))}
+                </p>
+              )}
             </div>
           </div>
 

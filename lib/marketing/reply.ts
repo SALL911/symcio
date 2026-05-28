@@ -19,3 +19,11 @@ export function replyForText(_userText: string): string {
   // existing @ai-sdk/google dependency without changing the webhook contract.
   return welcomeText();
 }
+
+// Call-to-action links shared across channels that support buttons.
+export function ctaButtons(): { text: string; url: string }[] {
+  return [
+    { text: "免費 BCI 診斷", url: `${SITE}/audit` },
+    { text: "購買電子書 NT$390", url: `${SITE}/ebook` },
+  ];
+}

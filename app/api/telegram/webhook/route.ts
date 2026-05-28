@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { verifyTelegramSecret, sendMessage } from "@/lib/telegram/client";
-import { replyForText } from "@/lib/marketing/reply";
+import { replyForText, ctaButtons } from "@/lib/marketing/reply";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -25,7 +25,7 @@ export async function POST(req: Request): Promise<Response> {
 
   const chatId = update.message?.chat?.id;
   if (chatId) {
-    await sendMessage(chatId, replyForText(update.message?.text ?? ""));
+    await sendMessage(chatId, replyForText(update.message?.text ?? ""), ctaButtons());
   }
 
   return NextResponse.json({ ok: true });
