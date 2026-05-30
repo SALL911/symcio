@@ -63,15 +63,17 @@ export default function TeamsPage() {
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted">
             Symcio · BrandOS 由跨品牌、ESG、AI 與資本領域的成員與顧問共同推動。
-            目前公司法人尚在籌備登記，本頁的職位、顧問與利益關係單位
-            <strong className="text-ink"> 以模擬與示意方式呈現</strong>，
-            正式設立並取得授權後，將依實際人員與單位逐筆更新。
+            目前公司法人尚在籌備登記，
+            <strong className="text-ink">經營團隊與顧問為籌備團隊配置</strong>，
+            部分尚未底定的席次以英文大寫代號預設；
+            海內外利益關係單位則以<strong className="text-ink">諧音 / 非正式代稱</strong>示意，
+            未使用任何官方 LOGO，正式設立並取得授權後逐筆更新。
           </p>
 
           <div className="mt-6 inline-flex flex-wrap items-center gap-2 rounded-card border border-line bg-surface px-4 py-3">
-            <SimBadge label="模擬" />
+            <SimBadge label="預設" />
             <span className="text-sm text-muted">
-              職位與人員為佔位示意
+              部分席次為英文大寫代號，待人事底定
             </span>
             <span className="mx-1 text-line">·</span>
             <SimBadge label="諧音" />
@@ -89,12 +91,12 @@ export default function TeamsPage() {
             <div>
               <SectionLabel>經營團隊 · Leadership</SectionLabel>
               <h2 className="mt-3 text-2xl font-semibold md:text-3xl">
-                核心 C-Level
+                核心經營團隊
               </h2>
             </div>
             <p className="hidden max-w-xs text-sm text-muted md:block">
-              CEO / COO / CFO / CTO 為模擬配置，延伸自全站設計語彙，
-              待實際人員確認後做人事修改。
+              CEO / COO / CFO / CTO 與帳務團隊；尚未列名者以英文大寫代號預設，
+              待人事底定後更新。
             </p>
           </div>
 
@@ -123,7 +125,7 @@ export default function TeamsPage() {
                   >
                     {m.titleEn}
                   </span>
-                  {m.simulated ? <SimBadge label="模擬" /> : null}
+                  {m.simulated ? <SimBadge label="預設" /> : null}
                 </div>
 
                 <h3 className="mt-1 text-lg font-semibold text-ink">
@@ -171,7 +173,7 @@ export default function TeamsPage() {
                       <h3 className="text-base font-semibold text-ink">
                         {a.title}
                       </h3>
-                      {a.simulated ? <SimBadge label="模擬" /> : null}
+                      {a.simulated ? <SimBadge label="預設" /> : null}
                     </div>
                     <p
                       className={`mt-1 font-mono text-[11px] uppercase tracking-wide ${ACCENT_TEXT[a.accent]}`}
@@ -282,9 +284,9 @@ export default function TeamsPage() {
             </div>
             <p className="mt-3 text-[12px] leading-relaxed text-muted">
               Symcio 為 BrandOS 方法論與工具的產品名稱；公司法人實體尚在登記籌備中。
-              本頁所列職位（CEO / COO / CFO / CTO）、顧問與利益關係單位，
-              於正式設立前皆為「模擬 / 示意」，名稱為諧音或非正式代稱，
-              不構成任何聘任、合作、授權、代表或背書關係。
+              本頁所列經營團隊與顧問為籌備團隊配置，部分尚未底定之席次以英文大寫代號預設；
+              海內外利益關係單位名稱為諧音 / 非正式代稱，未使用任何官方 LOGO。
+              於正式設立前，相關職位與關係不構成最終聘任、合作、授權、代表或背書關係，
               所有內容將於法人成立、人員到任並取得單位授權後逐筆更新替換。
             </p>
           </div>
