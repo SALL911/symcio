@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="#000">
+  <!-- AI 算力 示意：晶片 (placeholder) -->
+  <rect x="14" y="14" width="20" height="20" rx="3"/>
+  <rect x="20" y="20" width="8" height="8" rx="1.5" fill="#fff"/>
+  <g stroke="#000" stroke-width="2.4" stroke-linecap="round">
+    <path d="M18 14V9m6 5V9m6 5V9M18 39v-5m6 5v-5m6 5v-5"/>
+    <path d="M14 18H9m5 6H9m5 6H9m30-12h-5m5 6h-5m5 6h-5"/>
+  </g>
+</svg>

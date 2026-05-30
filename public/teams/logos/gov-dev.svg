@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="#000">
+  <!-- 政府/法人 示意：階梯狀建築輪廓 (placeholder, 覆蓋同名檔即可換正式單色 LOGO) -->
+  <path d="M24 6 8 16v3h32v-3L24 6Zm0 4.4 8.6 5.4H15.4L24 10.4Z"/>
+  <rect x="11" y="21" width="3.5" height="15"/>
+  <rect x="18" y="21" width="3.5" height="15"/>
+  <rect x="26.5" y="21" width="3.5" height="15"/>
+  <rect x="33.5" y="21" width="3.5" height="15"/>
+  <rect x="7" y="38" width="34" height="4"/>
+</svg>
