@@ -98,8 +98,8 @@ export type Stakeholder = {
 export const LEADERSHIP: Member[] = [
   {
     id: "ceo",
-    name: "Sall Huang",
-    nameEn: "Sall Huang",
+    name: "SALL HUANG",
+    nameEn: "SALL HUANG",
     title: "執行長",
     titleEn: "CEO",
     focus: "願景、品類定義與對外敘事；統籌 BrandOS 整體策略與募資。",
@@ -108,8 +108,8 @@ export const LEADERSHIP: Member[] = [
   },
   {
     id: "coo",
-    name: "Jim",
-    nameEn: "Jim",
+    name: "JIM",
+    nameEn: "JIM",
     title: "營運長",
     titleEn: "COO",
     focus: "交付流程、客戶成功與跨部門營運；把方法論變成可規模化的服務。",
@@ -128,8 +128,8 @@ export const LEADERSHIP: Member[] = [
   },
   {
     id: "cto",
-    name: "Guanhao",
-    nameEn: "Guanhao",
+    name: "GUANHAO",
+    nameEn: "GUANHAO",
     title: "技術長",
     titleEn: "CTO",
     focus: "四引擎量測架構、資料管線與 ABVI 計算引擎；開源方法論技術維運。",
@@ -138,8 +138,8 @@ export const LEADERSHIP: Member[] = [
   },
   {
     id: "accounting",
-    name: "Iren Fung",
-    nameEn: "Iren Fung",
+    name: "IREN FUNG",
+    nameEn: "IREN FUNG",
     title: "會計",
     titleEn: "Accounting",
     focus: "帳務、發票與財務報表；支援法人設立後的稅務與記帳作業。",
@@ -154,7 +154,7 @@ export const LEADERSHIP: Member[] = [
 export const ADVISORS: Advisor[] = [
   {
     id: "adv-brand",
-    name: "Eddy",
+    name: "EDDY",
     title: "品牌顧問",
     domain: "品牌敘事 · 品類定位",
     avatar: "line-02",
@@ -162,7 +162,7 @@ export const ADVISORS: Advisor[] = [
   },
   {
     id: "adv-tech",
-    name: "Jonathan",
+    name: "JONATHAN",
     title: "技術顧問",
     domain: "技術架構 · LLM 評測",
     avatar: "line-07",
