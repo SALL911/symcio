@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>台灣品牌 AI 能見度指數｜方法論白皮書 v1.0 — Symcio 全識</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#1B4332;
+    --green-2:#2D6A4F;
+    --green-dark:#081C15;
+    --paper:#F0EDE8;
+    --paper-2:#FBFAF7;
+    --ink:#15201A;
+    --ink-soft:#4b574f;
+    --white:#FFFFFF;
+    --red:#C1121F;
+    --olive:#6B8E23;
+    --line:#cdd2cb;
+    --line-strong:#aab3a8;
+    --mono:'IBM Plex Mono', ui-monospace, monospace;
+    --sans:'Noto Sans TC', system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); font-size:15px; line-height:1.7; font-weight:400;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sheet{
+    max-width:860px; margin:32px auto; background:var(--paper);
+    box-shadow:0 24px 60px -28px rgba(8,28,21,.45);
+    position:relative; overflow:hidden;
+  }
+
+  /* ── masthead 深綠 band ── */
+  .masthead{
+    background:
+      radial-gradient(120% 160% at 85% -20%, rgba(45,106,79,.55), transparent 60%),
+      linear-gradient(120deg, var(--green) 0%, var(--green-dark) 100%);
+    color:var(--white); padding:18px 46px;
+    display:flex; align-items:center; justify-content:space-between;
+    position:relative;
+  }
+  .masthead::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:3px;
+    background:linear-gradient(90deg, var(--olive), transparent 65%);
+  }
+  .mh-brand{ font-family:var(--mono); font-size:11.5px; letter-spacing:.28em;
+    text-transform:uppercase; font-weight:600; color:#dfeee6; }
+  .logomark{ font-family:var(--mono); font-weight:600; font-size:22px;
+    letter-spacing:.02em; color:var(--white); display:inline-flex; align-items:center; gap:2px;}
+  .logomark b{ color:var(--olive); font-weight:600; }
+
+  .inner{ padding:40px 46px 0; position:relative; z-index:1; }
+
+  /* ── Tag chip（左上角綠標）── */
+  .tag{ display:inline-flex; align-items:center; gap:8px;
+    background:var(--green); color:var(--white);
+    font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    font-weight:500; padding:5px 12px; border-radius:3px; }
+  .tag.alt{ background:var(--olive); }
+
+  h1{ font-family:var(--sans); font-weight:900; font-size:34px; line-height:1.18;
+    margin:18px 0 6px; letter-spacing:.005em; color:var(--green); }
+  .subtitle{ font-size:15px; color:var(--ink-soft); margin:0 0 18px; font-weight:500; }
+  .meta{ display:flex; flex-wrap:wrap; gap:0 26px; font-family:var(--mono);
+    font-size:11px; letter-spacing:.04em; color:var(--ink-soft);
+    border-top:1px solid var(--line-strong); border-bottom:1px solid var(--line-strong);
+    padding:10px 0; margin-bottom:24px;}
+  .meta b{ color:var(--green); font-weight:600; }
+
+  h2{ font-size:19px; font-weight:700; letter-spacing:.01em; color:var(--green);
+    margin:28px 0 8px; display:flex; align-items:center; gap:11px;}
+  h2 .n{ font-family:var(--mono); font-size:12px; font-weight:600; color:var(--white);
+    background:var(--green); width:25px; height:25px; flex:0 0 25px;
+    display:inline-flex; align-items:center; justify-content:center; border-radius:4px;}
+  p{ margin:.5em 0; }
+  .lede{ color:var(--ink); }
+  b, strong{ color:var(--green); font-weight:700; }
+
+  /* ── 公式區（深綠）── */
+  .formula{
+    background:
+      radial-gradient(140% 180% at 90% -30%, rgba(45,106,79,.5), transparent 60%),
+      linear-gradient(120deg, var(--green) 0%, var(--green-dark) 100%);
+    color:#eaf3ee; border-radius:8px;
+    padding:22px 26px; margin:16px 0 18px; font-family:var(--mono);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);
+  }
+  .formula .eq{ font-size:16px; font-weight:500; letter-spacing:.01em; line-height:1.7; }
+  .formula .eq .var{ color:#cfe8d8; }
+  .formula .eq .w{ color:#a7cf5e; }
+  .formula .cap{ font-size:10.5px; letter-spacing:.16em; text-transform:uppercase;
+    color:#8fb39f; margin-bottom:10px; }
+
+  table{ width:100%; border-collapse:collapse; margin:12px 0 6px; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top;}
+  thead th{ font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--white); background:var(--green); border-bottom:none; }
+  thead th:first-child{ border-radius:4px 0 0 0; }
+  thead th:last-child{ border-radius:0 4px 0 0; }
+  td.code{ font-family:var(--mono); font-weight:600; color:var(--green); white-space:nowrap;}
+  td.wt{ font-family:var(--mono); font-weight:600; text-align:right; white-space:nowrap; color:var(--ink);}
+  tr:nth-child(even) td{ background:rgba(27,67,50,.035); }
+  tr.total td{ border-top:2px solid var(--green); border-bottom:none; font-weight:700; background:rgba(107,142,35,.08);}
+  tr.total td.wt{ color:var(--olive); }
+
+  ul{ margin:.4em 0 .6em; padding-left:1.1em; }
+  li{ margin:.3em 0; }
+  li::marker{ color:var(--olive); }
+
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:0 34px; }
+
+  .callout{ border-left:4px solid var(--olive); background:rgba(107,142,35,.09);
+    padding:13px 17px; margin:14px 0; border-radius:0 5px 5px 0; font-size:13.5px;}
+  .callout b{ color:var(--green); }
+
+  .disclaimer{ margin-top:22px; border:1px solid var(--red); border-radius:6px;
+    background:rgba(193,18,31,.045); padding:16px 18px; }
+  .disclaimer h3{ font-family:var(--mono); font-size:11px; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--red); margin:0 0 8px; }
+  .disclaimer p{ font-size:12.5px; line-height:1.6; color:var(--ink-soft); margin:.35em 0;}
+  .disclaimer b{ color:var(--red); }
+
+  /* ── footer：綠色漸層霧化 + 資訊列 ── */
+  .footwrap{ margin-top:34px; position:relative; }
+  .footwrap::before{
+    content:""; display:block; height:60px;
+    background:radial-gradient(80% 120% at 50% 130%, rgba(45,106,79,.28), transparent 70%);
+  }
+  footer{
+    background:
+      radial-gradient(120% 160% at 12% 140%, rgba(45,106,79,.5), transparent 55%),
+      linear-gradient(120deg, var(--green-dark) 0%, var(--green) 100%);
+    color:#dfeee6; padding:18px 46px;
+    display:flex; justify-content:space-between; align-items:center; gap:16px;
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; flex-wrap:wrap;
+  }
+  footer .url{ color:var(--white); font-weight:600; letter-spacing:.12em; }
+  footer .tagline{ font-family:var(--sans); font-size:11px; letter-spacing:0; color:#cfe2d7; flex:1; text-align:center; min-width:200px;}
+  footer .org{ color:var(--olive); font-weight:600; letter-spacing:.16em; text-transform:uppercase; }
+
+  .hl{ background:linear-gradient(transparent 60%, rgba(107,142,35,.32) 60%); padding:0 1px; }
+  .tagmono{ font-family:var(--mono); font-size:11px; color:var(--ink-soft); }
+
+  @media (max-width:680px){
+    .inner{ padding:30px 22px 0; } .masthead, footer{ padding:16px 22px; } h1{ font-size:27px; }
+    .grid2{ grid-template-columns:1fr; gap:0; }
+    .sheet{ margin:0; }
+    footer .tagline{ order:3; text-align:left; }
+  }
+  @media print{
+    body{ background:#fff; }
+    .sheet{ box-shadow:none; margin:0; max-width:none; }
+    .inner{ padding:18px 30px 0; }
+    .masthead, .formula, footer, thead th, tr.total td, .callout, .disclaimer{
+      -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    h2{ page-break-after:avoid; } table,.formula,.disclaimer,.callout{ page-break-inside:avoid; }
+    @page{ margin:0; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="masthead">
+    <span class="mh-brand">Symcio 全識 · BrandOS™ Research</span>
+    <span class="logomark">[<b>·</b>]</span>
+  </div>
+
+ <div class="inner">
+
+  <span class="tag">方法論白皮書 · Methodology</span>
+
+  <h1>台灣品牌 AI 能見度指數</h1>
+  <p class="subtitle">Taiwan Brand AI Visibility Index (AIV) — Index Methodology</p>
+
+  <div class="meta">
+    <span>版本 <b>v1.0</b></span>
+    <span>生效 <b>2026-05</b></span>
+    <span>編製 <b>全識股份有限公司</b></span>
+    <span>覆蓋 <b>30 間台灣上市櫃品牌</b></span>
+    <span>更新頻率 <b>每月</b></span>
+  </div>
+
+  <h2><span class="n">1</span>指數定義與範圍</h2>
+  <p class="lede">本指數衡量單一可觀測事實：<span class="hl">台灣品牌在主流生成式 AI 系統的回應中「被提及、被引述、被推薦」的程度</span>。它量化的是品牌在 AI 時代的「心智佔有率」（mind share），而非企業營運、財務或證券價值。</p>
+  <ul>
+    <li><b>受測系統：</b>ChatGPT、Claude、Gemini 三大公開生成式 AI 系統，模型版本逐月記錄。</li>
+    <li><b>受測對象：</b>30 間台灣上市櫃企業品牌，依產業類別分組比較（樣本清單版本化公開）。</li>
+    <li><b>區域與語言：</b>地區設定台灣、語言繁體中文，模擬本地消費者查詢情境。</li>
+  </ul>
+
+  <h2><span class="n">2</span>資料蒐集協議</h2>
+  <p>排名的可信度來自<b>協議的可重現性</b>。本指數依固定協議週期性蒐集，原始紀錄保留供稽核：</p>
+  <div class="grid2">
+    <ul>
+      <li><b>題庫（Query Bank v1.0）：</b>每產業類別固定一組開放式問句（如「台灣最值得信賴的 ___ 品牌？」），題庫版本化並公開。</li>
+      <li><b>取樣：</b>每題 × 每模型重複 <span class="tagmono">K = 5</span> 次，以<b>中位數</b>聚合，抑制單次回應的隨機偏移。</li>
+    </ul>
+    <ul>
+      <li><b>參數控制：</b>溫度（temperature）於 API 可控時固定並記錄；聯網檢索開／關狀態逐次標記。</li>
+      <li><b>時間戳與留存：</b>每次快照記錄 UTC+8 時間戳與模型版本；原始輸出 log 留存以供第三方重算。</li>
+    </ul>
+  </div>
+
+  <h2><span class="n">3</span>計分方法</h2>
+  <p>AIV 綜合分數為 0–100，由五項標準化子指標加權合成：</p>
+  <div class="formula">
+    <div class="cap">AI Visibility Score — Composite</div>
+    <div class="eq">
+      AIV = <span class="w">0.35</span>·<span class="var">PR</span>
+      + <span class="w">0.25</span>·<span class="var">CR</span>
+      + <span class="w">0.20</span>·<span class="var">SoV</span>
+      + <span class="w">0.10</span>·<span class="var">CQ</span>
+      + <span class="w">0.10</span>·<span class="var">CMC</span>
+    </div>
+  </div>
+  <table>
+    <thead><tr><th>代碼</th><th>子指標</th><th>定義</th><th class="wt">權重</th></tr></thead>
+    <tbody>
+      <tr><td class="code">PR</td><td>出現率<br><span class="tagmono">Presence Rate</span></td><td>在類別相關問句中，品牌被提及的題目比率。</td><td class="wt">35%</td></tr>
+      <tr><td class="code">CR</td><td>引述排序<br><span class="tagmono">Citation Rank</span></td><td>被提及時的平均排序位置，首位權重最高、遞減計分。</td><td class="wt">25%</td></tr>
+      <tr><td class="code">SoV</td><td>聲量占比<br><span class="tagmono">Share of Voice</span></td><td>同類別中，本品牌提及次數佔全類別提及總數之比。</td><td class="wt">20%</td></tr>
+      <tr><td class="code">CQ</td><td>語境品質<br><span class="tagmono">Context Quality</span></td><td>AI 描述之事實正確性與情感傾向（正面／中性／負面）。</td><td class="wt">10%</td></tr>
+      <tr><td class="code">CMC</td><td>跨模型一致性<br><span class="tagmono">Cross-Model Consistency</span></td><td>跨三大系統的能見度穩定度；變異越低分數越高（代表能見度具結構性而非偶發）。</td><td class="wt">10%</td></tr>
+      <tr class="total"><td colspan="3">綜合 AIV Score</td><td class="wt">100%</td></tr>
+    </tbody>
+  </table>
+  <p class="tagmono">各子指標於計分前皆做 0–100 區間標準化（min–max within category）。權重每年檢視一次，變更須走變更紀錄。</p>
+
+  <h2><span class="n">4</span>可重現性與隨機性處理</h2>
+  <div class="callout">
+    <p><b>核心原則：</b>生成式 AI 具非決定性（non-deterministic），單次回應不構成證據。本指數以「<b>多次取樣 × 中位數聚合 × 固定協議 × 版本化題庫</b>」將隨機性壓低至可重現範圍——任何第三方依公開題庫與協議，皆可獨立重算並驗證結果。</p>
+  </div>
+
+  <h2><span class="n">5</span>治理與利益衝突防火牆</h2>
+  <ul>
+    <li><b>計分／服務物理隔離：</b>排名計分流程與 Symcio 之付費優化（GEO）服務完全分離；<span class="hl">付費不能購買、不能影響任何品牌的排名分數</span>。</li>
+    <li><b>事實校正（opt-in）：</b>企業可申請更正「事實性錯誤」（如品牌歸屬、產業分類），但<b>不得</b>申請調整分數。</li>
+    <li><b>變更紀錄：</b>題庫、權重、受測系統之任何調整皆登錄於公開 change log 並升版，確保歷史數據可追溯。</li>
+  </ul>
+
+  <div class="disclaimer">
+    <h3>免責聲明 · Disclaimer</h3>
+    <p>本指數所衡量者，僅為「品牌於特定時間點在 AI 系統中之能見度」此一<b>可觀測事實</b>，<b>不構成</b>對任何企業之營運、財務、信用或證券價值之判斷或預測。</p>
+    <p>本指數<b>非投資建議、非信用評等、非有價證券之招拀或推介</b>，亦不應作為任何投資決策之唯一依據。AI 系統具隨機性且模型持續更新，所有數據僅反映觀測當下之狀態。</p>
+    <p>© 2026 全識股份有限公司 Symcio Co., Ltd. 方法論與題庫之著作權為本公司所有；引用須註明出處與版本。</p>
+  </div>
+
+ </div>
+
+ <div class="footwrap">
+  <footer>
+    <span class="url">www.symcio.tw</span>
+    <span class="tagline">不是幫你做行銷，是幫你的品牌數據合規、AI 可見、資產可估。</span>
+    <span class="org">Symcio 全識 · BrandOS™</span>
+  </footer>
+ </div>
+
+</div>
+</body>
+</html>
