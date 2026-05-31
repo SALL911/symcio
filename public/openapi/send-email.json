@@ -94,7 +94,12 @@
               { "type": "array", "items": { "type": "string" } }
             ]
           },
-          "replyTo": { "type": "string", "example": "sall@symcio.tw" }
+          "replyTo": { "type": "string", "example": "sall@symcio.tw" },
+          "provider": {
+            "type": "string",
+            "enum": ["graph", "gmail"],
+            "description": "Optional. Force a provider: 'graph' = Microsoft 365 (Outlook), 'gmail' = Google Workspace. Omit to auto-select the configured provider (Graph preferred, since @symcio.tw is on Microsoft 365)."
+          }
         }
       }
     }

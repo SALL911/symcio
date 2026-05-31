@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { send, isGmailConfigured } from "@/lib/email/gmail";
+import { sendMail, configuredProviders } from "@/lib/email/send";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -10,8 +10,12 @@ export const dynamic = "force-dynamic";
  *
  * One HTTPS endpoint that any AI tool / automation (ChatGPT custom GPT Actions,
  * Manus, Make/Zapier/n8n, or plain curl) can call to send mail AS a real
- * @symcio.tw mailbox via the Gmail API — so the message also lands in that
- * mailbox's server-side Sent folder and stays in sync across every device.
+ * @symcio.tw mailbox. The message lands in that mailbox's server-side Sent
+ * folder so it stays in sync across every device.
+ *
+ * Provider is chosen automatically (or via the optional `provider` field):
+ *   - "graph" → Microsoft 365 (info@symcio.tw lives here; saves to Outlook Sent)
+ *   - "gmail" → Google Workspace / Gmail (saves to Gmail Sent)
  *
  * Security: this endpoint can send as your domain, so it is NOT open.
  *   - Caller must present `x-api-key: <SEND_EMAIL_API_KEY>`.
@@ -32,6 +36,7 @@ const BodySchema = z
     cc: AddrList.optional(),
     bcc: AddrList.optional(),
     replyTo: z.string().trim().email().max(254).optional(),
+    provider: z.enum(["graph", "gmail"]).optional(),
   })
   .refine((b) => Boolean(b.html || b.text), { message: "either html or text is required" });
 
@@ -75,25 +80,27 @@ export async function POST(req: Request) {
     );
   }
 
-  if (!isGmailConfigured()) {
-    return NextResponse.json({ ok: false, error: "gmail-not-configured" }, { status: 503 });
+  if (configuredProviders().length === 0) {
+    return NextResponse.json({ ok: false, error: "no-email-provider-configured" }, { status: 503 });
   }
 
-  // 4. Send.
-  const result = await send(body);
+  // 4. Send via the right provider (saves to that mailbox's Sent folder).
+  const result = await sendMail(body);
   if (!result.ok) {
     console.error("[api/send-email] send failed", result.error);
-    return NextResponse.json({ ok: false, error: result.error }, { status: 502 });
+    return NextResponse.json({ ok: false, error: result.error, provider: result.provider }, { status: 502 });
   }
-  return NextResponse.json({ ok: true, id: result.id, threadId: result.threadId });
+  return NextResponse.json({ ok: true, provider: result.provider, id: result.id });
 }
 
 /** GET → tiny health probe so you can confirm config without sending. */
 export async function GET() {
+  const providers = configuredProviders();
   return NextResponse.json({
     ok: true,
     service: "send-email",
-    configured: isGmailConfigured() && Boolean(process.env.SEND_EMAIL_API_KEY),
+    configured: providers.length > 0 && Boolean(process.env.SEND_EMAIL_API_KEY),
+    providers,
     allowedSenders: allowedSenders(),
   });
 }
