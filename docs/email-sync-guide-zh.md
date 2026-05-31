@@ -19,11 +19,37 @@
 
 ---
 
+## 🔑 2026/05/31 重要補充：GoDaddy / SITE123 / Google Workspace 的真相
+
+你後來補充：網域是在 **GoDaddy** 買的、網站用 **SITE123**、信箱想用 **Google Workspace**。這裡有個關鍵觀念一定要先搞懂，否則會一直設錯方向：
+
+> **GoDaddy 賣的企業電子郵件，本身就是「GoDaddy 版的 Microsoft 365」。**
+> 這正好解釋了為什麼上面實測 `info@symcio.tw` 的信件 header 顯示 `*.PROD.OUTLOOK.COM`——
+> **你的 info@ 其實跑在微軟系統上，不是 Google。**
+
+所以你很可能是「**兩套並存**」：
+
+| 來源 | 系統 | 誰在上面 |
+| --- | --- | --- |
+| GoDaddy 附的企業信箱 | **Microsoft 365 / Outlook** | `info@symcio.tw`（header 已證實） |
+| 你另外付費的 Google Workspace | **Google** | 可能 `sall@`、或重複的 `info@` |
+
+**這就是寄件夾分岔的真正主因**：同一個網域，信箱卻分散在微軟和 Google 兩邊。
+
+### 怎麼一次確認到底在哪（5 分鐘）
+1. 用 `info@symcio.tw` 登入 **https://admin.microsoft.com** → 進得去 = info@ 在微軟（GoDaddy M365）。
+2. 用 `info@symcio.tw` 登入 **https://admin.google.com** → 看使用者清單有沒有 info@ / sall@ = 你在 Google 也有帳號。
+3. **以「能真正收到新信的那一個」為準**，全部裝置統一用它，另一個停用或只當備援。
+
+> 判斷不出來時，預設用 **Microsoft 365**（因為 header 證實 info@ 的信實際從微軟發出）。下面第 2 步的 Outlook 設定就是給這個情況用的。
+
+---
+
 ## 第 1 步：做一個決定（最重要）
 
-**公司信以後統一用哪一個系統寄？** 建議選 **Microsoft 365（Outlook）**，因為你的 `info@symcio.tw` 已經在上面了。
+**公司信以後統一用哪一個系統寄？** 建議選 **Microsoft 365（Outlook）**，因為你的 `info@symcio.tw` 已經在上面了（GoDaddy 附的就是它）。
 
-> 若你確定要用 Google Workspace（你有付費），也可以；但要先確認 `info@symcio.tw` 真的有在 Google 那邊收信，否則會收不到信。不確定的話，先用 Microsoft 365。
+> 若你確定要改用 Google Workspace（你有付費），也可以；但要先用上面的方法確認 `info@symcio.tw` 真的有在 Google 那邊收得到信，否則會收不到信。不確定的話，先用 Microsoft 365。
 
 決定後，**一律從 info@symcio.tw 寄信，不要再用個人 Gmail 寄公司信。**（用個人 Gmail 寄，對方看到的寄件人是 cchuan911@gmail.com，不專業也容易進垃圾桶。）
 
@@ -68,10 +94,10 @@
 
 我查了你的 info@ 信箱，裡面**沒有任何 sall@symcio.tw 的往來信件**。代表 sall@ 可能：
 - 還沒建立、或
-- 在另一個系統、或
+- 在另一個系統（很可能在你的 **Google Workspace** 那邊，而 info@ 在微軟）、或
 - 你其實很少用它。
 
-請先確認 sall@symcio.tw 到底存不存在、在哪個系統。若要用，建議**跟 info@ 放在同一個系統（Microsoft 365）**，整頓方式完全一樣。
+請先用上面「第 0 步補充」的兩個 admin 後台確認 sall@symcio.tw 到底在 Microsoft 還是 Google。若要用，**強烈建議跟 info@ 放在同一個系統**，整頓方式完全一樣，才不會又分岔。
 
 ---
 
