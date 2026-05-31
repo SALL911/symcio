@@ -5,118 +5,109 @@
 
 ---
 
-## ✅ 已確認（2026/05/31，使用者親自確認）：info@symcio.tw 在 Microsoft 365
+## ✅ 已確認（2026/05/31，使用者親自確認）：兩個信箱分屬兩個平台
 
-平台問題已經有答案了，下面是**定稿版、照做即可的最短路徑**。其餘背景診斷保留在後面章節供參考。
+| 信箱 | 平台 | 它的家（原生 App） |
+| --- | --- | --- |
+| **info@symcio.tw** | **Microsoft 365** | **Outlook** |
+| **sall@symcio.tw** | **Google Workspace** | **Gmail / Google** |
 
-### 核心原則
-Microsoft 365 的「寄件備份」**存在微軟伺服器上**。只要每台裝置都用 **Exchange / Microsoft 365 方式**連進去，四台會自動同步同一份 Sent，不需手動搬。
-會「對不起來」只有兩個原因：**(a) 某台用了 POP**、或 **(b) 用 Gmail / Google Workspace App 去收 info@**（Gmail App 接微軟信箱無法正確同步 Sent）。
+### 🟡 黃金原則（記住這一句就解決九成問題）
+> **info@ 的信永遠用 Outlook 寄；sall@ 的信永遠用 Gmail 寄。**
+> 每個信箱待在自己平台的原生 App 裡，寄件備份天生就同步。
+> 會分岔，幾乎都是因為「拿錯 App 寄」或「用了 POP」。
 
-### 四台裝置定稿設定
-| 裝置 | 怎麼做 |
-| --- | --- |
-| ✅ **手機 Outlook** | 新增帳號 → 輸入 `info@symcio.tw` → 自動辨識為 **Microsoft 365** → 登入。 |
-| ✅ **桌機 Outlook** | 帳戶設定 → 刪掉任何 **POP** 或重複的 info@ → 重新新增 → 選 **Exchange / Microsoft 365**（**絕不要選 POP**）。 |
-| ⚠️ **手機 Google Workspace（Gmail App）** | **不要用它收發 info@**。公司信一律改用手機 Outlook App。 |
-| ⚠️ **桌機 Google Workspace（網頁 Gmail）** | **不要用它寄 info@**。改用 outlook.office.com 或桌機 Outlook App。 |
+### info@symcio.tw（微軟）→ 全部走 Outlook
+- 📱 手機 Outlook：加 `info@symcio.tw` → 自動辨識 **Microsoft 365** → 登入 ✅
+- 💻 桌機 Outlook：加 `info@symcio.tw` → 選 **Exchange / Microsoft 365**（**不要 POP**）✅
+- ❌ 不要把 info@ 放進 Gmail App / 網頁 Gmail
 
-> 一句話：**info@ 的信，四台一律走 Outlook / Microsoft；Google 那兩個 App 不要碰公司信。**
+### sall@symcio.tw（Google）→ 全部走 Gmail
+- 📱 手機 **Gmail App**：加 `sall@symcio.tw`（用 Google 登入）✅ 自動同步
+- 💻 桌機 **網頁 Gmail**（mail.google.com）：登入 sall@ ✅ 自動同步
+- 先進 Gmail 設定 →「轉寄和 POP/IMAP」→ **停用 POP、啟用 IMAP**
+- ❌ 不要把 sall@ 放進 Outlook（若真的要，得用 IMAP 並設「不儲存寄件副本」，否則會重複）
 
-### 驗收（2 分鐘）
-手機 Outlook 寄一封給自己 → 看桌機 Outlook 的「寄件備份」→ 幾秒內出現 = ✅ 完成。
+### ⚠️ 兩個最容易讓你分岔的雷（務必避開）
+1. **POP**：任何一台用 POP 都會各存各的 → info@ 改 Exchange、sall@ 改 IMAP。
+2. **別名代寄**：不要在 Gmail 裡設「用 info@ 寄」、也不要在 Outlook 裡設「用 sall@ 寄」。這會把副本存到錯的伺服器 → 兩邊對不起來。**誰的信，就用誰的原生 App 寄。**
 
-### 還要確認：sall@symcio.tw
-info@ 已確認在微軟。**sall@ 建議也放微軟、跟 info@ 同一套**，設定完全一樣。若 sall@ 其實在 Google Workspace，那它才用 Gmail App，不要和 info@ 混。
+### 驗收
+- info@：手機 Outlook 寄 → 桌機 Outlook 寄件備份出現 ✅
+- sall@：手機 Gmail App 寄 → 桌機網頁 Gmail 寄件備份出現 ✅
 
 ---
 
 ## 第 0 步：先認清你現在的狀況（這是病因）
 
-我實際比對了你正在用的信箱，發現你**同時在用兩套不同公司的信箱系統**：
+你「寄件夾永遠對不起來」的根因：**同一個網域，兩個信箱卻分屬微軟和 Google 兩套系統**，而你在裝置上常常拿錯 App 寄、或某台用了 POP，導致副本散落各處。
 
-| 你在用的 | 它其實是 | 寄出的信存到哪 |
+| 信箱 | 它其實是 | 寄出的信該存到哪 |
 | --- | --- | --- |
-| `info@symcio.tw` | **Microsoft 365（Outlook）** | Outlook 的「寄件備份」 |
-| `cchuan911@gmail.com`（個人 Gmail） | **Google 個人信箱** | Gmail 的「寄件備份」 |
+| `info@symcio.tw` | **Microsoft 365（Outlook）** | Outlook 伺服器端「寄件備份」 |
+| `sall@symcio.tw` | **Google Workspace** | Gmail 伺服器端「寄件備份」 |
+| `cchuan911@gmail.com`（個人 Gmail） | **Google 個人信箱**（私人用） | 跟公司信無關，別拿來寄公司信 |
 
-👉 **這就是為什麼寄件夾永遠對不起來**：它們是兩個獨立帳號、各存各的，天生不會同步。
-沒有任何設定能把「兩個不同帳號」的寄件夾合併——只能讓你**固定用同一個帳號寄信**。
+👉 沒有任何設定能把「兩個不同平台的信箱」寄件夾合併——正解是**每個信箱固定用自己平台的 App 寄**（見最上方黃金原則）。
 
 ---
 
-## 🔑 2026/05/31 重要補充：GoDaddy / SITE123 / Google Workspace 的真相
+## 🔑 背景：GoDaddy / SITE123 的真相
 
-你後來補充：網域是在 **GoDaddy** 買的、網站用 **SITE123**、信箱想用 **Google Workspace**。這裡有個關鍵觀念一定要先搞懂，否則會一直設錯方向：
+網域在 **GoDaddy** 買、網站用 **SITE123**。關鍵觀念：
 
 > **GoDaddy 賣的企業電子郵件，本身就是「GoDaddy 版的 Microsoft 365」。**
-> 這正好解釋了為什麼上面實測 `info@symcio.tw` 的信件 header 顯示 `*.PROD.OUTLOOK.COM`——
-> **你的 info@ 其實跑在微軟系統上，不是 Google。**（已於 2026/05/31 由你親自確認）
+> 這正好解釋為什麼實測 `info@symcio.tw` 的信件 header 是 `*.PROD.OUTLOOK.COM`——
+> info@ 跑在微軟系統上（已由你親自確認）。而 sall@ 則在你另外付費的 Google Workspace。
 
-所以你很可能是「**兩套並存**」：
+### 怎麼自行確認平台
+1. 用 `info@symcio.tw` 登入 **https://admin.microsoft.com** → 進得去 = 在微軟。✅ 已確認
+2. 用 `sall@symcio.tw` 登入 **https://mail.google.com** → 進得去 = 在 Google。✅ 已確認
 
-| 來源 | 系統 | 誰在上面 |
+---
+
+## 第 1 步：四個 App，誰配哪個信箱
+
+| App | 放哪個信箱 | 連線方式 |
 | --- | --- | --- |
-| GoDaddy 附的企業信箱 | **Microsoft 365 / Outlook** | `info@symcio.tw`（已確認） |
-| 你另外付費的 Google Workspace | **Google** | 可能 `sall@`、或重複的 `info@` |
+| 📱 手機 Outlook | info@ | Microsoft 365 / Exchange |
+| 💻 桌機 Outlook | info@ | Exchange（不要 POP） |
+| 📱 手機 Gmail App | sall@ | Google 登入（IMAP，不要 POP） |
+| 💻 桌機 網頁 Gmail | sall@ | 直接登入 |
 
-**這就是寄件夾分岔的真正主因**：同一個網域，信箱卻分散在微軟和 Google 兩邊。
-
-### 怎麼一次確認到底在哪（5 分鐘）
-1. 用 `info@symcio.tw` 登入 **https://admin.microsoft.com** → 進得去 = info@ 在微軟（GoDaddy M365）。✅ 已確認
-2. 用 `info@symcio.tw` 登入 **https://admin.google.com** → 看使用者清單有沒有 info@ / sall@ = 你在 Google 也有帳號。
-3. **以「能真正收到新信的那一個」為準**，全部裝置統一用它，另一個停用或只當備援。
+> 不要交叉混用（例如把 info@ 塞進 Gmail App、或用 Outlook 代寄 sall@），那是分岔主因。
 
 ---
 
-## 第 1 步：做一個決定（最重要）
+## 第 2 步：逐台設定
 
-**公司信以後統一用哪一個系統寄？** → **Microsoft 365（Outlook）**，因為你的 `info@symcio.tw` 已確認在上面了（GoDaddy 附的就是它）。
+### 📱 手機 Outlook（放 info@）
+1. Outlook App → 左上頭像 → ⚙️ 設定 → 郵件帳戶。
+2. 若有重複或 POP 版 info@ → **刪除**，只留乾淨一個。
+3. 新增帳戶 → `info@symcio.tw` → 自動辨識 **Microsoft 365 / Exchange** → 登入。
+4. 確認「寄件備份」看得到最近寄的信。
 
-決定後，**一律從 info@symcio.tw 寄信，不要再用個人 Gmail 寄公司信。**（用個人 Gmail 寄，對方看到的寄件人是 cchuan911@gmail.com，不專業也容易進垃圾桶。）
+### 💻 桌機 Outlook（放 info@）
+1. 帳戶設定 → 刪掉重複或 POP 的 info@。
+2. 重新新增 → `info@symcio.tw` → 選 **Exchange / Microsoft 365**（**不要 POP**）。
+3. 若問「寄件備份存哪」→ 選「存到伺服器的 Sent Items」。
 
----
+### 📱 手機 Gmail App（放 sall@）
+1. Gmail App → 右上頭像 → 新增其他帳戶 → Google → `sall@symcio.tw` 登入。
+2. 先到 Gmail 設定確認 **IMAP 已啟用、POP 停用**。
+3. 不要在這裡設「用 info@ 別名寄信」。
 
-## 第 2 步：四個裝置逐一整理
-
-每個裝置的原則都一樣：**移除重複/舊的帳號 → 用正確方式重新加入 info@symcio.tw → 不要用 POP。**
-
-### 📱 手機 Outlook（iPhone / Android）
-1. 開 Outlook App → 左上頭像 → 齒輪 ⚙️ 設定。
-2. 看「郵件帳戶」：如果同一個 info@symcio.tw 出現兩次、或有奇怪的 POP 帳戶 → 點進去 → **刪除帳戶**，只留乾淨的一個。
-3. 重新「新增帳戶」→ 輸入 `info@symcio.tw` → 它會自動辨識成 **Microsoft 365 / Exchange** → 登入密碼。
-4. 完成後，點底部「寄件備份」資料夾，確認看得到你最近寄的信。
-
-### 📱 手機 Google Workspace / Gmail App
-- **手機 Gmail App 不要再拿來寄 info@symcio.tw 的信**。可以保留它收個人 cchuan911@gmail.com，但公司信都改用 Outlook App。
-- 重點：不要在 Gmail App 裡用「以 info@symcio.tw 寄信」的別名功能，那會讓寄件備份又分岔。
-
-### 💻 桌機 Outlook（Windows / Mac）
-1. Outlook → 檔案 / 設定 → 帳戶設定。
-2. 一樣：刪掉重複或 POP 的 info@symcio.tw，只留一個。
-3. 重新新增 → `info@symcio.tw` → 選 **Exchange / Microsoft 365**（**不要選 POP**）。
-4. 如果它問你「寄件備份要存哪」→ 選「存到伺服器的 Sent Items」。
-
-### 💻 桌機 Google Workspace（網頁版）
-- 同手機原則：公司信改用 Outlook（outlook.office.com），網頁 Gmail 不再拿來寄 info@symcio.tw。
+### 💻 桌機 網頁 Gmail（放 sall@）
+- 直接 mail.google.com 登入 sall@，原生自動同步，不需特別設定。
 
 ---
 
-## 第 3 步：驗收（確認真的同步了）
+## 第 3 步：驗收
 
-1. 從**手機 Outlook** 用 info@symcio.tw 寄一封測試信給你自己。
-2. 打開**桌機 Outlook** 的「寄件備份」→ 應該幾秒內就看到同一封。
-3. 再從桌機寄一封，回手機看「寄件備份」→ 也應該出現。
+- **info@**：手機 Outlook 寄一封給自己 → 桌機 Outlook「寄件備份」幾秒內出現 ✅
+- **sall@**：手機 Gmail App 寄一封給自己 → 桌機網頁 Gmail「寄件備份」出現 ✅
 
-兩邊都看得到同一封 = ✅ 同步問題解決。
-
----
-
-## 關於 sall@symcio.tw
-
-info@ 已確認在微軟。sall@ 請確認在 Microsoft 還是 Google：
-- 用 `sall@symcio.tw` 登入 admin.microsoft.com 或一般 Outlook 登入 → 進得去代表在微軟。
-- 若要用，**強烈建議跟 info@ 放在同一個系統（Microsoft 365）**，整頓方式完全一樣，才不會又分岔。
+兩個信箱各自在自己的兩台 App 上都看得到 = 同步完成。
 
 ---
 
@@ -126,7 +117,7 @@ info@ 已確認在微軟。sall@ 請確認在 Microsoft 還是 Google：
 
 **真相：沒有「一鍵同步全部 AI」這個東西。** 它們是不同公司、各自獨立的產品，彼此不共用帳號。
 
-能做到的是：建**一個共用的「寄信入口」**，再把支援外部工具的 AI 接上去。這個入口我**已經幫你做好並測試通過了**（在你的 symcio 專案、PR #12）：
+能做到的是：建**一個共用的「寄信入口」**（已做好，PR #12），再把支援外部工具的 AI 接上去：
 
 | AI 工具 | 能不能接 | 怎麼接 |
 | --- | --- | --- |
@@ -135,6 +126,6 @@ info@ 已確認在微軟。sall@ 請確認在 Microsoft 還是 Google：
 | Make / Zapier / n8n | ✅ | HTTP 呼叫 |
 | Gemini / Grok / Meta AI | ⚠️ | 一般介面不開放外部工具，只能透過上面的自動化代發 |
 
-> 因為 info@ 已確認在 Microsoft 365，這個寄信入口正式上線時只需設定 **Azure（Microsoft Graph）**那一套 env（`GRAPH_*`），不需要 Gmail 那套。那一步需要你或工程師登入 Azure 後台授權，我無法代登。詳見 `docs/email-gmail-api.md`。
+> 因為 **info@ 在微軟、sall@ 在 Google**，寄信入口正式上線時：寄 info@ 走 **Microsoft Graph（`GRAPH_*`）**，寄 sall@ 走 **Gmail API（`GMAIL_*`）**，兩套 env 都要設。那一步需要你或工程師登入 Azure 與 Google 後台授權，我無法代登。詳見 `docs/email-gmail-api.md`。
 >
 > **建議順序**：第一優先先把上面的「裝置同步」做好——那才是你每天「很難做事」的真正痛點，今天自己就能完成。AI 發信入口可以等有工程資源時再開。
