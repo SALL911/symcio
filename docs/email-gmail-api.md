@@ -126,7 +126,30 @@ curl -X POST https://symcio.tw/api/send-email \
 | **ChatGPT（自訂 GPT）** | Actions 匯入 `https://symcio.tw/openapi/send-email.json`，驗證選 API Key（header `x-api-key`）。 |
 | **Manus / 支援 OpenAPI 的 Agent** | 匯入同一個 OpenAPI URL。 |
 | **Make / Zapier / n8n** | HTTP module 對 `/api/send-email` 發 POST，帶 `x-api-key` 與 JSON body。 |
-| **Claude / Gemini / Grok / Meta AI** | 一般對話介面未開放自訂外部 Action；改由你的後端/自動化呼叫本端點，或在支援 MCP/工具的情境包一層。 |
+| **Claude Code / Manus（可執行 shell 的 Agent）** | 直接叫 `scripts/send-email.mjs`：`SEND_EMAIL_API_KEY=... node scripts/send-email.mjs --from info@symcio.tw --to a@b.com --subject "Hi" --html "<p>…</p>"`（`--html @file.html` 可讀檔；`--json` 給機器解析）。 |
+| **Gemini / Grok / Meta AI** | 一般對話介面未開放自訂外部 Action；改由你的後端/自動化呼叫本端點，或在支援 MCP/工具的情境包一層。 |
+
+### Make / Zapier / n8n 範例（HTTP POST）
+
+```
+POST https://symcio.tw/api/send-email
+Headers: { "Content-Type": "application/json", "x-api-key": "<SEND_EMAIL_API_KEY>" }
+Body:
+{
+  "from": "info@symcio.tw",
+  "to": "client@example.com",
+  "subject": "報告已寄出",
+  "html": "<p>您好，報告如附件。</p>"
+}
+```
+
+### 安全限縮（建議）
+
+設定好 Graph 後，跑一次把 app 只能寄你的兩個信箱（需 Exchange Online PowerShell 管理員）：
+
+```powershell
+./scripts/restrict-mailboxes.ps1 -AppId "<setup-email.sh 印出的 client id>"
+```
 
 ---
 
