@@ -39,6 +39,27 @@ AI 工具 / 自動化 ──HTTPS──▶  /api/send-email  ──▶  lib/emai
 
 ---
 
+## 1.5 最快路徑：一鍵腳本（Microsoft 365）
+
+不想手動點 Azure / Vercel 後台的話，在**你自己的電腦**跑這個腳本，它會自動：註冊 Azure AD app、加 `Mail.Send` 權限、admin consent、建 secret、把所有環境變數推到 Vercel。
+
+```bash
+# 一次性前置：az login（需 M365 管理員）、vercel login && vercel link
+ALLOWED_SENDERS="info@symcio.tw,sall@symcio.tw" npm run email:setup
+
+# 重新部署讓環境變數生效
+vercel --prod
+
+# 驗證（會寄一封真實測試信，並提示你去寄件備份確認同步）
+SEND_EMAIL_API_KEY="<腳本印出的值>" BASE_URL="https://symcio.tw" \
+  TEST_TO="you@example.com" npm run email:verify
+```
+
+> 為什麼要在你電腦跑：腳本用的是**你自己的 `az` 與 `vercel` 登入**，只有你能對你的租戶/專案授權，這一步無法代登。
+> 想手動做或了解細節，看下面第 2、3 節。
+
+---
+
 ## 2.（@symcio.tw 推薦）Microsoft 365 / Outlook — Microsoft Graph
 
 因為 `info@symcio.tw` 在 Microsoft 365，用 Graph 寄信會自動存進 **Outlook 寄件備份**，你手機/桌機 Outlook 立即同步。

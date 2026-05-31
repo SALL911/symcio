@@ -8,7 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "email:setup": "bash scripts/setup-email.sh",
+    "email:verify": "node scripts/verify-email.mjs"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.64",
