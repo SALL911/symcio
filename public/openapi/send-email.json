@@ -1,0 +1,102 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Symcio Send Email",
+    "version": "1.0.0",
+    "description": "Send an email AS a real @symcio.tw mailbox via the Gmail API. The message is stored in that mailbox's server-side Sent folder, so it stays in sync across every device (phone/desktop Outlook, Gmail web/app). Import this schema into ChatGPT custom GPT Actions, Manus, or any tool that consumes OpenAPI to let an AI assistant send mail from symcio.tw."
+  },
+  "servers": [{ "url": "https://symcio.tw" }],
+  "paths": {
+    "/api/send-email": {
+      "post": {
+        "operationId": "sendEmail",
+        "summary": "Send an email from a symcio.tw mailbox",
+        "security": [{ "ApiKeyAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SendEmailRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean" },
+                    "id": { "type": "string" },
+                    "threadId": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Missing or invalid x-api-key" },
+          "403": { "description": "Sender mailbox not in the allow-list" },
+          "400": { "description": "Invalid request body" },
+          "502": { "description": "Gmail API send failed" },
+          "503": { "description": "Server not configured" }
+        }
+      },
+      "get": {
+        "operationId": "sendEmailHealth",
+        "summary": "Health/config probe (no email sent)",
+        "responses": {
+          "200": { "description": "Service status" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key"
+      }
+    },
+    "schemas": {
+      "SendEmailRequest": {
+        "type": "object",
+        "required": ["from", "to", "subject"],
+        "description": "Provide at least one of html or text.",
+        "properties": {
+          "from": {
+            "type": "string",
+            "description": "Sender mailbox; must be on the allow-list (info@symcio.tw or sall@symcio.tw). May include a display name, e.g. 'Symcio <info@symcio.tw>'.",
+            "example": "Symcio <info@symcio.tw>"
+          },
+          "to": {
+            "description": "Recipient(s). A single address string or an array of addresses.",
+            "oneOf": [
+              { "type": "string" },
+              { "type": "array", "items": { "type": "string" } }
+            ],
+            "example": "client@example.com"
+          },
+          "subject": { "type": "string", "example": "Symcio AI 能見度報告" },
+          "html": { "type": "string", "description": "HTML body (UTF-8)." },
+          "text": { "type": "string", "description": "Plain-text body (UTF-8)." },
+          "cc": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "array", "items": { "type": "string" } }
+            ]
+          },
+          "bcc": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "array", "items": { "type": "string" } }
+            ]
+          },
+          "replyTo": { "type": "string", "example": "sall@symcio.tw" }
+        }
+      }
+    }
+  }
+}
