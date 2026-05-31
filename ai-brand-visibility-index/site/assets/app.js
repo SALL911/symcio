@@ -19,7 +19,10 @@ const WEIGHT_LABELS = {
 let STATE = { data: null, filter: "全部", query: "" };
 
 // ── boot ──────────────────────────────
-try {
+(async function init() {
+  let data = window.AIV_DATA;
+  if (API_BASE) {
+    try {
       const r = await fetch(`${API_BASE}/api/rankings`, { cache: "no-store" });
       if (r.ok) data = await r.json();
     } catch (e) { console.warn("Live API unavailable, using bundled demo data.", e); }
