@@ -199,6 +199,15 @@ export const ADVISORS: Advisor[] = [
  *    要換成正式單位時：
  *      (1) 把 alias 改成正式名稱、homophone 設 false；
  *      (2) 將 public/teams/logos/<logo>.svg 覆蓋為該單位授權後的「單色 LOGO」。
+ *
+ *    ── 本週 0 成本外聯 5 單位對照（自用備忘，勿對外）──────────────────
+ *      聯全盟約   = UN Global Compact      → 申請中（Gmail 草稿已備）
+ *      自然揭露盟 = TNFD Adopter           → 申請中（Gmail 草稿已備）
+ *      全球碼一號 = GS1 Taiwan             → 申請中（Gmail 草稿已備）
+ *      循護護照   = CIRPASS-2 / EU DPP     → 申請中（Gmail 草稿已備）
+ *      星綠藍圖   = MAS Project Greenprint → 透過 ESGpedia 對接（草稿已備）
+ *    收到各單位「核准 / 接受」書面後，才把 alias 改正式名、homophone=false、
+ *    並覆蓋授權後的單色 logo（避免冒用受規範的官方標誌）。
  * ──────────────────────────────────────────────────────────────────────── */
 export const STAKEHOLDERS: Stakeholder[] = [
   // —— 政府 / 法人單位（示意） ——
@@ -274,6 +283,47 @@ export const STAKEHOLDERS: Stakeholder[] = [
     relation: "品牌評價方法論精神參考（ISO 10668 精神，非合規認證；示意）。",
     logo: "/teams/logos/iso.svg",
     accent: "gold",
+    homophone: true,
+  },
+  // —— 本週 0 成本外聯 5 單位（諧音示意，申請中，未掛官方 LOGO） ——
+  {
+    id: "sh-ungc",
+    alias: "聯全盟約",
+    category: "國際標準 / 平台",
+    relation: "全球永續原則與 SDG 對接框架（申請中；諧音示意，非官方名稱、未授權）。",
+    accent: "accent",
+    homophone: true,
+  },
+  {
+    id: "sh-tnfd",
+    alias: "自然揭露盟",
+    category: "國際標準 / 平台",
+    relation: "自然相關財務揭露（LEAP 框架）採用者社群（申請中；諧音示意）。",
+    accent: "excellent",
+    homophone: true,
+  },
+  {
+    id: "sh-gs1",
+    alias: "全球碼一號",
+    category: "國際標準 / 平台",
+    relation: "Digital Link 與 DPP 數據載體技術標準（申請中；諧音示意）。",
+    accent: "good",
+    homophone: true,
+  },
+  {
+    id: "sh-cirpass",
+    alias: "循護護照",
+    category: "國際標準 / 平台",
+    relation: "歐盟數位產品護照（DPP）示範標準工作圈（申請中；諧音示意）。",
+    accent: "warning",
+    homophone: true,
+  },
+  {
+    id: "sh-greenprint",
+    alias: "星綠藍圖",
+    category: "國際標準 / 平台",
+    relation: "新加坡永續金融數據平台，透過既有 ESG 數據夥伴對接（申請中；諧音示意）。",
+    accent: "good",
     homophone: true,
   },
 ];
