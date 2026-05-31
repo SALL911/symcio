@@ -118,7 +118,7 @@ window.AIV_DATA = {
       "chg": 2.4
     },
     {
-      "zh": "宏碚",
+      "zh": "宏碁",
       "en": "Acer",
       "industry": "電子製造",
       "PR": 74.7,
