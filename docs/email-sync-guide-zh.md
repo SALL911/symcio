@@ -5,6 +5,32 @@
 
 ---
 
+## ✅ 已確認（2026/05/31，使用者親自確認）：info@symcio.tw 在 Microsoft 365
+
+平台問題已經有答案了，下面是**定稿版、照做即可的最短路徑**。其餘背景診斷保留在後面章節供參考。
+
+### 核心原則
+Microsoft 365 的「寄件備份」**存在微軟伺服器上**。只要每台裝置都用 **Exchange / Microsoft 365 方式**連進去，四台會自動同步同一份 Sent，不需手動搬。
+會「對不起來」只有兩個原因：**(a) 某台用了 POP**、或 **(b) 用 Gmail / Google Workspace App 去收 info@**（Gmail App 接微軟信箱無法正確同步 Sent）。
+
+### 四台裝置定稿設定
+| 裝置 | 怎麼做 |
+| --- | --- |
+| ✅ **手機 Outlook** | 新增帳號 → 輸入 `info@symcio.tw` → 自動辨識為 **Microsoft 365** → 登入。 |
+| ✅ **桌機 Outlook** | 帳戶設定 → 刪掉任何 **POP** 或重複的 info@ → 重新新增 → 選 **Exchange / Microsoft 365**（**絕不要選 POP**）。 |
+| ⚠️ **手機 Google Workspace（Gmail App）** | **不要用它收發 info@**。公司信一律改用手機 Outlook App。 |
+| ⚠️ **桌機 Google Workspace（網頁 Gmail）** | **不要用它寄 info@**。改用 outlook.office.com 或桌機 Outlook App。 |
+
+> 一句話：**info@ 的信，四台一律走 Outlook / Microsoft；Google 那兩個 App 不要碰公司信。**
+
+### 驗收（2 分鐘）
+手機 Outlook 寄一封給自己 → 看桌機 Outlook 的「寄件備份」→ 幾秒內出現 = ✅ 完成。
+
+### 還要確認：sall@symcio.tw
+info@ 已確認在微軟。**sall@ 建議也放微軟、跟 info@ 同一套**，設定完全一樣。若 sall@ 其實在 Google Workspace，那它才用 Gmail App，不要和 info@ 混。
+
+---
+
 ## 第 0 步：先認清你現在的狀況（這是病因）
 
 我實際比對了你正在用的信箱，發現你**同時在用兩套不同公司的信箱系統**：
@@ -25,31 +51,27 @@
 
 > **GoDaddy 賣的企業電子郵件，本身就是「GoDaddy 版的 Microsoft 365」。**
 > 這正好解釋了為什麼上面實測 `info@symcio.tw` 的信件 header 顯示 `*.PROD.OUTLOOK.COM`——
-> **你的 info@ 其實跑在微軟系統上，不是 Google。**
+> **你的 info@ 其實跑在微軟系統上，不是 Google。**（已於 2026/05/31 由你親自確認）
 
 所以你很可能是「**兩套並存**」：
 
 | 來源 | 系統 | 誰在上面 |
 | --- | --- | --- |
-| GoDaddy 附的企業信箱 | **Microsoft 365 / Outlook** | `info@symcio.tw`（header 已證實） |
+| GoDaddy 附的企業信箱 | **Microsoft 365 / Outlook** | `info@symcio.tw`（已確認） |
 | 你另外付費的 Google Workspace | **Google** | 可能 `sall@`、或重複的 `info@` |
 
 **這就是寄件夾分岔的真正主因**：同一個網域，信箱卻分散在微軟和 Google 兩邊。
 
 ### 怎麼一次確認到底在哪（5 分鐘）
-1. 用 `info@symcio.tw` 登入 **https://admin.microsoft.com** → 進得去 = info@ 在微軟（GoDaddy M365）。
+1. 用 `info@symcio.tw` 登入 **https://admin.microsoft.com** → 進得去 = info@ 在微軟（GoDaddy M365）。✅ 已確認
 2. 用 `info@symcio.tw` 登入 **https://admin.google.com** → 看使用者清單有沒有 info@ / sall@ = 你在 Google 也有帳號。
 3. **以「能真正收到新信的那一個」為準**，全部裝置統一用它，另一個停用或只當備援。
-
-> 判斷不出來時，預設用 **Microsoft 365**（因為 header 證實 info@ 的信實際從微軟發出）。下面第 2 步的 Outlook 設定就是給這個情況用的。
 
 ---
 
 ## 第 1 步：做一個決定（最重要）
 
-**公司信以後統一用哪一個系統寄？** 建議選 **Microsoft 365（Outlook）**，因為你的 `info@symcio.tw` 已經在上面了（GoDaddy 附的就是它）。
-
-> 若你確定要改用 Google Workspace（你有付費），也可以；但要先用上面的方法確認 `info@symcio.tw` 真的有在 Google 那邊收得到信，否則會收不到信。不確定的話，先用 Microsoft 365。
+**公司信以後統一用哪一個系統寄？** → **Microsoft 365（Outlook）**，因為你的 `info@symcio.tw` 已確認在上面了（GoDaddy 附的就是它）。
 
 決定後，**一律從 info@symcio.tw 寄信，不要再用個人 Gmail 寄公司信。**（用個人 Gmail 寄，對方看到的寄件人是 cchuan911@gmail.com，不專業也容易進垃圾桶。）
 
@@ -66,7 +88,7 @@
 4. 完成後，點底部「寄件備份」資料夾，確認看得到你最近寄的信。
 
 ### 📱 手機 Google Workspace / Gmail App
-- 如果你決定公司信用 Microsoft 365：**手機 Gmail App 就不要再拿來寄 info@symcio.tw 的信**。可以保留它收個人 cchuan911@gmail.com，但公司信都改用 Outlook App。
+- **手機 Gmail App 不要再拿來寄 info@symcio.tw 的信**。可以保留它收個人 cchuan911@gmail.com，但公司信都改用 Outlook App。
 - 重點：不要在 Gmail App 裡用「以 info@symcio.tw 寄信」的別名功能，那會讓寄件備份又分岔。
 
 ### 💻 桌機 Outlook（Windows / Mac）
@@ -76,7 +98,7 @@
 4. 如果它問你「寄件備份要存哪」→ 選「存到伺服器的 Sent Items」。
 
 ### 💻 桌機 Google Workspace（網頁版）
-- 同手機原則：公司信改用 Outlook，網頁 Gmail 不再拿來寄 info@symcio.tw。
+- 同手機原則：公司信改用 Outlook（outlook.office.com），網頁 Gmail 不再拿來寄 info@symcio.tw。
 
 ---
 
@@ -92,12 +114,9 @@
 
 ## 關於 sall@symcio.tw
 
-我查了你的 info@ 信箱，裡面**沒有任何 sall@symcio.tw 的往來信件**。代表 sall@ 可能：
-- 還沒建立、或
-- 在另一個系統（很可能在你的 **Google Workspace** 那邊，而 info@ 在微軟）、或
-- 你其實很少用它。
-
-請先用上面「第 0 步補充」的兩個 admin 後台確認 sall@symcio.tw 到底在 Microsoft 還是 Google。若要用，**強烈建議跟 info@ 放在同一個系統**，整頓方式完全一樣，才不會又分岔。
+info@ 已確認在微軟。sall@ 請確認在 Microsoft 還是 Google：
+- 用 `sall@symcio.tw` 登入 admin.microsoft.com 或一般 Outlook 登入 → 進得去代表在微軟。
+- 若要用，**強烈建議跟 info@ 放在同一個系統（Microsoft 365）**，整頓方式完全一樣，才不會又分岔。
 
 ---
 
@@ -116,6 +135,6 @@
 | Make / Zapier / n8n | ✅ | HTTP 呼叫 |
 | Gemini / Grok / Meta AI | ⚠️ | 一般介面不開放外部工具，只能透過上面的自動化代發 |
 
-> 但這個「寄信入口」要正式上線，需要工程設定（Azure 應用程式 + 部署），那一步需要你或工程師登入你的後台授權，我無法代登。詳見 `docs/email-gmail-api.md`。
+> 因為 info@ 已確認在 Microsoft 365，這個寄信入口正式上線時只需設定 **Azure（Microsoft Graph）**那一套 env（`GRAPH_*`），不需要 Gmail 那套。那一步需要你或工程師登入 Azure 後台授權，我無法代登。詳見 `docs/email-gmail-api.md`。
 >
-> **給非工程的你的建議**：第一優先是先把上面第 1~3 步的「裝置同步」做好——那才是你每天「很難做事」的真正痛點，而且你今天自己就能完成。AI 發信入口可以等有工程資源時再開。
+> **建議順序**：第一優先先把上面的「裝置同步」做好——那才是你每天「很難做事」的真正痛點，今天自己就能完成。AI 發信入口可以等有工程資源時再開。
