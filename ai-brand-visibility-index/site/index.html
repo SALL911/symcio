@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>台灣品牌 AI 能見度指數 ｜ Symcio 全識 · BrandOS™</title>
+<meta name="description" content="即時追蹤台灣上市櫃企業在 ChatGPT、Claude、Gemini 等 AI 系統中的品牌能見度與引述排名。Symcio 全識 BrandOS。">
+<meta property="og:title" content="台灣品牌 AI 能見度指數 — Symcio 全識">
+<meta property="og:description" content="不是幫你做行銷，是幫你的品牌數據合規、AI 可見、資產可估。">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<!-- Masthead -->
+<header class="masthead">
+  <div class="wrap">
+    <div class="mh-top">
+      <span class="mh-brand">Symcio 全識 · BrandOS™</span>
+      <span class="logomark">[<b>·</b>]</span>
+    </div>
+    <div class="mh-hero">
+      <span class="tag"><span class="dot"></span>即時追蹤 · LIVE INDEX</span>
+      <h1 class="title">台灣品牌 AI 能見度指數
+        <span class="en">Taiwan Brand AI Visibility Index — AIV</span></h1>
+      <p class="lede">即時追蹤台灣上市櫃企業，在 ChatGPT、Claude、Gemini 等主流 AI 系統中的品牌存在感與被引述排名。當消費者不再 Google、改問 AI，「被 AI 看見」就是下一個十年的入場券。</p>
+      <div class="mh-stats" id="stats"></div>
+    </div>
+  </div>
+</header>
+
+<!-- Ticker -->
+<div class="ticker"><div class="ticker-track" id="ticker-track"></div></div>
+
+<main class="wrap">
+
+  <!-- Demo banner -->
+  <div class="demo-banner" id="demo-banner" style="display:none">
+    <b>示意資料 DEMO</b>
+    <span>目前顯示為示範數據，用於展示榜單結構。實際 AIV 分數以每月實測為準；本指數非投資建議、非信用評等。</span>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="filters" id="filters"></div>
+    <div class="search"><input id="search-input" type="text" placeholder="搜尋品牌 / Search brand…"></div>
+  </div>
+
+  <!-- Ranking -->
+  <div class="list-head">
+    <span>排名</span><span>品牌</span><span>產業</span><span>能見度</span><span class="r">AIV</span>
+  </div>
+  <div class="rows" id="rows"></div>
+
+  <!-- Methodology -->
+  <span class="sec-tag olive">計分方法 · Methodology</span>
+  <h2 class="sec">AIV 綜合分數 = 五項子指標加權</h2>
+  <p class="sec-sub">每個品牌的分數由五個可重現的子指標合成，皆於產業類別內標準化。完整協議（題庫、取樣、防火牆、免責）見方法論白皮書。</p>
+  <div class="mcards" id="mcards"></div>
+  <a class="btn" href="methodology.html">閱讀完整方法論白皮書 →</a>
+
+  <!-- Positioning -->
+  <span class="sec-tag">定位 · Positioning</span>
+  <h2 class="sec">不是幫你做行銷</h2>
+  <p class="sec-sub">是幫你的品牌<b style="color:var(--green)">數據合規、AI 可見、資產可估</b>。Symcio 在 AI 換軌的時代，把「品牌能見度」變成可量化、可治理、可估值的資產。</p>
+
+</main>
+
+<!-- Modal -->
+<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
+
+<!-- Footer -->
+<div class="footwrap">
+  <footer><div class="wrap"><div class="foot-in">
+    <span class="url">www.symcio.tw</span>
+    <span class="tagline">不是幫你做行銷，是幫你的品牌數據合規、AI 可見、資產可估。</span>
+    <span class="org">Symcio 全識 · BrandOS™</span>
+  </div></div></footer>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
