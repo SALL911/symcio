@@ -3,10 +3,12 @@ import type Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 import { getStripe } from "@/lib/stripe/client";
 import { fireRepositoryDispatch } from "@/lib/github/dispatch";
-import { send as sendEmail, renderAuditConfirmation } from "@/lib/email/resend";
+import { send as sendEmail, renderAuditConfirmation, renderEbookDelivery } from "@/lib/email/resend";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+const ORIGIN = process.env.NEXT_PUBLIC_SITE_URL || "https://symcio.tw";
 
 /**
  * Stripe webhook handler.
@@ -40,8 +42,12 @@ async function handleCheckoutCompleted(
   const email = session.customer_email ?? session.customer_details?.email ?? null;
   const amountTotal = session.amount_total ?? 0;
   const priceUsd = amountTotal / 100;
-  const product: "audit" | "optimization" =
-    metadata.product === "optimization" ? "optimization" : "audit";
+  const product: "audit" | "optimization" | "ebook" =
+    metadata.product === "optimization"
+      ? "optimization"
+      : metadata.product === "ebook"
+        ? "ebook"
+        : "audit";
   const brandName = metadata.brand || "Unknown";
 
   let orderId: string | null = null;
@@ -86,28 +92,32 @@ async function handleCheckoutCompleted(
   }
 
   // 2. GitHub repository_dispatch → triggers geo-audit.yml to run real audit.
-  const dispatchResp = await fireRepositoryDispatch({
-    eventType: "paid-audit",
-    clientPayload: {
-      brand_name: brandName,
-      brand_domain: metadata.brand_domain || "",
-      brand_industry: metadata.brand_industry || "technology",
-      product,
-      order_id: orderId,
-      customer_email: email,
-      stripe_session_id: session.id,
-    },
-  });
-  if (!dispatchResp.ok) warnings.push(`dispatch: ${dispatchResp.error}`);
+  //    Ebook is an instant digital download, so it has no audit to dispatch.
+  if (product !== "ebook") {
+    const dispatchResp = await fireRepositoryDispatch({
+      eventType: "paid-audit",
+      clientPayload: {
+        brand_name: brandName,
+        brand_domain: metadata.brand_domain || "",
+        brand_industry: metadata.brand_industry || "technology",
+        product,
+        order_id: orderId,
+        customer_email: email,
+        stripe_session_id: session.id,
+      },
+    });
+    if (!dispatchResp.ok) warnings.push(`dispatch: ${dispatchResp.error}`);
+  }
 
-  // 3. Confirmation email via Resend.
+  // 3. Confirmation / delivery email via Resend.
   if (email) {
     const from = process.env.RESEND_FROM_ADDRESS || "Symcio <info@symcio.tw>";
-    const { subject, html } = renderAuditConfirmation({
-      brandName,
-      customerEmail: email,
-      product,
-    });
+    const { subject, html } = product === "ebook"
+      ? renderEbookDelivery({
+          customerEmail: email,
+          downloadUrl: `${ORIGIN}/api/ebook/download?session_id=${session.id}`,
+        })
+      : renderAuditConfirmation({ brandName, customerEmail: email, product });
     const emailResp = await sendEmail({
       from,
       to: email,

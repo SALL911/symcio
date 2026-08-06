@@ -32,6 +32,13 @@ export const STRIPE_PRODUCTS = {
     amount: 199900,
     currency: "usd",
   },
+  ebook: {
+    name: "BCI 品牌資本指數 方法論電子書",
+    description:
+      "Brand Capital Index 完整方法論電子書（PDF）。付款後立即下載。",
+    amount: 39000, // TWD is 2-decimal in Stripe → NT$390
+    currency: "twd",
+  },
 } as const;
 
 export type StripeProduct = keyof typeof STRIPE_PRODUCTS;

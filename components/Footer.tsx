@@ -31,6 +31,8 @@ export function Footer() {
             <ul className="mt-4 space-y-2 text-sm text-muted">
               <li><Link href="/dashboard" className="no-underline hover:text-accent">AI 能見度排行榜</Link></li>
               <li><Link href="/audit" className="no-underline hover:text-accent">Brand AI Audit</Link></li>
+              <li><Link href="/service" className="no-underline hover:text-accent">AI 獲客成交系統</Link></li>
+              <li><Link href="/ebook" className="no-underline hover:text-accent">BCI 方法論電子書 · NT$390</Link></li>
               <li><Link href="/pricing" className="no-underline hover:text-accent">方案與定價</Link></li>
               <li><Link href="/tools" className="no-underline hover:text-accent">工具套件</Link></li>
               <li><Link href="/faq/enterprise" className="no-underline hover:text-accent">知識庫</Link></li>
