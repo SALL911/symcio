@@ -11,6 +11,7 @@ const LINKS: { href: string; label: string }[] = [
   { href: "/faq/enterprise", label: "知識庫" },
   { href: "/news", label: "電子報" },
   { href: "/tools", label: "工具" },
+  { href: "/teams", label: "團隊" },
   { href: "/about", label: "關於" },
 ];
 

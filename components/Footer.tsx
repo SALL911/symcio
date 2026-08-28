@@ -45,6 +45,7 @@ export function Footer() {
                   Policy Research ↗
                 </a>
               </li>
+              <li><Link href="/teams" className="no-underline hover:text-accent">團隊與夥伴</Link></li>
               <li><Link href="/about" className="no-underline hover:text-accent">關於 Symcio</Link></li>
             </ul>
           </div>
