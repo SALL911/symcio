@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taiwan Brand AI Visibility Index (AIV) — Index Methodology v1.0 — Symcio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#1B4332;
+    --green-2:#2D6A4F;
+    --green-dark:#081C15;
+    --paper:#F0EDE8;
+    --paper-2:#FBFAF7;
+    --ink:#15201A;
+    --ink-soft:#4b574f;
+    --white:#FFFFFF;
+    --red:#C1121F;
+    --olive:#6B8E23;
+    --line:#cdd2cb;
+    --line-strong:#aab3a8;
+    --mono:'IBM Plex Mono', ui-monospace, monospace;
+    --sans:'Noto Sans TC', system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); font-size:15px; line-height:1.65; font-weight:400;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sheet{
+    max-width:860px; margin:32px auto; background:var(--paper);
+    box-shadow:0 24px 60px -28px rgba(8,28,21,.45);
+    position:relative; overflow:hidden;
+  }
+
+  .masthead{
+    background:
+      radial-gradient(120% 160% at 85% -20%, rgba(45,106,79,.55), transparent 60%),
+      linear-gradient(120deg, var(--green) 0%, var(--green-dark) 100%);
+    color:var(--white); padding:18px 46px;
+    display:flex; align-items:center; justify-content:space-between;
+    position:relative;
+  }
+  .masthead::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:3px;
+    background:linear-gradient(90deg, var(--olive), transparent 65%);
+  }
+  .mh-brand{ font-family:var(--mono); font-size:11.5px; letter-spacing:.28em;
+    text-transform:uppercase; font-weight:600; color:#dfeee6; }
+  .logomark{ font-family:var(--mono); font-weight:600; font-size:22px;
+    letter-spacing:.02em; color:var(--white); display:inline-flex; align-items:center; gap:2px;}
+  .logomark b{ color:var(--olive); font-weight:600; }
+
+  .inner{ padding:40px 46px 0; position:relative; z-index:1; }
+
+  .tag{ display:inline-flex; align-items:center; gap:8px;
+    background:var(--green); color:var(--white);
+    font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    font-weight:500; padding:5px 12px; border-radius:3px; }
+  .tag.alt{ background:var(--olive); }
+
+  h1{ font-family:var(--sans); font-weight:900; font-size:36px; line-height:1.1;
+    margin:18px 0 6px; letter-spacing:-.01em; color:var(--green); }
+  .subtitle{ font-size:15px; color:var(--ink-soft); margin:0 0 18px; font-weight:500; font-style:italic; }
+  .meta{ display:flex; flex-wrap:wrap; gap:0 24px; font-family:var(--mono);
+    font-size:11px; letter-spacing:.03em; color:var(--ink-soft);
+    border-top:1px solid var(--line-strong); border-bottom:1px solid var(--line-strong);
+    padding:10px 0; margin-bottom:24px;}
+  .meta b{ color:var(--green); font-weight:600; }
+
+  h2{ font-size:19px; font-weight:700; letter-spacing:-.01em; color:var(--green);
+    margin:28px 0 8px; display:flex; align-items:center; gap:11px;}
+  h2 .n{ font-family:var(--mono); font-size:12px; font-weight:600; color:var(--white);
+    background:var(--green); width:25px; height:25px; flex:0 0 25px;
+    display:inline-flex; align-items:center; justify-content:center; border-radius:4px;}
+  p{ margin:.5em 0; }
+  .lede{ color:var(--ink); }
+  b, strong{ color:var(--green); font-weight:700; }
+
+  .formula{
+    background:
+      radial-gradient(140% 180% at 90% -30%, rgba(45,106,79,.5), transparent 60%),
+      linear-gradient(120deg, var(--green) 0%, var(--green-dark) 100%);
+    color:#eaf3ee; border-radius:8px;
+    padding:22px 26px; margin:16px 0 18px; font-family:var(--mono);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);
+  }
+  .formula .eq{ font-size:16px; font-weight:500; letter-spacing:.01em; line-height:1.7; }
+  .formula .eq .var{ color:#cfe8d8; }
+  .formula .eq .w{ color:#a7cf5e; }
+  .formula .cap{ font-size:10.5px; letter-spacing:.16em; text-transform:uppercase;
+    color:#8fb39f; margin-bottom:10px; }
+
+  table{ width:100%; border-collapse:collapse; margin:12px 0 6px; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top;}
+  thead th{ font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--white); background:var(--green); border-bottom:none; }
+  thead th:first-child{ border-radius:4px 0 0 0; }
+  thead th:last-child{ border-radius:0 4px 0 0; }
+  td.code{ font-family:var(--mono); font-weight:600; color:var(--green); white-space:nowrap;}
+  td.wt{ font-family:var(--mono); font-weight:600; text-align:right; white-space:nowrap; color:var(--ink);}
+  tr:nth-child(even) td{ background:rgba(27,67,50,.035); }
+  tr.total td{ border-top:2px solid var(--green); border-bottom:none; font-weight:700; background:rgba(107,142,35,.08);}
+  tr.total td.wt{ color:var(--olive); }
+
+  ul{ margin:.4em 0 .6em; padding-left:1.1em; }
+  li{ margin:.32em 0; }
+  li::marker{ color:var(--olive); }
+
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:0 34px; }
+
+  .callout{ border-left:4px solid var(--olive); background:rgba(107,142,35,.09);
+    padding:13px 17px; margin:14px 0; border-radius:0 5px 5px 0; font-size:13.5px;}
+  .callout b{ color:var(--green); }
+
+  .disclaimer{ margin-top:22px; border:1px solid var(--red); border-radius:6px;
+    background:rgba(193,18,31,.045); padding:16px 18px; }
+  .disclaimer h3{ font-family:var(--mono); font-size:11px; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--red); margin:0 0 8px; }
+  .disclaimer p{ font-size:12.5px; line-height:1.6; color:var(--ink-soft); margin:.35em 0;}
+  .disclaimer b{ color:var(--red); }
+
+  .footwrap{ margin-top:34px; position:relative; }
+  .footwrap::before{
+    content:""; display:block; height:60px;
+    background:radial-gradient(80% 120% at 50% 130%, rgba(45,106,79,.28), transparent 70%);
+  }
+  footer{
+    background:
+      radial-gradient(120% 160% at 12% 140%, rgba(45,106,79,.5), transparent 55%),
+      linear-gradient(120deg, var(--green-dark) 0%, var(--green) 100%);
+    color:#dfeee6; padding:18px 46px;
+    display:flex; justify-content:space-between; align-items:center; gap:16px;
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; flex-wrap:wrap;
+  }
+  footer .url{ color:var(--white); font-weight:600; letter-spacing:.12em; }
+  footer .tagline{ font-family:var(--sans); font-size:11px; letter-spacing:0; color:#cfe2d7; flex:1; text-align:center; min-width:220px;}
+  footer .org{ color:var(--olive); font-weight:600; letter-spacing:.16em; text-transform:uppercase; }
+
+  .hl{ background:linear-gradient(transparent 60%, rgba(107,142,35,.32) 60%); padding:0 1px; }
+  .tagmono{ font-family:var(--mono); font-size:11px; color:var(--ink-soft); }
+
+  @media (max-width:680px){
+    .inner{ padding:30px 22px 0; } .masthead, footer{ padding:16px 22px; } h1{ font-size:28px; }
+    .grid2{ grid-template-columns:1fr; gap:0; }
+    .sheet{ margin:0; }
+    footer .tagline{ order:3; text-align:left; }
+  }
+  @media print{
+    body{ background:#fff; }
+    .sheet{ box-shadow:none; margin:0; max-width:none; }
+    .inner{ padding:18px 30px 0; }
+    .masthead, .formula, footer, thead th, tr.total td, .callout, .disclaimer{
+      -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    h2{ page-break-after:avoid; } table,.formula,.disclaimer,.callout{ page-break-inside:avoid; }
+    @page{ margin:0; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="masthead">
+    <span class="mh-brand">Symcio · BrandOS™ Research</span>
+    <span class="logomark">[<b>·</b>]</span>
+  </div>
+
+ <div class="inner">
+
+  <span class="tag">Methodology · Public Document</span>
+
+  <h1>Taiwan Brand AI Visibility Index</h1>
+  <p class="subtitle">AIV — Index Methodology</p>
+
+  <div class="meta">
+    <span>Version <b>v1.0</b></span>
+    <span>Effective <b>May 2026</b></span>
+    <span>Administrator <b>Symcio Co., Ltd.</b></span>
+    <span>Coverage <b>30 Taiwan-listed brands</b></span>
+    <span>Frequency <b>Monthly</b></span>
+  </div>
+
+  <h2><span class="n">1</span>Index Definition &amp; Scope</h2>
+  <p class="lede">The Index measures a single observable fact: <span class="hl">the degree to which Taiwan brands are mentioned, cited, and recommended within the responses of mainstream generative-AI systems</span>. It quantifies a brand's <i>mind share</i> in the AI era — not the operational, financial, or securities value of any company.</p>
+  <ul>
+    <li><b>Systems assessed:</b> ChatGPT, Claude, and Gemini — three public generative-AI systems. Model versions are recorded at each cycle.</li>
+    <li><b>Constituents:</b> 30 Taiwan-listed brands, compared within industry peer groups. The constituent list is versioned and published.</li>
+    <li><b>Locale:</b> Region set to Taiwan, language set to Traditional Chinese, replicating local consumer query conditions.</li>
+  </ul>
+
+  <h2><span class="n">2</span>Data Collection Protocol</h2>
+  <p>Credibility rests on the <b>reproducibility of the protocol</b>. Data is collected on a fixed protocol at a regular cadence, with raw records retained for audit:</p>
+  <div class="grid2">
+    <ul>
+      <li><b>Query Bank (v1.0):</b> a fixed set of open-ended prompts per industry category (e.g. "Which is the most trusted ___ brand in Taiwan?"). The bank is versioned and published.</li>
+      <li><b>Sampling:</b> each prompt × each model is repeated <span class="tagmono">K = 5</span> times, aggregated by <b>median</b> to suppress single-response variance.</li>
+    </ul>
+    <ul>
+      <li><b>Parameter control:</b> temperature is fixed and logged where the API permits; web-retrieval on/off state is flagged per run.</li>
+      <li><b>Timestamp &amp; retention:</b> each snapshot records a UTC+8 timestamp and model version; raw output logs are retained to enable third-party recomputation.</li>
+    </ul>
+  </div>
+
+  <h2><span class="n">3</span>Scoring Methodology</h2>
+  <p>The composite AIV Score is scaled 0–100, synthesized from five standardized sub-indicators:</p>
+  <div class="formula">
+    <div class="cap">AI Visibility Score — Composite</div>
+    <div class="eq">
+      AIV = <span class="w">0.35</span>·<span class="var">PR</span>
+      + <span class="w">0.25</span>·<span class="var">CR</span>
+      + <span class="w">0.20</span>·<span class="var">SoV</span>
+      + <span class="w">0.10</span>·<span class="var">CQ</span>
+      + <span class="w">0.10</span>·<span class="var">CMC</span>
+    </div>
+  </div>
+  <table>
+    <thead><tr><th>Code</th><th>Sub-indicator</th><th>Definition</th><th class="wt">Weight</th></tr></thead>
+    <tbody>
+      <tr><td class="code">PR</td><td>Presence Rate</td><td>Share of category-relevant prompts in which the brand is mentioned.</td><td class="wt">35%</td></tr>
+      <tr><td class="code">CR</td><td>Citation Rank</td><td>Average ordinal position when mentioned; first position weighted highest, decaying thereafter.</td><td class="wt">25%</td></tr>
+      <tr><td class="code">SoV</td><td>Share of Voice</td><td>Brand mentions as a proportion of all brand mentions within the peer category.</td><td class="wt">20%</td></tr>
+      <tr><td class="code">CQ</td><td>Context Quality</td><td>Factual accuracy and sentiment polarity (positive / neutral / negative) of the AI's description.</td><td class="wt">10%</td></tr>
+      <tr><td class="code">CMC</td><td>Cross-Model Consistency</td><td>Stability of visibility across the three systems; lower variance scores higher, indicating structural rather than incidental visibility.</td><td class="wt">10%</td></tr>
+      <tr class="total"><td colspan="3">Composite AIV Score</td><td class="wt">100%</td></tr>
+    </tbody>
+  </table>
+  <p class="tagmono">All sub-indicators are min–max normalized to 0–100 within category prior to weighting. Weights are reviewed annually; any change follows the published change log.</p>
+
+  <h2><span class="n">4</span>Reproducibility &amp; Non-Determinism</h2>
+  <div class="callout">
+    <p><b>Core principle:</b> generative-AI output is non-deterministic; a single response is not evidence. The Index suppresses randomness to a reproducible range through <b>repeated sampling × median aggregation × a fixed protocol × a versioned query bank</b>. Any third party can independently recompute and verify the results from the published query bank and protocol.</p>
+  </div>
+
+  <h2><span class="n">5</span>Governance &amp; Conflict-of-Interest Firewall</h2>
+  <ul>
+    <li><b>Separation of assessment and commercial functions:</b> the ranking computation is fully separated from Symcio's paid optimization (GEO) services. <span class="hl">Payment cannot purchase or influence any brand's ranking score.</span></li>
+    <li><b>Factual correction (opt-in):</b> a company may request correction of factual errors (e.g. brand attribution, industry classification) but <b>may not</b> request a score adjustment.</li>
+    <li><b>Change log:</b> any change to the query bank, weights, or systems assessed is recorded in a public change log and versioned, ensuring historical data remains auditable.</li>
+  </ul>
+
+  <div class="disclaimer">
+    <h3>Disclaimer</h3>
+    <p>The Index measures only the <b>observable fact</b> of a brand's visibility within AI systems at a given point in time. It does <b>not</b> constitute a judgment or forecast of any company's operational, financial, credit, or securities value.</p>
+    <p>The Index is <b>not investment advice, not a credit rating, and not a solicitation or recommendation of any security</b>, and should not be used as the sole basis for any investment decision. AI systems are non-deterministic and models are continuously updated; all data reflect the state observed at the time of measurement only.</p>
+    <p>© 2026 Symcio Co., Ltd. The methodology and query bank are the copyright of the company; citation requires attribution of source and version.</p>
+  </div>
+
+ </div>
+
+ <div class="footwrap">
+  <footer>
+    <span class="url">www.symcio.tw</span>
+    <span class="tagline">We don't do your marketing — we make your brand data compliant, AI-visible, and valuable.</span>
+    <span class="org">Symcio · BrandOS™</span>
+  </footer>
+ </div>
+
+</div>
+</body>
+</html>
