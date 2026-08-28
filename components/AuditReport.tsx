@@ -147,6 +147,18 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
   };
 
   async function downloadPdf() {
+    const el = pdfRef.current;
+    if (!el) return;
+
+    const prev = {
+      position: el.style.position,
+      left: el.style.left,
+      top: el.style.top,
+      opacity: el.style.opacity,
+      pointerEvents: el.style.pointerEvents,
+      zIndex: el.style.zIndex,
+    };
+
     try {
       const mod = (await import("html2pdf.js")) as unknown as {
         default: (...args: unknown[]) => {
@@ -156,8 +168,6 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
         };
       };
       const html2pdf = mod.default;
-      const el = pdfRef.current;
-      if (!el) return;
 
       try {
         const g = (
@@ -168,6 +178,25 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
       } catch {
         /* ignore */
       }
+
+      // html2canvas fails to capture elements positioned with `left: -99999px`
+      // (produces a blank PDF). Temporarily move into the viewport, invisible,
+      // for the capture, then restore.
+      el.style.position = "fixed";
+      el.style.left = "0";
+      el.style.top = "0";
+      el.style.opacity = "0";
+      el.style.pointerEvents = "none";
+      el.style.zIndex = "-1";
+
+      if (typeof document !== "undefined" && document.fonts?.ready) {
+        try {
+          await document.fonts.ready;
+        } catch {
+          /* ignore */
+        }
+      }
+      await new Promise<void>((r) => requestAnimationFrame(() => r()));
 
       const filename = `${result.brandName}_AI品牌可見度報告_${today()}.pdf`;
       await html2pdf()
@@ -180,6 +209,7 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
             useCORS: true,
             logging: false,
             backgroundColor: "#ffffff",
+            windowWidth: 794,
           },
           jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
           pagebreak: { mode: ["css", "legacy"] },
@@ -189,6 +219,13 @@ export default function AuditReport({ result }: { result: ScoringResult }) {
     } catch (err) {
       alert("PDF 生成失敗，請稍候再試。");
       console.error(err);
+    } finally {
+      el.style.position = prev.position;
+      el.style.left = prev.left;
+      el.style.top = prev.top;
+      el.style.opacity = prev.opacity;
+      el.style.pointerEvents = prev.pointerEvents;
+      el.style.zIndex = prev.zIndex;
     }
   }
 
