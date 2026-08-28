@@ -88,7 +88,7 @@ export function renderAuditConfirmation(params: {
         </p>
       </td></tr>
       <tr><td style="padding:16px 32px;border-top:1px solid #eee;color:#6B7280;font-size:11px;">
-        Symcio · Bloomberg 台灣授權代表 · <a href="https://symcio.tw" style="color:#6B7280;">symcio.tw</a>
+        Symcio · AI Visibility Intelligence · <a href="https://symcio.tw" style="color:#6B7280;">symcio.tw</a>
       </td></tr>
     </table>
   </td></tr></table>
