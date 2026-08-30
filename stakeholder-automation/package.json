@@ -3,17 +3,21 @@
   "private": true,
   "type": "module",
   "version": "0.1.0",
-  "description": "Weekly stakeholder digest -> Gmail drafts (draft-only, never auto-sends). Pulls from lib/news-data.ts + weekly-update.md.",
+  "description": "Weekly stakeholder digest + media-agency outreach -> Gmail drafts (draft-only, never auto-sends; every draft Bcc'd to sall@symcio.tw).",
   "scripts": {
     "digest": "tsx src/digest.ts",
     "drafts": "tsx src/createDrafts.ts",
-    "drafts:dry": "cross-env DRY_RUN=true tsx src/createDrafts.ts"
+    "drafts:dry": "cross-env DRY_RUN=true tsx src/createDrafts.ts",
+    "agency-drafts": "tsx src/createAgencyDrafts.ts",
+    "agency-drafts:dry": "cross-env DRY_RUN=true tsx src/createAgencyDrafts.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
     "googleapis": "^144.0.0"
   },
   "devDependencies": {
+    "@types/node": "^26.4.0",
     "cross-env": "^7.0.3",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"

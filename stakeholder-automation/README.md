@@ -27,6 +27,8 @@
 ## 安全設計
 
 - **Draft-only**：程式只呼叫 `gmail.users.drafts.create`，沒有任何 send 呼叫。
+- **Bcc 寄件備份**：每封草稿都帶 `Bcc: sall@symcio.tw`（可用 `BACKUP_BCC` 覆寫）。
+  草稿手動寄出時，備份副本會同時送達。收件人本身就是備份信箱時會自動略過 Bcc。
 - **DRY_RUN 預設 true**：本機跑預設只把 `.eml` 預覽寫到 `.out/`，不碰 API。
 - 設 `DRY_RUN=false` 才會真的在 `info@symcio.tw` 建立草稿（仍不寄出）。
 - 找不到確認 email 的收件人，草稿一律建到 `GMAIL_USER`（你自己）作備份。
@@ -62,3 +64,53 @@ cp .env.example .env   # 填入 Gmail OAuth 憑證
 ## 手機/桌機 Outlook、Google Workspace 帳號同步
 
 那是**裝置端帳號設定**，不在本系統範圍。設定方式見 `docs/email-sync.md`。
+
+
+---
+
+## 媒體代理商外聯（18 家 + MAA 公會）
+
+名單 SSoT 在 `BrandOS-Infrastructure` 的 `data/crm/agency_partners.csv`；
+本 repo 的 `agencies.json` 是它的鏡像，欄位值與
+`schemas/hubspot_crm_schema.json` 的列舉值一致。
+
+### 兩種模板
+
+| 對象 | `orgType` | 信件立場 |
+|------|-----------|---------|
+| 台北市媒體服務代理商協會（MAA）| `trade_association` | 以**聯合會**身份談委員會與方法論標準，不談商業服務 |
+| 18 家媒體代理商 | `media_agency` | 以 **Symcio** 身份談資料層合作（授權／白牌／轉介）|
+
+這個分流不是文案風格差異，是 `docs/NGO_ENTITY_STRUCTURE.md` §2.2 的
+NGO 收錢邊界在信件層的落實：**聯合會不賣服務，商業一律走 Symcio。**
+
+### 使用方式
+
+```bash
+npm install
+npm run agency-drafts:dry    # 預覽 → .out/agencies/*.eml
+npm run agency-drafts        # DRY_RUN=false 才會在 Gmail 建草稿
+```
+
+### 寄出前的強制檢查
+
+程式會在每封未個人化的草稿頂端印一行紅字 TODO，並在結尾統計還有幾封未補：
+
+```
+🔴 19 封尚未填 personalNote — 補齊 agencies.json 後才可寄出。
+```
+
+依 `BrandOS-Infrastructure/content/cold-outreach/README.md` 的規範：
+
+- 每封信的**主旨與前兩句**必須提到對方具體近況（案子、得獎、發表、人事）
+- **每日人工寄出上限 20 封**；19 封剛好在上限內，但仍建議分兩天
+- 3 家（陽獅銳奇、傳立媒體、競立媒體）無公開 email，
+  草稿會改建到備份信箱，補上窗口後再寄
+
+### 自動化
+
+`.github/workflows/agency-outreach-drafts.yml` — 手動觸發，預設 dry-run。
+需在 repo Secrets 設 `GMAIL_CLIENT_ID` / `GMAIL_CLIENT_SECRET` /
+`GMAIL_REFRESH_TOKEN` / `GMAIL_USER`。
+
+**這個 workflow 不排程、不自動寄信。** 它只產生草稿。
