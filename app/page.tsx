@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Symcio BrandOS — 量化品牌 AI 基礎設施系統",
   description:
-    "量測品牌在 AI 答案裡的能見度。三階段 — 診斷 (BCI 免費)、追蹤 (AIVI 月訂閱)、資產化 (品牌估值 + DPP 合規)。只交付量測值,不承接行銷執行。",
+    "量測品牌在 AI 答案裡的能見度。三階段 — 診斷 (BCI 免費)、追蹤 (AIVI 45,000/月起)、資產化 (品牌估值 + DPP 合規)。只交付量測值,不承接行銷執行。",
 };
 
 const STAGES = [
@@ -62,8 +62,8 @@ const PHASES = [
     code: "Phase 2",
     label: "追蹤",
     tagline: "固定費 · 90 天起",
-    pricing: "固定費",
-    pricingNote: "報價後開案 · 月訂閱可續",
+    pricing: "NTD 45,000 起",
+    pricingNote: "/月 · 90 天 POC 固定費 120,000",
     title: "AIVI 能見度基線與追蹤",
     desc: "中英雙語各 40 題鎖版題庫,每週跨引擎採樣。交出期初與期末對照,證明變化是真的。Symcio 只量測,改善施作由貴公司自做或轉介執行夥伴。",
     deliverables: [
@@ -110,8 +110,8 @@ const PLANS = [
   },
   {
     name: "Phase 2 · 追蹤",
-    price: "固定費",
-    period: "90 天起 · 報價後開案",
+    price: "NTD 45,000 起",
+    period: "/月 · 90 天 POC 120,000",
     items: [
       "12 次週採樣 × 中英雙語題庫",
       "before / after 對照",

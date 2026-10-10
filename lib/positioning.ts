@@ -90,8 +90,8 @@ export const PRODUCT_LADDER = [
     id: "poc",
     name: "90 天 POC",
     nameEn: "90-Day Proof of Concept",
-    price: "固定費",
-    priceNote: "專案制 · 報價後開案",
+    price: "NTD 120,000",
+    priceNote: "90 天專案固定費",
     duration: "90 天",
     summary: "鎖版題庫每週採樣，交出期初與期末的對照，證明變化是真的。",
     deliverables: [
@@ -105,8 +105,8 @@ export const PRODUCT_LADDER = [
     id: "subscription",
     name: "月追蹤訂閱",
     nameEn: "Monthly Tracking",
-    price: "固定費",
-    priceNote: "月費制 · 年約可談",
+    price: "NTD 45,000 起",
+    priceNote: "/月 · 固定費,年約可談",
     duration: "持續",
     summary: "把單次分數變成時序資料集——競品無法回頭補做的資產。",
     deliverables: [

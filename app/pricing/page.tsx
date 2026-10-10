@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 export const metadata: Metadata = {
   title: "定價方案 — Symcio BrandOS",
   description:
-    "Phase 1 診斷免費 · Phase 2 AIVI 追蹤固定費 · Phase 3 資產化客製。Symcio 只交付量測值,不承接行銷執行、不對成效抽成。",
+    "Phase 1 診斷免費 · Phase 2 AIVI 追蹤 NTD 45,000 起/月（90 天 POC 120,000）· Phase 3 資產化客製。Symcio 只交付量測值,不承接行銷執行、不對成效抽成。",
 };
 
 const PLANS = [
@@ -29,8 +29,8 @@ const PLANS = [
   },
   {
     name: "Phase 2 · 追蹤 Track",
-    price: "固定費",
-    period: "90 天起 · 報價後開案",
+    price: "NTD 45,000 起",
+    period: "/月 · 90 天 POC 120,000",
     tagline: "鎖版題庫週期採樣,把單次分數變成可比較的時序資料。",
     items: [
       "Phase 1 全部功能",

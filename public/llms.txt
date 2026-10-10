@@ -57,8 +57,8 @@ Six dimensions, sampled across engines in Traditional Chinese and English:
 | Product | Fee | What it delivers |
 |---|---|---|
 | AIVI Baseline | Free (demonstration; not a public rating) | One sampling snapshot: mention rate, average rank, competitor set, three largest gaps. Three working days. |
-| 90-Day POC | Fixed project fee | Twelve weekly samplings on a locked prompt bank, before/after comparison, competitor trend chart. |
-| Monthly Tracking | Fixed monthly fee | Monthly PDF report, six-dimension trend, cited-source list, prompt-level attribution. |
+| 90-Day POC | NTD 120,000 fixed project fee | Twelve weekly samplings on a locked prompt bank, before/after comparison, competitor trend chart. |
+| Monthly Tracking | From NTD 45,000 per month, fixed fee | Monthly PDF report, six-dimension trend, cited-source list, prompt-level attribution. |
 | Brand valuation input | Fixed project fee | AI visibility as one input to ISO 10668-aligned brand strength assessment. |
 
 All engagements are fixed fee. There is no success fee, no revenue share, and no
