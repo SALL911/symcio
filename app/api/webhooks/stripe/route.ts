@@ -3,7 +3,11 @@ import type Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 import { getStripe } from "@/lib/stripe/client";
 import { fireRepositoryDispatch } from "@/lib/github/dispatch";
-import { send as sendEmail, renderAuditConfirmation } from "@/lib/email/resend";
+import {
+  send as sendEmail,
+  renderAuditConfirmation,
+  renderKitUpgradeConfirmation,
+} from "@/lib/email/resend";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -40,6 +44,9 @@ async function handleCheckoutCompleted(
   const email = session.customer_email ?? session.customer_details?.email ?? null;
   const amountTotal = session.amount_total ?? 0;
   const priceUsd = amountTotal / 100;
+  if (metadata.product === "kit-upgrade") {
+    return handleKitUpgrade(session, email, priceUsd);
+  }
   const product: "audit" | "optimization" =
     metadata.product === "optimization" ? "optimization" : "audit";
   const brandName = metadata.brand || "Unknown";
@@ -110,6 +117,53 @@ async function handleCheckoutCompleted(
     });
     const emailResp = await sendEmail({
       from,
+      to: email,
+      subject,
+      html,
+      replyTo: "info@symcio.tw",
+    });
+    if (!emailResp.ok) warnings.push(`resend: ${emailResp.error}`);
+  } else {
+    warnings.push("no-customer-email");
+  }
+
+  return { ok: true, warnings };
+}
+
+/**
+ * Gumroad Starter Kit → VIP 升級（$260）：寫入 orders、寄送預約信。
+ * 不觸發 paid-audit dispatch（非 AI Visibility Audit 訂單）。
+ */
+async function handleKitUpgrade(
+  session: Stripe.Checkout.Session,
+  email: string | null,
+  priceUsd: number,
+): Promise<{ ok: boolean; error?: string; warnings: string[] }> {
+  const warnings: string[] = [];
+  const sb = supabaseAdmin();
+  const gumroadEmail =
+    session.custom_fields?.find((f) => f.key === "gumroad_email")?.text?.value ?? undefined;
+
+  if (sb) {
+    const { error } = await sb.from("orders").insert({
+      brand_id: null,
+      product: "kit-upgrade",
+      price: priceUsd,
+      payment_status: "paid",
+      delivery_status: "pending",
+    });
+    if (error) return { ok: false, error: error.message, warnings };
+  } else {
+    warnings.push("supabase-not-configured");
+  }
+
+  if (email) {
+    const { subject, html } = renderKitUpgradeConfirmation({
+      gumroadEmail,
+      bookingUrl: process.env.KIT_UPGRADE_BOOKING_URL,
+    });
+    const emailResp = await sendEmail({
+      from: process.env.RESEND_FROM_ADDRESS || "Symcio <info@symcio.tw>",
       to: email,
       subject,
       html,
