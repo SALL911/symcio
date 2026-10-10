@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /checkout/
+Disallow: /u/
 
 # AI crawler guidance
 User-agent: GPTBot

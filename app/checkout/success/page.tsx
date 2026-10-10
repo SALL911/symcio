@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "付款成功 — Symcio AI Visibility Audit",
-  robots: { index: false, follow: false },
-};
+  description: "付款成功 — Symcio AI Visibility Audit",
+  path: "/checkout/success",
+  noindex: true,
+});
 
 export default function CheckoutSuccess() {
   return (

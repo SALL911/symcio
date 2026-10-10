@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { SchemaWikidataGenerator } from "@/components/SchemaWikidataGenerator";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Schema + Wikidata Generator — Symcio",
   description:
     "填入品牌資料，一次產出 schema.org JSON-LD 與 Wikidata QuickStatements，讓 ChatGPT、Claude、Gemini、Perplexity 都能正確認識你的品牌。",
-  alternates: { canonical: "/schema-generator" },
-};
+  path: "/schema-generator",
+});
 
 export default function SchemaGeneratorPage() {
   return (

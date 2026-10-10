@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "工具套件 — Symcio BrandOS",
   description:
     "Symcio 提供的品牌 AI 可見度工具組 — Brand AI Audit、Entity Builder、Typeform 健檢、Schema 產生器。",
-};
+  path: "/tools",
+});
 
 const TOOLS = [
   {
