@@ -344,8 +344,8 @@ export function calculateBCI(data: ScoringInput): ScoringResult {
     recommendations.push({
       priority: "低",
       title: "建立品牌 AI 內容策略",
-      desc: "持續優化品牌在 AI 引擎中的敘事品質，確保 AI 引用的資訊正確且正面。",
-      action: "聯繫 Symcio 顧問規劃 GEO 內容策略",
+      desc: "持續優化品牌在 AI 引擎中的敘事品質，確保 AI 引用的資訊正確且正面。執行可自做或交由執行夥伴，Symcio 負責量測前後差異。",
+      action: "開 AIVI 基線取得缺口清單，再決定先補哪一題",
     });
 
   const competitors = COMPETITORS[industry] ?? COMPETITORS["其他"];

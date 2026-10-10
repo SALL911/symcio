@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Symcio BrandOS — 量化品牌 AI 基礎設施系統",
   description:
-    "為有外銷、有品牌、缺合規資源的中小企業設計。三階段流程 — 診斷 (BCI 免費)、治理 (ESG 內容自動化 30,000/月起)、資產化 (品牌估值 + DPP 合規)。",
+    "量測品牌在 AI 答案裡的能見度。三階段 — 診斷 (BCI 免費)、追蹤 (AIVI 月訂閱)、資產化 (品牌估值 + DPP 合規)。只交付量測值,不承接行銷執行。",
 };
 
 const STAGES = [
@@ -21,14 +21,14 @@ const STAGES = [
     idx: "II",
     title: "板塊二 · 治理與數位基建",
     sub: "Stage 2 制度 · Stage 3 數據",
-    desc: "Wikidata / Schema.org 實體建置、AI 語料治理制度、Supabase 資料倉儲接入。",
+    desc: "Wikidata / Schema.org 實體規格與檢核、AI 語料治理制度設計;施作由客戶自做或執行夥伴承接。",
     tone: "accent",
   },
   {
     idx: "III",
     title: "板塊三 · 資產化與合規治理",
     sub: "Stage 4 流量 · Stage 5 合規",
-    desc: "四引擎 AI 可見度追蹤、ESG 內容自動化、DPP 欄位對接、BCI 時序化資產量化。",
+    desc: "四引擎 AI 可見度追蹤、引用來源盤點、DPP 欄位結構規格、BCI 時序化資產量化。",
     tone: "excellent",
   },
   {
@@ -52,7 +52,7 @@ const PHASES = [
     deliverables: [
       "BCI 分數與四引擎能見度報告",
       "競品同框分析",
-      "GEO 改善建議（3 項具體 Action）",
+      "缺口清單（哪一題、哪個引擎、輸給誰）",
       "可下載 PDF",
     ],
     ctaLabel: "免費試用診斷",
@@ -60,20 +60,20 @@ const PHASES = [
   },
   {
     code: "Phase 2",
-    label: "治理",
-    tagline: "月費制 · 持續交付",
-    pricing: "NTD 30,000 起",
-    pricingNote: "/月 · 月費制",
-    title: "ESG 內容自動化 + 資料治理",
-    desc: "為有外銷、品牌、合規壓力的中小企業導入完整的數位治理與內容自動化系統。每月 30 則 ESG 自動內容,並接通 DPP 所需欄位結構。",
+    label: "追蹤",
+    tagline: "固定費 · 90 天起",
+    pricing: "固定費",
+    pricingNote: "報價後開案 · 月訂閱可續",
+    title: "AIVI 能見度基線與追蹤",
+    desc: "中英雙語各 40 題鎖版題庫,每週跨引擎採樣。交出期初與期末對照,證明變化是真的。Symcio 只量測,改善施作由貴公司自做或轉介執行夥伴。",
     deliverables: [
-      "30 則/月 ESG 自動內容",
-      "單一平台發布 + 產業自動篩選",
-      "品牌數位資產盤點（官網/社群/產品頁）",
-      "DPP 數據欄位對接與結構化",
+      "12 次週採樣（中英雙語鎖版題庫）",
+      "before / after 對照與競品同框趨勢",
+      "AI 回覆的引用來源清單",
+      "10% 人工抽驗與方法論揭露",
     ],
-    ctaLabel: "預約治理 Demo",
-    ctaHref: "mailto:sall@symcio.tw?subject=Phase%202%20%E6%B2%BB%E7%90%86%20Demo",
+    ctaLabel: "詢問 90 天 POC",
+    ctaHref: "mailto:sall@symcio.tw?subject=AIVI%2090%20%E5%A4%A9%20POC",
   },
   {
     code: "Phase 3",
@@ -82,12 +82,12 @@ const PHASES = [
     pricing: "客製報價",
     pricingNote: "年約 · 客製方案",
     title: "品牌估值 + DPP 合規 + 內容資產",
-    desc: "Phase 2 的擴展版本:多平台 ESG 內容 + 品牌 CI 套版 + 客製議題管線,加上 ISO 10668 精神之品牌估值與融資/補助文件包,把品牌轉成可入帳的無形資產。",
+    desc: "Phase 2 的擴展版本:AIVI 長期追蹤資料集作為品牌強度輸入,加上 ISO 10668 精神之品牌估值與融資/補助文件包,把品牌轉成可入帳的無形資產。",
     deliverables: [
-      "30 則/月 ESG 內容 + 專業解讀",
-      "多平台分發（官網/社群/電子報）+ CI 套版",
+      "AIVI 月追蹤 + 六維度趨勢解讀",
+      "ESG 揭露可引用的量測附錄",
       "ISO 10668 精神之品牌估值報告 + DPP 合規報告",
-      "嵌入客戶 CMS API · 耀飛/SITI 補助文件",
+      "耀飛 / SITI 補助文件與融資證明文件包",
     ],
     ctaLabel: "聯繫資產化規劃",
     ctaHref: "mailto:sall@symcio.tw?subject=Phase%203%20%E5%93%81%E7%89%8C%E8%B3%87%E7%94%A2%E5%8C%96",
@@ -102,24 +102,24 @@ const PLANS = [
     items: [
       "BCI 品牌可見度診斷",
       "四引擎能見度報告",
-      "GEO 改善建議",
+      "缺口清單（哪一題、哪個引擎）",
       "PDF 報告下載",
     ],
     cta: "立即試用",
     href: "/audit",
   },
   {
-    name: "Phase 2 · 治理",
-    price: "NTD 30,000 起",
-    period: "/月 · 月費制",
+    name: "Phase 2 · 追蹤",
+    price: "固定費",
+    period: "90 天起 · 報價後開案",
     items: [
-      "30 則/月 ESG 自動內容",
-      "單一平台發布 + 產業篩選",
-      "DPP 欄位對接",
-      "雙月策略 office hour",
+      "12 次週採樣 × 中英雙語題庫",
+      "before / after 對照",
+      "引用來源清單",
+      "雙月方法論 office hour",
     ],
-    cta: "預約 Demo",
-    href: "mailto:sall@symcio.tw?subject=Phase%202%20%E6%B2%BB%E7%90%86%20Demo",
+    cta: "詢問 POC",
+    href: "mailto:sall@symcio.tw?subject=AIVI%2090%20%E5%A4%A9%20POC",
     featured: true,
   },
   {
@@ -127,7 +127,7 @@ const PLANS = [
     price: "客製報價",
     period: "年約",
     items: [
-      "多平台 ESG 內容 + CI 套版",
+      "AIVI 月追蹤 + 趨勢解讀",
       "ISO 10668 品牌估值報告",
       "DPP 合規完整報告",
       "融資/補助文件包",
@@ -755,7 +755,7 @@ export default function HomePage() {
             BrandOS Weekly
           </h2>
           <p className="mt-3 text-base text-white/80">
-            每週一封 — AI 可見度最新動態、GEO 策略、BCI 方法論更新。
+            每週一封 — AI 可見度最新動態、量測方法論、BCI 更新。
           </p>
           <form
             action="mailto:info@symcio.tw?subject=BrandOS%20Weekly%20Subscribe"

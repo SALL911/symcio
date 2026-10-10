@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 export const metadata: Metadata = {
   title: "定價方案 — Symcio BrandOS",
   description:
-    "Phase 1 診斷免費 · Phase 2 治理 NTD 30,000 起/月 · Phase 3 資產化客製。為有外銷、有品牌、缺合規資源的中小企業設計的三階段方案。",
+    "Phase 1 診斷免費 · Phase 2 AIVI 追蹤固定費 · Phase 3 資產化客製。Symcio 只交付量測值,不承接行銷執行、不對成效抽成。",
 };
 
 const PLANS = [
@@ -18,32 +18,33 @@ const PLANS = [
     items: [
       "BCI 品牌可見度快速診斷",
       "ChatGPT / Claude / Gemini / Perplexity 四引擎",
-      "基礎 GEO 改善建議",
+      "缺口清單（哪一題、哪個引擎）",
       "PDF 報告下載",
       "Discord 社群參與",
     ],
-    missing: ["月度內容自動化", "DPP 欄位對接", "品牌估值報告"],
+    missing: ["週期追蹤與趨勢", "引用來源清單", "品牌估值報告"],
     cta: "立即試用診斷",
     ctaHref: "/audit",
     featured: false,
   },
   {
-    name: "Phase 2 · 治理 Govern",
-    price: "NTD 30,000 起",
-    period: "/月 · 月費制",
-    tagline: "為外銷中小企業導入 ESG 內容自動化與資料治理。",
+    name: "Phase 2 · 追蹤 Track",
+    price: "固定費",
+    period: "90 天起 · 報價後開案",
+    tagline: "鎖版題庫週期採樣,把單次分數變成可比較的時序資料。",
     items: [
       "Phase 1 全部功能",
-      "30 則/月 ESG 自動內容",
-      "單一平台發布",
-      "產業自動篩選",
-      "品牌數位資產盤點（官網/社群/產品頁）",
-      "DPP 數據欄位對接與結構化",
-      "雙月策略 office hour",
+      "中英雙語各 40 題鎖版題庫",
+      "12 次週採樣 × 四引擎",
+      "before / after 對照表",
+      "競品同框趨勢圖",
+      "AI 回覆的引用來源清單",
+      "10% 人工抽驗與方法論揭露",
+      "雙月方法論 office hour",
     ],
-    missing: ["多平台分發", "品牌 CI 套版", "估值與融資文件包"],
-    cta: "預約 Phase 2 Demo",
-    ctaHref: "mailto:sall@symcio.tw?subject=Phase%202%20%E6%B2%BB%E7%90%86%20Demo",
+    missing: ["品牌估值報告", "DPP 合規完整報告", "補助與融資文件包"],
+    cta: "詢問 90 天 POC",
+    ctaHref: "mailto:sall@symcio.tw?subject=AIVI%2090%20%E5%A4%A9%20POC",
     featured: true,
   },
   {
@@ -53,12 +54,10 @@ const PLANS = [
     tagline: "品牌變成可入帳的無形資產。",
     items: [
       "Phase 2 全部功能",
-      "30 則/月 ESG 自動內容 + 專業解讀",
-      "多平台分發（官網/社群/電子報）",
-      "品牌 CI 套版",
-      "季度內容報告",
-      "客製化議題專屬管線",
-      "嵌入客戶 CMS API",
+      "AIVI 月追蹤訂閱 + 六維度趨勢解讀",
+      "季度量測回顧與競品對照",
+      "ESG 揭露可引用的量測附錄",
+      "Brand Capital API 程式化存取",
       "ISO 10668 精神之品牌估值報告",
       "DPP 合規完整報告",
       "耀飛 / SITI 等政府補助申請支援",
@@ -78,11 +77,15 @@ const FAQ = [
   },
   {
     q: "免費版和單次報告的主要差異?",
-    a: "免費版提供 1 個 prompt 的快速掃描,適合初步看見品牌在 AI 的基準表現。單次報告（Audit）跑 20 個產業標準化 prompt × 4 引擎,輸出完整 BCI 報告 PDF、5 個競品對比、3 項具體 GEO 改善建議,並包含 30 天內免費重測一次。企業合作為自訂方案,適合需要 API 接入或 ESG 報告書素材整理的團隊。",
+    a: "免費版提供 1 個 prompt 的快速掃描,適合初步看見品牌在 AI 的基準表現。單次報告（Audit）跑 20 個產業標準化 prompt × 4 引擎,輸出完整 BCI 報告 PDF、5 個競品對比、3 項最大缺口（哪一題、哪個引擎、輸給誰）,並包含 30 天內免費重測一次。企業合作為自訂方案,適合需要 API 接入或 ESG 報告書素材整理的團隊。",
+  },
+  {
+    q: "Symcio 可以順便幫我把分數做上去嗎?",
+    a: "不行,這是刻意的邊界。同一家公司既評分又執行,報告就失去第三方效力,也無法作為 ESG 揭露或品牌估值的引用來源。Symcio 只交付量測值,一律固定費、不對成效抽成;內容生產、外部曝光、schema 與 CMS 施作由貴公司自做,或由我們轉介執行夥伴承接。",
   },
   {
     q: "AI 可見度多久可以看到改善?",
-    a: "基礎建設（Wikidata + Schema.org）上線後,既有客戶的觀察大多在 2–4 週內可在 AI 引擎重新爬取後看見初步變化。完整的 GEO 內容策略執行,過往案例觀察 ABVI 分數於 3–6 個月內有 8–20 分的變動區間。每個品牌的起始基準、產業競爭密度、語料品質不同,改善幅度因案而異,Symcio 不保證特定數字結果。",
+    a: "改善施作由貴公司自做或交由執行夥伴承接,Symcio 只負責量測前後差異。依既有觀察,實體層（Wikidata + Schema.org）更新上線後約 2–4 週可在 AI 引擎重新爬取後看見初步變化;內容與第三方曝光的影響通常落後更久,建議以 90 天、12 次採樣為判讀基礎。每個品牌的起始基準、產業競爭密度、語料品質不同,Symcio 不保證特定數字結果。",
   },
 ];
 
