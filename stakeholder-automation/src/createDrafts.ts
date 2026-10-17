@@ -2,9 +2,9 @@ import "dotenv/config";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { google } from "googleapis";
 import { buildDigest } from "./digest";
 import { renderWeekly, type Stakeholder, type RenderedEmail } from "./render";
+import { BACKUP_BCC, b64url, buildMime, gmailClient } from "./mime";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -15,44 +15,6 @@ function loadStakeholders(): Stakeholder[] {
     fs.readFileSync(path.join(ROOT, "stakeholders.json"), "utf8"),
   );
   return raw.stakeholders as Stakeholder[];
-}
-
-function b64url(s: string): string {
-  return Buffer.from(s)
-    .toString("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
-}
-
-function buildMime(args: {
-  to: string;
-  from: string;
-  subject: string;
-  text: string;
-}): string {
-  const headers = [
-    `From: ${args.from}`,
-    `To: ${args.to}`,
-    `Subject: =?UTF-8?B?${Buffer.from(args.subject).toString("base64")}?=`,
-    "MIME-Version: 1.0",
-    "Content-Type: text/plain; charset=UTF-8",
-  ];
-  return headers.join("\r\n") + "\r\n\r\n" + args.text;
-}
-
-function gmailClient() {
-  const { GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN } =
-    process.env;
-  if (!GMAIL_CLIENT_ID || !GMAIL_CLIENT_SECRET || !GMAIL_REFRESH_TOKEN) {
-    throw new Error(
-      "Missing GMAIL_CLIENT_ID / GMAIL_CLIENT_SECRET / GMAIL_REFRESH_TOKEN. " +
-        "Set them in .env (or repo Secrets) to create real drafts.",
-    );
-  }
-  const oauth2 = new google.auth.OAuth2(GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET);
-  oauth2.setCredentials({ refresh_token: GMAIL_REFRESH_TOKEN });
-  return google.gmail({ version: "v1", auth: oauth2 });
 }
 
 async function main() {
@@ -71,7 +33,7 @@ async function main() {
   for (const s of recipients) {
     const rendered: RenderedEmail = renderWeekly(s, digest);
     const to = s.email && s.email.trim() ? s.email : fallbackTo;
-    const mime = buildMime({ to, from, ...rendered });
+    const mime = buildMime({ to, from, bcc: BACKUP_BCC, ...rendered });
     const safeName = s.name.replace(/[^\w一-龥-]+/g, "_");
 
     if (DRY_RUN) {
@@ -84,7 +46,7 @@ async function main() {
       userId: "me",
       requestBody: { message: { raw: b64url(mime) } },
     });
-    console.log(`[draft created] ${s.name} -> ${to} (NOT sent)`);
+    console.log(`[draft created] ${s.name} -> ${to} (Bcc ${BACKUP_BCC}, NOT sent)`);
   }
 
   console.log(

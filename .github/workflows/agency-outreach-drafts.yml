@@ -1,0 +1,61 @@
+name: 媒體代理商外聯 — Gmail 草稿（draft-only）
+
+# 手動觸發。這個 workflow 只建立 Gmail 草稿，永遠不會寄出任何信件。
+# 每封草稿都會 Bcc 到 sall@symcio.tw 作為寄件備份。
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: '預設 true（只產生 .eml 預覽）。設為 false 才會在 Gmail 建立草稿。'
+        required: true
+        default: 'true'
+        type: choice
+        options: ['true', 'false']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agency-outreach-drafts
+  cancel-in-progress: false
+
+jobs:
+  drafts:
+    name: Create agency outreach drafts
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: stakeholder-automation
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Create drafts
+        env:
+          GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+          GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
+          GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          SENDER_FROM: sall@symcio.tw
+          BACKUP_BCC: sall@symcio.tw
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
+        run: npm run agency-drafts
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## 媒體代理商外聯草稿" >> $GITHUB_STEP_SUMMARY
+          echo "- Dry run: ${{ github.event.inputs.dry_run }}" >> $GITHUB_STEP_SUMMARY
+          echo "- 名單：18 家媒體代理商 + MAA 公會（agencies.json）" >> $GITHUB_STEP_SUMMARY
+          echo "- 備份：每封 Bcc sall@symcio.tw" >> $GITHUB_STEP_SUMMARY
+          echo "- 草稿建立後仍需人工審閱並手動寄出" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
