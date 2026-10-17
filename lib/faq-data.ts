@@ -41,7 +41,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
       },
       {
         q: "導入 Symcio 的時程大約多久？",
-        a: "免費健檢 3 分鐘即可完成。專業版啟動約需 2 週（Wikidata + Schema.org 基礎建設上線後，AI 引擎重新爬取）。完整的 GEO 策略效果通常 3–6 個月內見效。",
+        a: "免費健檢 3 分鐘即可完成。AIVI 基線 3 個工作天交付；90 天 POC 為 12 次週採樣。改善施作由貴公司自做或交由執行夥伴承接，Symcio 只量測前後差異——實體層更新後約 2–4 週可見初步變化，內容與第三方曝光的影響落後更久。",
       },
       {
         q: "企業版的 Brand Capital API 可以做什麼？",

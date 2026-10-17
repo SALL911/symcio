@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import "./globals.css";
 import { PostHogProvider } from "@/components/PostHogProvider";
 import { UtmCapture } from "@/components/UtmCapture";
+import { organizationSchema } from "@/lib/positioning";
 
 export const metadata: Metadata = {
   title: "Symcio · BrandOS — AI 能見度的量化標準",
@@ -26,19 +27,7 @@ export const metadata: Metadata = {
   },
 };
 
-const ORGANIZATION_SCHEMA = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Symcio · BrandOS",
-  alternateName: ["Symcio", "BrandOS"],
-  url: "https://symcio.tw",
-  description:
-    "AI 品牌曝光量化方法論與工具集。跨四引擎觀察性指標,開源公開。",
-  sameAs: [
-    "https://github.com/sall911/symcio",
-    "https://discord.gg/jGWJr2Sd",
-  ],
-};
+const ORGANIZATION_SCHEMA = organizationSchema();
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
