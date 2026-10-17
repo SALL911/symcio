@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "定價方案 — Symcio BrandOS",
   description:
     "Phase 1 診斷免費 · Phase 2 治理 NTD 30,000 起/月 · Phase 3 資產化客製。為有外銷、有品牌、缺合規資源的中小企業設計的三階段方案。",
-};
+  path: "/pricing",
+});
 
 const PLANS = [
   {

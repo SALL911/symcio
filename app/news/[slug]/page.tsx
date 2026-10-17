@@ -5,6 +5,8 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { NEWS_ENTRIES, findEntry } from "@/lib/news-data";
+import { JsonLd } from "@/components/JsonLd";
+import { OG_IMAGE, SITE_URL, breadcrumbSchema, pageMetadata } from "@/lib/seo";
 
 interface Props {
   params: { slug: string };
@@ -17,16 +19,14 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: Props): Metadata {
   const entry = findEntry(params.slug);
   if (!entry) return { title: "電子報 — Symcio" };
-  return {
+  return pageMetadata({
     title: `${entry.title} — Symcio Weekly`,
     description: entry.summary,
-    openGraph: {
-      title: entry.title,
-      description: entry.summary,
-      type: "article",
-      publishedTime: entry.publishedAt,
-    },
-  };
+    path: `/news/${entry.slug}`,
+    type: "article",
+    publishedTime: entry.publishedAt,
+    ogTitle: entry.title,
+  });
 }
 
 function formatDate(iso: string): string {
@@ -49,16 +49,25 @@ export default function NewsDetailPage({ params }: Props) {
     headline: entry.title,
     description: entry.summary,
     datePublished: entry.publishedAt,
-    author: { "@type": "Organization", name: "Symcio · BrandOS" },
-    publisher: { "@type": "Organization", name: "Symcio · BrandOS" },
+    dateModified: entry.publishedAt,
+    inLanguage: "zh-Hant",
+    mainEntityOfPage: `${SITE_URL}/news/${entry.slug}`,
+    image: `${SITE_URL}${OG_IMAGE}`,
+    author: { "@id": `${SITE_URL}/#organization`, "@type": "Organization", name: "Symcio" },
+    publisher: { "@id": `${SITE_URL}/#organization`, "@type": "Organization", name: "Symcio" },
     keywords: entry.categories.join(", "),
   };
 
   return (
     <main className="min-h-screen bg-bg text-ink">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      <JsonLd
+        data={[
+          articleSchema,
+          breadcrumbSchema([
+            ["電子報", "/news"],
+            [entry.title, `/news/${entry.slug}`],
+          ]),
+        ]}
       />
 
       <Navigation />

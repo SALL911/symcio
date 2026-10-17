@@ -1,0 +1,40 @@
+name: GEO / SEO Audit
+
+# 每個 PR 與 main push：build 後啟動站台，用 geo-optimizer skill 的 audit 腳本稽核。
+# 分數低於 90 視為失敗（例如整站 bailout 成 CSR、canonical 遺失、sitemap 壞連結）。
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Start site
+        run: |
+          npx next start -p 3100 &
+          for i in $(seq 1 30); do curl -sf -o /dev/null http://localhost:3100/ && exit 0; sleep 1; done
+          echo "server did not start" && exit 1
+      - name: Guard against client-side-rendering bailout
+        # 小範圍 bailout（例如 layout 裡包 PostHogPageView 的 Suspense）是正常的；
+        # 要擋的是頁面主體沒進 HTML。首頁 H1 必須出現在 server HTML 中。
+        run: |
+          if ! curl -s http://localhost:3100/ | grep -q '<h1'; then
+            echo "::error::Home page HTML has no <h1>; page body is client-rendered and invisible to AI crawlers."
+            exit 1
+          fi
+      - name: Run GEO audit
+        run: node .claude/skills/geo-optimizer/scripts/audit.mjs http://localhost:3100 --md geo-audit.md --min-score 90
+      - name: Job summary
+        if: always()
+        run: test -f geo-audit.md && cat geo-audit.md >> "$GITHUB_STEP_SUMMARY" || true

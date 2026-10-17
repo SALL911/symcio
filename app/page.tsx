@@ -1,13 +1,15 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Symcio BrandOS — 量化品牌 AI 基礎設施系統",
   description:
     "為有外銷、有品牌、缺合規資源的中小企業設計。三階段流程 — 診斷 (BCI 免費)、治理 (ESG 內容自動化 30,000/月起)、資產化 (品牌估值 + DPP 合規)。",
-};
+  path: "/",
+});
 
 const STAGES = [
   {
