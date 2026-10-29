@@ -13,6 +13,7 @@ export interface SendParams {
   subject: string;
   html: string;
   replyTo?: string;
+  headers?: Record<string, string>;
 }
 
 export async function send(params: SendParams): Promise<{ ok: boolean; id?: string; error?: string }> {
@@ -32,6 +33,7 @@ export async function send(params: SendParams): Promise<{ ok: boolean; id?: stri
         subject: params.subject,
         html: params.html,
         reply_to: params.replyTo,
+        headers: params.headers,
       }),
     });
 
@@ -46,6 +48,54 @@ export async function send(params: SendParams): Promise<{ ok: boolean; id?: stri
     }
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : String(err) };
+  }
+}
+
+/**
+ * Resend batch send（一次最多 100 封）。回傳與輸入同序的結果陣列。
+ * 電子報走這條，避免逐封呼叫撞到 Resend 每秒請求上限。
+ */
+export async function sendBatch(
+  items: SendParams[],
+): Promise<{ ok: boolean; id?: string; error?: string }[]> {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return items.map(() => ({ ok: false, error: "resend-not-configured" }));
+  if (items.length === 0) return [];
+  if (items.length > 100) throw new Error("sendBatch: max 100 items per call");
+
+  try {
+    const resp = await fetch(`${API}/emails/batch`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${key}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(
+        items.map((p) => ({
+          from: p.from,
+          to: [p.to],
+          subject: p.subject,
+          html: p.html,
+          reply_to: p.replyTo,
+          headers: p.headers,
+        })),
+      ),
+    });
+    const text = await resp.text();
+    if (!resp.ok) {
+      const error = `resend HTTP ${resp.status}: ${text.slice(0, 200)}`;
+      return items.map(() => ({ ok: false, error }));
+    }
+    let ids: { id?: string }[] = [];
+    try {
+      ids = (JSON.parse(text) as { data?: { id?: string }[] }).data ?? [];
+    } catch {
+      // 成功但回應無法解析：視為已送出、無 id
+    }
+    return items.map((_, i) => ({ ok: true, id: ids[i]?.id }));
+  } catch (err) {
+    const error = err instanceof Error ? err.message : String(err);
+    return items.map(() => ({ ok: false, error }));
   }
 }
 
@@ -88,7 +138,7 @@ export function renderAuditConfirmation(params: {
         </p>
       </td></tr>
       <tr><td style="padding:16px 32px;border-top:1px solid #eee;color:#6B7280;font-size:11px;">
-        Symcio · Bloomberg 台灣授權代表 · <a href="https://symcio.tw" style="color:#6B7280;">symcio.tw</a>
+        Symcio · <a href="https://symcio.tw" style="color:#6B7280;">symcio.tw</a>
       </td></tr>
     </table>
   </td></tr></table>

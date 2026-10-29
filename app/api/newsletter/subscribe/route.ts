@@ -1,28 +1,24 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { createClient } from "@supabase/supabase-js";
+import { adminClient } from "@/lib/supabase/admin";
+import { subscribe } from "@/lib/newsletter/subscribers";
+import { syncMember } from "@/lib/sync/member";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// 每週電子報訂閱端點。
-// 目前只把 email 寫進既有的 leads 表(source=newsletter),
-// 等選定外部寄信平台(Resend / Beehiiv / Mailchimp)後,
-// 在這裡 fan-out 同步到該平台的名單。
+// 每週電子報訂閱端點（本人在網站表單送出 = 明確同意）。
+// 1. newsletter_subscribers → active（週報 cron 的寄送名單）
+// 2. leads（source=newsletter）保留給既有 lead-scorer / HubSpot workflow
+// 3. HubSpot + Notion 同步（訂閱者不建立 Obsidian 會員筆記）
 //
-// Supabase 未設定時回 202(已收到),避免訂閱表單在前端顯示失敗,
-// 但 server log 會記下,以便日後手動補抓。
+// Supabase 未設定時回 202（已收到），避免前端顯示失敗，server log 記錄以便補抓。
 
 const BodySchema = z.object({
   email: z.string().trim().email().max(254),
+  name: z.string().trim().max(120).optional(),
+  source: z.string().trim().max(40).optional(),
 });
-
-function supa() {
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) return null;
-  return createClient(url, key, { auth: { persistSession: false } });
-}
 
 export async function POST(req: Request) {
   let parsed: z.infer<typeof BodySchema>;
@@ -36,31 +32,42 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: msg }, { status: 400 });
   }
 
-  const sb = supa();
+  const email = parsed.email.toLowerCase();
+  const source = parsed.source || "website";
+  const sb = adminClient();
   if (!sb) {
-    console.warn("[newsletter] supabase not configured; email=%s", parsed.email);
+    console.warn("[newsletter] supabase not configured; email=%s", email);
     return NextResponse.json(
       { ok: true, message: "已收到訂閱,首期會寄到你的信箱。" },
       { status: 202 },
     );
   }
 
-  const { error } = await sb.from("leads").insert({
-    email: parsed.email,
-    name: parsed.email,
-    company: "",
-    source: "newsletter",
-    status: "subscribed",
-    notes: "channel=symcio-weekly",
-  });
-
-  if (error && !/duplicate|unique/i.test(error.message)) {
-    console.error("[newsletter] insert failed", error);
+  const { error } = await subscribe(sb, { email, displayName: parsed.name, source });
+  if (error) {
+    console.error("[newsletter] subscribe failed", error);
     return NextResponse.json(
       { ok: false, error: "訂閱失敗,請稍後再試或來信 info@symcio.tw。" },
       { status: 500 },
     );
   }
+
+  const { error: leadErr } = await sb.from("leads").insert({
+    email,
+    name: parsed.name || email,
+    company: "",
+    source: "newsletter",
+    status: "subscribed",
+    notes: "channel=symcio-weekly",
+  });
+  if (leadErr && !/duplicate|unique/i.test(leadErr.message)) {
+    console.warn("[newsletter] leads insert failed", leadErr.message);
+  }
+
+  await syncMember(
+    { email, name: parsed.name, source: "newsletter", newsletterOptIn: true, createdAt: new Date().toISOString() },
+    ["hubspot", "notion"],
+  );
 
   return NextResponse.json({
     ok: true,

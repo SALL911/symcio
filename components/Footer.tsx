@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SOCIAL_LINKS } from "@/lib/social";
 
 export function Footer() {
   return (
@@ -35,6 +36,7 @@ export function Footer() {
               <li><Link href="/tools" className="no-underline hover:text-accent">工具套件</Link></li>
               <li><Link href="/faq/enterprise" className="no-underline hover:text-accent">知識庫</Link></li>
               <li><Link href="/news" className="no-underline hover:text-accent">每週電子報</Link></li>
+              <li><Link href="/member" className="no-underline hover:text-accent">會員中心</Link></li>
               <li>
                 <a
                   href="https://symcio-research.netlify.app"
@@ -54,16 +56,13 @@ export function Footer() {
               社群與聯絡
             </div>
             <ul className="mt-4 space-y-2 text-sm text-muted">
-              <li>
-                <a href="https://discord.gg/jGWJr2Sd" target="_blank" rel="noopener noreferrer" className="no-underline hover:text-accent">
-                  Discord 社群
-                </a>
-              </li>
-              <li>
-                <a href="https://github.com/sall911/symcio" target="_blank" rel="noopener noreferrer" className="no-underline hover:text-accent">
-                  GitHub（方法論開源）
-                </a>
-              </li>
+              {SOCIAL_LINKS.map((s) => (
+                <li key={s.key}>
+                  <a href={s.href} target="_blank" rel="noopener noreferrer" className="no-underline hover:text-accent">
+                    {s.label}
+                  </a>
+                </li>
+              ))}
               <li>
                 <a href="mailto:info@symcio.tw" className="no-underline hover:text-accent">
                   info@symcio.tw（一般洽詢）
