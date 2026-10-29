@@ -4,6 +4,8 @@ import { Suspense } from "react";
 import "./globals.css";
 import { PostHogProvider } from "@/components/PostHogProvider";
 import { UtmCapture } from "@/components/UtmCapture";
+import { LineFloat } from "@/components/LineFloat";
+import { SAME_AS } from "@/lib/social";
 
 export const metadata: Metadata = {
   title: "Symcio · BrandOS — AI 能見度的量化標準",
@@ -34,10 +36,7 @@ const ORGANIZATION_SCHEMA = {
   url: "https://symcio.tw",
   description:
     "AI 品牌曝光量化方法論與工具集。跨四引擎觀察性指標,開源公開。",
-  sameAs: [
-    "https://github.com/sall911/symcio",
-    "https://discord.gg/jGWJr2Sd",
-  ],
+  sameAs: SAME_AS,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -72,6 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </PostHogProvider>
         </Suspense>
+        <LineFloat />
         {/* Start of HubSpot Embed Code */}
         <Script
           id="hs-script-loader"
