@@ -32,6 +32,13 @@ export const STRIPE_PRODUCTS = {
     amount: 199900,
     currency: "usd",
   },
+  ebook: {
+    name: "BCI 品牌資本指數 方法論電子書",
+    description:
+      "Brand Capital Index 完整方法論電子書（PDF）。付款後立即下載。",
+    amount: 39000, // TWD is 2-decimal in Stripe → NT$390
+    currency: "twd",
+  },
   // Gumroad $39 Starter Kit 買家升級：$299 VIP 專人建置 − $39 全額折抵
   "kit-upgrade": {
     name: "VIP Concierge Full Setup (Starter Kit upgrade)",
