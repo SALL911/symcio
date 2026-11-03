@@ -9,9 +9,6 @@ export const dynamic = "force-dynamic";
 // "1|OK" once handled, otherwise ECPay keeps retrying.
 export async function POST(req: Request): Promise<Response> {
   const config = getEcpayConfig();
-  if (!config) {
-    return new NextResponse("0|ecpay-not-configured", { status: 503 });
-  }
 
   const form = await req.formData();
   const params: Record<string, string> = {};

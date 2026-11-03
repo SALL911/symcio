@@ -33,9 +33,6 @@ export async function GET(req: Request): Promise<Response> {
   const email = new URL(req.url).searchParams.get("email") || undefined;
 
   const config = getEcpayConfig();
-  if (!config) {
-    return NextResponse.json({ ok: false, error: "ecpay-not-configured" }, { status: 503 });
-  }
 
   const params = buildCheckoutParams({
     config,

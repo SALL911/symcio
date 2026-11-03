@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isEcpaySandbox } from "@/lib/ecpay/client";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -24,10 +25,11 @@ export async function GET(): Promise<Response> {
       webhookSecret: has("STRIPE_WEBHOOK_SECRET"),
     },
     ecpay: {
-      mode: mode("ECPAY_MODE"),
+      mode: mode("ECPAY_MODE") || "stage",
       merchantId: has("ECPAY_MERCHANT_ID"),
       hashKey: has("ECPAY_HASH_KEY"),
       hashIv: has("ECPAY_HASH_IV"),
+      usingSandbox: isEcpaySandbox(),
     },
     paypal: {
       mode: mode("PAYPAL_MODE"),
@@ -63,12 +65,15 @@ export async function GET(): Promise<Response> {
   const ready = {
     ebookDelivery: checks.ebook.pdfUrl && checks.resend.apiKey && checks.resend.fromAddress,
     stripe: allOf(checks.stripe),
-    ecpay: allOf(checks.ecpay),
+    // ECPay works out of the box with the public sandbox credentials, so the
+    // gateway is always "ready" to accept test payments. usingSandbox tells
+    // the operator whether real money will land vs test-mode only.
+    ecpay: true,
     paypal: allOf(checks.paypal),
     telegram: allOf(checks.telegram),
     line: allOf(checks.line),
     meta: allOf(checks.meta),
-    kit: checks.kit.apiKey, // formId is optional (generic subscriber if absent)
+    kit: checks.kit.apiKey,
   };
 
   const anyPaymentReady = ready.stripe || ready.ecpay || ready.paypal;

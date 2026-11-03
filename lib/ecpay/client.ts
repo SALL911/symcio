@@ -24,12 +24,21 @@ export interface EcpayConfig {
 const STAGE_URL = "https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5";
 const PROD_URL = "https://payment.ecpay.com.tw/Cashier/AioCheckOut/V5";
 
-export function getEcpayConfig(): EcpayConfig | null {
-  const merchantId = process.env.ECPAY_MERCHANT_ID;
-  const hashKey = process.env.ECPAY_HASH_KEY;
-  const hashIV = process.env.ECPAY_HASH_IV;
-  if (!merchantId || !hashKey || !hashIV) return null;
+// Public ECPay sandbox credentials — documented in ECPay's official docs and
+// shared across all developers' .env.example files. Letting these be the
+// default when env is missing means Preview / fresh deploys can demo the
+// full checkout flow end-to-end without any Vercel configuration. Switching
+// to real credentials just means setting ECPAY_MODE=prod + the merchant's
+// own MerchantID/HashKey/HashIV.
+const SANDBOX_MERCHANT_ID = "2000132";
+const SANDBOX_HASH_KEY = "5294y06JbISpM5x9";
+const SANDBOX_HASH_IV = "v77hoKGq4kWxNNIS";
+
+export function getEcpayConfig(): EcpayConfig {
   const mode: EcpayMode = process.env.ECPAY_MODE === "prod" ? "prod" : "stage";
+  const merchantId = process.env.ECPAY_MERCHANT_ID?.trim() || SANDBOX_MERCHANT_ID;
+  const hashKey = process.env.ECPAY_HASH_KEY?.trim() || SANDBOX_HASH_KEY;
+  const hashIV = process.env.ECPAY_HASH_IV?.trim() || SANDBOX_HASH_IV;
   return {
     merchantId,
     hashKey,
@@ -37,6 +46,15 @@ export function getEcpayConfig(): EcpayConfig | null {
     mode,
     actionUrl: mode === "prod" ? PROD_URL : STAGE_URL,
   };
+}
+
+export function isEcpaySandbox(): boolean {
+  return (
+    process.env.ECPAY_MODE !== "prod" ||
+    !process.env.ECPAY_MERCHANT_ID?.trim() ||
+    !process.env.ECPAY_HASH_KEY?.trim() ||
+    !process.env.ECPAY_HASH_IV?.trim()
+  );
 }
 
 // ECPay expects amounts as whole NT dollars (no decimals).
