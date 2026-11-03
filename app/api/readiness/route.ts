@@ -51,6 +51,10 @@ export async function GET(): Promise<Response> {
       pubu: has("NEXT_PUBLIC_EBOOK_PUBU_URL"),
       readmoo: has("NEXT_PUBLIC_EBOOK_READMOO_URL"),
     },
+    kit: {
+      apiKey: has("KIT_API_KEY"),
+      formId: has("KIT_FORM_ID"),
+    },
   };
 
   const allOf = (obj: Record<string, unknown>) =>
@@ -64,6 +68,7 @@ export async function GET(): Promise<Response> {
     telegram: allOf(checks.telegram),
     line: allOf(checks.line),
     meta: allOf(checks.meta),
+    kit: checks.kit.apiKey, // formId is optional (generic subscriber if absent)
   };
 
   const anyPaymentReady = ready.stripe || ready.ecpay || ready.paypal;
