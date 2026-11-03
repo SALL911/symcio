@@ -1,0 +1,42 @@
+name: Weekly Stakeholder Digest (drafts only)
+
+# 每週一 09:00 Asia/Taipei (01:00 UTC) 自動在 info@symcio.tw 建立草稿（不寄出）。
+# 手動觸發預設為 dry-run（只產預覽）。
+
+on:
+  schedule:
+    - cron: "0 1 * * 1"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (preview only, no Gmail drafts)"
+        type: boolean
+        default: true
+
+jobs:
+  drafts:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: stakeholder-automation
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install
+      - name: Create stakeholder digest drafts (never sends)
+        env:
+          DRY_RUN: ${{ github.event_name == 'schedule' && 'false' || inputs.dry_run }}
+          GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+          GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
+          GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          SENDER_FROM: ${{ secrets.SENDER_FROM }}
+        run: npm run drafts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: digest-previews
+          path: stakeholder-automation/.out/
+          if-no-files-found: ignore

@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "source": "Notion: Symcio 關鍵利益人地圖 — Key Stakeholders",
+    "notionDataSourceId": "22754f79-a074-48b0-8e81-a9b8fb43cf5c",
+    "principle": "draft-only; redlines: no gambling / securities-token / profit-share / foundation-as-financial-backing language",
+    "note": "weeklyOptIn=true 才會收到每週摘要 (暖關係)。email 為 TBD 者，草稿會建到 GMAIL_USER 作備份。"
+  },
+  "segments": {
+    "standards": "標準制定 (CIRPASS-2, GS1, IFRS/ISSB, GHG Protocol)",
+    "intl_org": "國際組織 (UN Global Compact, TNFD, PRI, SBTi, UNEP FI)",
+    "finance": "金融/投資 (MAS Greenprint, Brand Finance, 永豐銀行, 基金會)",
+    "partner": "產業合作 (ESGpedia, 顧問, 社創中心, 法律顧問)",
+    "regulator": "政府監理 (金管會, 櫃買, 環境部, 經濟部) — 走既定路線, 不進每週名單"
+  },
+  "stakeholders": [
+    { "name": "嚴子貿老師", "segment": "partner", "region": "TW", "email": "", "language": "zh", "weeklyOptIn": true, "status": "已建草稿", "notes": "永續策略顧問" },
+    { "name": "溫燕嬌董事長", "segment": "finance", "region": "TW", "email": "", "language": "zh", "weeklyOptIn": true, "status": "已回覆", "notes": "基金會；金流與商業嚴格切分" },
+    { "name": "ESGpedia", "segment": "partner", "region": "SG", "email": "", "language": "en", "weeklyOptIn": true, "status": "走既定路線", "notes": "已註冊平台" },
+    { "name": "環境部 資源循環署", "segment": "regulator", "region": "TW", "email": "", "language": "zh", "weeklyOptIn": false, "status": "已寄出", "notes": "政策合作探詢" },
+    { "name": "社會創新實驗中心", "segment": "partner", "region": "TW", "email": "", "language": "zh", "weeklyOptIn": true, "status": "已寄出", "notes": "進駐申請中" },
+    { "name": "UN Global Compact", "segment": "intl_org", "region": "UN", "email": "", "language": "en", "weeklyOptIn": false, "status": "待寄草稿", "notes": "一次性 intro" },
+    { "name": "TNFD", "segment": "intl_org", "region": "UN", "email": "", "language": "en", "weeklyOptIn": false, "status": "待寄草稿", "notes": "一次性 adopter 登記" },
+    { "name": "GS1 Taiwan", "segment": "standards", "region": "EU", "email": "", "language": "zh", "weeklyOptIn": false, "status": "待寄草稿", "notes": "一次性會員申請" },
+    { "name": "CIRPASS-2", "segment": "standards", "region": "EU", "email": "", "language": "en", "weeklyOptIn": false, "status": "待寄草稿", "notes": "一次性 stakeholder 申請" },
+    { "name": "MAS Project Greenprint", "segment": "finance", "region": "SG", "email": "", "language": "en", "weeklyOptIn": false, "status": "待寄草稿", "notes": "透過 ESGpedia 對接" }
+  ]
+}

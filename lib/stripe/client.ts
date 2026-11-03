@@ -39,6 +39,14 @@ export const STRIPE_PRODUCTS = {
     amount: 39000, // TWD is 2-decimal in Stripe → NT$390
     currency: "twd",
   },
+  // Gumroad $39 Starter Kit 買家升級：$299 VIP 專人建置 − $39 全額折抵
+  "kit-upgrade": {
+    name: "VIP Concierge Full Setup (Starter Kit upgrade)",
+    description:
+      "1-on-1 remote setup: Vercel deploy, custom domain, HubSpot pipeline, 14-day messaging support. $39 Starter Kit purchase credited.",
+    amount: 26000,
+    currency: "usd",
+  },
 } as const;
 
 export type StripeProduct = keyof typeof STRIPE_PRODUCTS;

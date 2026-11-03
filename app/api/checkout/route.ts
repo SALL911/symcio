@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 const ORIGIN = process.env.NEXT_PUBLIC_SITE_URL || "https://symcio.tw";
 
 const QuerySchema = z.object({
-  product: z.enum(["audit", "optimization", "ebook"] as const).default("audit"),
+  product: z.enum(["audit", "optimization", "ebook", "kit-upgrade"] as const).default("audit"),
   email: z.string().email().optional(),
   brand: z.string().trim().max(200).optional(),
 });
@@ -17,12 +17,14 @@ const PAYMENT_LINK_ENV: Record<StripeProduct, string> = {
   audit: "STRIPE_AUDIT_PAYMENT_LINK",
   optimization: "STRIPE_OPTIMIZATION_PAYMENT_LINK",
   ebook: "STRIPE_EBOOK_PAYMENT_LINK",
+  "kit-upgrade": "STRIPE_KIT_UPGRADE_PAYMENT_LINK",
 };
 
 const PRICE_ID_ENV: Record<StripeProduct, string> = {
   audit: "STRIPE_AUDIT_PRICE_ID",
   optimization: "STRIPE_OPTIMIZATION_PRICE_ID",
   ebook: "STRIPE_EBOOK_PRICE_ID",
+  "kit-upgrade": "STRIPE_KIT_UPGRADE_PRICE_ID",
 };
 
 // Fast path: a Stripe Payment Link is a pre-created static buy.stripe.com URL.
@@ -61,6 +63,7 @@ async function createSession(params: {
 
   const product = STRIPE_PRODUCTS[params.product];
   const priceId = process.env[PRICE_ID_ENV[params.product]];
+  const isKitUpgrade = params.product === "kit-upgrade";
 
   const lineItems = priceId
     ? [{ price: priceId, quantity: 1 as const }]
@@ -80,10 +83,23 @@ async function createSession(params: {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       line_items: lineItems,
-      success_url: `${ORIGIN}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: isKitUpgrade
+        ? `${ORIGIN}/checkout/upgrade-success?session_id={CHECKOUT_SESSION_ID}`
+        : `${ORIGIN}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${ORIGIN}/checkout/cancel`,
       customer_email: params.email,
       allow_promotion_codes: true,
+      // 升級折抵資格以 Gumroad 購買 email 對帳
+      ...(isKitUpgrade
+        ? {
+            custom_fields: [{
+              key: "gumroad_email",
+              label: { type: "custom" as const, custom: "Email used on Gumroad (if different)" },
+              type: "text" as const,
+              optional: true,
+            }],
+          }
+        : {}),
       metadata: {
         product: params.product,
         brand: params.brand || "",
