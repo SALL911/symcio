@@ -1,0 +1,45 @@
+name: Verify deployed readiness
+
+# Hits /api/readiness on the branch's Vercel preview deployment and asserts
+# canTakeMoney is true. Runs on each push to the branch and on manual dispatch.
+# This produces real-deployment evidence (not a local simulation) that the
+# cash-flow pipeline is live, which the goal hook requires.
+
+on:
+  push:
+    branches: [claude/awesome-galileo-6CE0m]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Vercel preview and probe /api/readiness
+        env:
+          PREVIEW_URL: https://symcio-git-claude-awesome-galileo-6ce0m-symcio-os.vercel.app
+        run: |
+          set -euo pipefail
+          echo "Waiting up to 5min for Vercel preview to serve the latest commit..."
+          deadline=$(( $(date +%s) + 300 ))
+          while [ "$(date +%s)" -lt "$deadline" ]; do
+            resp=$(curl -sS -o /tmp/readiness.json -w "%{http_code}" "$PREVIEW_URL/api/readiness" || echo "000")
+            if [ "$resp" = "200" ]; then
+              echo "readiness endpoint reachable (HTTP 200)"
+              break
+            fi
+            echo "  not ready yet (HTTP $resp); sleeping 15s"
+            sleep 15
+          done
+          if [ ! -s /tmp/readiness.json ]; then
+            echo "::error ::readiness endpoint never returned 200 within 5 min"
+            exit 1
+          fi
+          echo "--- /api/readiness ---"
+          cat /tmp/readiness.json | python3 -m json.tool
+          canTakeMoney=$(python3 -c "import json; print(json.load(open('/tmp/readiness.json'))['canTakeMoney'])")
+          echo "canTakeMoney=$canTakeMoney"
+          [ "$canTakeMoney" = "True" ] || {
+            echo "::error ::canTakeMoney is $canTakeMoney (expected True)"
+            exit 1
+          }
+          echo "::notice ::✅ canTakeMoney=true on deployed preview — cash-flow pipeline live"
