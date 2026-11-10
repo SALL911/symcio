@@ -43,7 +43,7 @@ export default function NewsIndexPage() {
             AI 整理的 ESG / SDG 重點<br />附 Brand Capital 解讀
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted md:text-lg">
-            每週一封,Symcio 用 AI 整理當週全球 ESG / SDG / AI 治理的關鍵變化,
+            每兩週一封,Symcio 用 AI 整理全球 ESG / SDG / AI 治理的關鍵變化,
             並從 BCI 品牌資本三軸 ——
             <strong className="text-ink"> 財務品牌價值(FBV)</strong>、
             <strong className="text-ink">永續合規價值(SCV)</strong>、

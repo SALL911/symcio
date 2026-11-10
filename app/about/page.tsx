@@ -5,7 +5,7 @@ import { TypeformEmbed } from "@/components/TypeformEmbed";
 export const metadata: Metadata = {
   title: "關於全識 | Symcio BrandOS",
   description:
-    "全識股份有限公司（Symcio）是台灣第一個 AI 曝光可量化系統，定義 AI Visibility Intelligence (AVI) 品類。",
+    "Symcio 全識專注 AI 品牌曝光量化：追蹤品牌在 ChatGPT、Claude、Gemini、Perplexity 答案裡的曝光、排名與描述。",
 };
 
 export default function AboutPage() {
@@ -44,7 +44,7 @@ export default function AboutPage() {
             </p>
 
             <p>
-              超過 50% 的 B2B 採購者在打開 Google 之前已先問 AI,
+              越來越多 B2B 採購者在打開 Google 之前,會先問 AI,
               但多數產業領導品牌在 AI 的答案裡曝光稀薄或描述不準確。
               這個代間轉換比 Google 取代 Yahoo 來得更快、更徹底,也更少人討論。
               Symcio 存在的原因,就是把這個盲區變成可量化、可追蹤、可優化的資產。

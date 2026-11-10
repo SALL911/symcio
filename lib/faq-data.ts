@@ -37,7 +37,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
       },
       {
         q: "為什麼要關心「AI 可見度」？我們的品牌 SEO 排第一就夠了。",
-        a: "超過 50% 的 B2B 採購者在打開 Google 前已先問 AI。AI 引擎不做 SERP 排名，而是「選擇提及哪些品牌」。若你的品牌不在 ChatGPT 的答案裡，即使 Google 第一也無效。",
+        a: "越來越多 B2B 採購者在打開 Google 前會先問 AI。AI 引擎不做 SERP 排名，而是「選擇提及哪些品牌」。若你的品牌不在 ChatGPT 的答案裡，即使 Google 第一也無效。",
       },
       {
         q: "導入 Symcio 的時程大約多久？",
