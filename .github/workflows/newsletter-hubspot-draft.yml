@@ -1,0 +1,57 @@
+name: Newsletter → HubSpot draft (never sends)
+
+# 在 newsletter-automation/issues/ 新增或修改期數檔並合併到 main，
+# 就自動在 HubSpot 建立該期電子報草稿。寄送與排程一律由人在 HubSpot 按下。
+
+on:
+  push:
+    branches: [main]
+    paths: ["newsletter-automation/issues/*.json"]
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: "期數檔路徑，例如 issues/2026-11-17.json"
+        required: true
+      dry_run:
+        description: "只產預覽，不呼叫 HubSpot"
+        type: boolean
+        default: true
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: newsletter-automation
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Pick issue files
+        id: pick
+        run: |
+          if [ -n "${{ inputs.issue }}" ]; then
+            echo "files=${{ inputs.issue }}" >> "$GITHUB_OUTPUT"
+          else
+            files=$(git diff --name-only --diff-filter=AM HEAD~1 HEAD -- issues/*.json | sed 's#^newsletter-automation/##' | tr '\n' ' ')
+            echo "files=$files" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Create HubSpot drafts
+        if: steps.pick.outputs.files != ''
+        env:
+          DRY_RUN: ${{ github.event_name == 'push' && 'false' || inputs.dry_run }}
+          HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_TOKEN }}
+          HUBSPOT_SUBSCRIPTION_ID: ${{ secrets.HUBSPOT_SUBSCRIPTION_ID }}
+          NEWSLETTER_FROM_NAME: ${{ secrets.NEWSLETTER_FROM_NAME }}
+          NEWSLETTER_REPLY_TO: ${{ secrets.NEWSLETTER_REPLY_TO }}
+        run: |
+          for f in ${{ steps.pick.outputs.files }}; do node publish.mjs "$f"; done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: newsletter-previews
+          path: newsletter-automation/.out/
+          if-no-files-found: ignore
