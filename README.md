@@ -1,8 +1,8 @@
 # Symcio — AI Citation & Entity Intelligence Infrastructure
  
-Symcio is Taiwan's first AI citation and entity intelligence
-infrastructure company, providing brand capital quantification
-through the BrandOS platform. Symcio tracks how brands are
+Symcio is a Taiwan-based AI citation and entity intelligence
+company, providing brand capital quantification through the
+BrandOS platform. Symcio tracks how brands are
 recognized, cited, and recommended by AI search engines including
 ChatGPT, Claude, Gemini, Perplexity, and Grok.
  
@@ -22,7 +22,6 @@ quantifies brand capital through:
  
 ## Key Stats
  
-- Tracking **30+ Taiwan brands** across AI search engines
 - Built on PostgreSQL + Vercel + Supabase
 - Schema aligned with ISO 10668 (Brand Valuation) and
   ISO 20671 (Brand Evaluation)
@@ -35,9 +34,7 @@ quantifies brand capital through:
  
 ## About
  
-Founded by [Sall Huang](https://linkedin.com/in/YOUR_HANDLE),
-previously founder of Growth Marketing Taiwan — a leading
-SEO/content marketing agency serving 100+ brand clients.
+Founded by Sall Huang (黃智詮).
  
-Symcio is positioned as Taiwan's answer to the question:
-"How do brands stay visible when AI replaces search?"
+Symcio works on one question:
+"How do brands stay visible and accurately described when people ask AI instead of searching?"
