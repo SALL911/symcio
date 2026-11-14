@@ -1,3 +1,4 @@
+import { signatureText, signatureTextEn } from "../../lib/email/signature";
 import type { Digest } from "./digest";
 
 export interface Stakeholder {
@@ -56,8 +57,7 @@ function renderZh(s: Stakeholder, d: Digest): RenderedEmail {
     "如不希望續收每週摘要，回覆「退訂」即可。",
     "",
     "順頌時祺",
-    "黃智詮 Sall ｜ Symcio 全識（籌備中）",
-    "sall@symcio.tw ｜ https://symcio.tw",
+    signatureText(),
   ].join("\n");
   return { subject, text };
 }
@@ -86,8 +86,7 @@ function renderEn(s: Stakeholder, d: Digest): RenderedEmail {
     "To stop receiving this weekly digest, just reply 'unsubscribe'.",
     "",
     "Best regards,",
-    "Sall Huang | Symcio 全識 (in formation)",
-    "sall@symcio.tw | https://symcio.tw",
+    signatureTextEn(),
   ].join("\n");
   return { subject, text };
 }

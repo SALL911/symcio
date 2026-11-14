@@ -1,3 +1,4 @@
+import { signatureText, signatureTextEn } from "../lib/email/signature";
 /**
  * 一次性 intro 信件骨架（冷接觸國際機構用）。
  * 每週摘要信見 src/render.ts。
@@ -23,7 +24,7 @@ export const INTRO_TEMPLATES: Record<string, IntroTemplate> = {
       "We build on W3C Verifiable Credentials and GS1 Digital Link, and would value being connected to the standards conversation early. Could Symcio register as a stakeholder / observer / adopter of {{name}}'s outputs?",
       "",
       "Kind regards,",
-      "Sall Huang | Symcio 全識 (in formation) | sall@symcio.tw",
+      signatureTextEn(),
     ].join("\n"),
   },
   intl_org: {
@@ -37,7 +38,7 @@ export const INTRO_TEMPLATES: Record<string, IntroTemplate> = {
       "As a company in formation we'd like to understand the participation pathway with {{name}} and align our reporting from day one.",
       "",
       "With appreciation,",
-      "Sall Huang | Symcio 全識 (in formation) | sall@symcio.tw",
+      signatureTextEn(),
     ].join("\n"),
   },
   finance: {
@@ -51,7 +52,7 @@ export const INTRO_TEMPLATES: Record<string, IntroTemplate> = {
       "We'd welcome a short call to explore data collaboration / methodology alignment with {{name}}.",
       "",
       "Best regards,",
-      "Sall Huang | Symcio 全識 (in formation) | sall@symcio.tw",
+      signatureTextEn(),
     ].join("\n"),
   },
   partner: {
@@ -65,7 +66,7 @@ export const INTRO_TEMPLATES: Record<string, IntroTemplate> = {
       "想邀請 {{name}} 一起探討合作的可能。若方便，安排一次簡短對齊。",
       "",
       "順頌時祺",
-      "黃智詮 Sall | Symcio 全識（籌備中）| sall@symcio.tw",
+      signatureText(),
     ].join("\n"),
   },
 };

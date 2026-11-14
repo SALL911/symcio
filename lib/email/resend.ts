@@ -1,3 +1,5 @@
+import { signatureHtml } from "./signature";
+
 /**
  * Minimal Resend REST client.
  *
@@ -88,7 +90,7 @@ export function renderAuditConfirmation(params: {
         </p>
       </td></tr>
       <tr><td style="padding:16px 32px;border-top:1px solid #eee;color:#6B7280;font-size:11px;">
-        Symcio 全識 · <a href="https://symcio.tw" style="color:#6B7280;">symcio.tw</a>
+        ${signatureHtml("#6B7280")}
       </td></tr>
     </table>
   </td></tr></table>
@@ -141,7 +143,8 @@ export function renderKitUpgradeConfirmation(params: {
         </p>
       </td></tr>
       <tr><td style="padding:16px 32px;border-top:1px solid #eee;color:#6B7280;font-size:11px;">
-        Symcio · <a href="https://symcio.tw" style="color:#6B7280;">symcio.tw</a> · 回覆本信即可聯絡
+        ${signatureHtml("#6B7280")}<br>
+        回覆本信即可聯絡
       </td></tr>
     </table>
   </td></tr></table>

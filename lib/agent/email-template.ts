@@ -1,4 +1,5 @@
 import type { FakeReport } from "./fake-data";
+import { signatureHtml } from "../email/signature";
 
 const INK = "#0B0F19";
 const ACCENT = "#FFD24A";
@@ -105,8 +106,8 @@ export function renderReportEmail(report: FakeReport): {
         </td></tr>
 
         <tr><td style="padding:16px 32px;border-top:1px solid #eee;color:${MUTED};font-size:11px;">
-          Symcio · AI Visibility Intelligence · <a href="https://symcio.tw" style="color:${MUTED};">symcio.tw</a>
-          <br>
+          ${signatureHtml(MUTED)}
+          <br><br>
           你因在 symcio.tw 提交 Free Scan 收到此信。若非本人操作可忽略。
         </td></tr>
       </table>

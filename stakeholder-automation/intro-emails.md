@@ -9,9 +9,27 @@
 
 ## 署名區塊
 
-**EN** — Sall Huang (黃智詮) | Founder & Independent Scholar · Chief Protocol Architect | Symcio 全識 (company in formation, Taiwan) | sall@symcio.tw | _Designed for Tier-1 financial ecosystems. Platform infrastructure built to institutional-grade specifications, with **planned (roadmap)** technical compatibility for integration with major global capital markets (e.g. top-tier US securities & data exchanges) and aerospace telemetry (Aerospace MRV) systems._
+**EN** — 以 `lib/email/signature.ts` 的 `signatureTextEn()` 為準：
 
-**中文** — 黃智詮 Sall Huang | 創辦人暨獨立研究者 · 首席協定架構師 | Symcio 全識（公司籌備中）| sall@symcio.tw | _專為第一梯隊金融生態系設計。平台基礎設施採機構級規格打造，【規劃中／roadmap】具備與全球主流資本市場（如美國頂級證券與數據交易所）及航太遙測（Aerospace MRV）系統直接整合的技術相容性。_
+```
+================================
+Sall Huang (黃智詮) | Founder, Symcio
+Symcio (in formation) | Helping AI describe your brand accurately: verifiable data · AI visibility · brand valuation
+BCI (Brand Capital Index) methodology paper: https://doi.org/10.5281/zenodo.20419081
+symcio.tw | sall@symcio.tw [個人信箱] | LINE: [LINE ID] | [電話]
+```
+
+**中文** — 以 `lib/email/signature.ts` 的 `signatureText()` 為準：
+
+```
+================================
+黃智詮 Sall Huang｜Symcio 創辦人
+Symcio（籌備中）｜讓 AI 正確介紹你的品牌：數據可查・AI 可見・品牌可估
+BCI 品牌資本指數 方法論論文：https://doi.org/10.5281/zenodo.20419081
+symcio.tw｜sall@symcio.tw [個人信箱]｜LINE：[LINE ID]｜[電話]
+```
+
+> 電話、LINE、個人信箱不寫進公開 repo，由環境變數 `EMAIL_SIG_PHONE`／`EMAIL_SIG_LINE`／`EMAIL_SIG_ALT_EMAIL` 帶入。
 
 ---
 

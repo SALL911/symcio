@@ -10,5 +10,5 @@
     "allowImportingTsExtensions": true,
     "noEmit": true
   },
-  "include": ["src", "templates.ts", "../lib/news-data.ts"]
+  "include": ["src", "templates.ts", "../lib/news-data.ts", "../lib/email/signature.ts"]
 }
