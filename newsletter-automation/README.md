@@ -1,26 +1,45 @@
-# 品牌治理雙週刊 → HubSpot 自動草稿
+# 品牌治理雙週刊 · 自動寄送
 
-新增一期：在 `issues/` 放一個 `YYYY-MM-DD.json`（格式照 `issues/2026-11-17.json`），合併到 `main`。
-GitHub Actions 會自動：
+## 運作方式
 
-1. 把這期內容套進 Symcio 版型，上傳成 HubSpot 編碼式範本（`symcio-newsletter/issue-日期.html`）
-2. 用這個範本在 HubSpot 建立電子報**草稿**
+| 時間（台北） | 動作 |
+|---|---|
+| 每週五 09:00 | 把下週二那期寄**預覽**給 `PREVIEW_TO`。沒有期數檔、或 `status` 不是 `ready`，會寄警示信 |
+| 每週二 09:00 | `issues/<當天日期>.json` 存在且 `"status": "ready"` → 同步訂閱者並寄給全體 |
 
-寄送與排程**一律由人在 HubSpot 按下**。HubSpot 只有 Marketing Hub Enterprise 或交易郵件附加元件能用 API 寄信，而且寄前人工檢查本來就該保留。
+兩週一期由期數檔日期控制：沒有當天的檔案就不寄。重複觸發不會重寄（同名 broadcast 已寄就略過）。
 
-## 一次性設定
+- 訂閱入口：symcio.tw/subscribe（HubSpot 表單 `dedb5e0d-…`）
+- 寄送：Resend Broadcasts。HubSpot 本帳號不是 Marketing Hub Enterprise，API 不能寄行銷信
+- 取消訂閱：Resend 每封信自帶連結；同步時只新增聯絡人，不會把已取消的人加回來
 
-1. HubSpot → 設定 → 整合 → 私人應用程式 → 建立，權限勾選 `content`、`marketing-email`（或 `marketing.email.write`）
-2. GitHub repo → Settings → Secrets → Actions，新增：
-   - `HUBSPOT_TOKEN`（必填）
-   - `HUBSPOT_SUBSCRIPTION_ID`、`NEWSLETTER_FROM_NAME`、`NEWSLETTER_REPLY_TO`（選填）
+## 新增一期
 
-## 本機預覽
+1. 複製 `issues/2026-12-01.json`，檔名改成發刊日（週二），`status` 先設 `draft`
+2. 週五收到預覽信，確認內容
+3. 把 `status` 改成 `ready`，合併到 `main`
+
+## 一次性設定（GitHub → Settings → Secrets and variables → Actions）
+
+| Secret | 內容 |
+|---|---|
+| `RESEND_API_KEY` | Resend API key（Sending + Audience 權限） |
+| `RESEND_SEGMENT_ID` | Resend → Audience → Segments 建「Symcio 雙週刊」後的 ID |
+| `NEWSLETTER_FROM` | 例：`Symcio 全識 <news@symcio.tw>`，symcio.tw 需先在 Resend 驗證 DNS |
+| `NEWSLETTER_REPLY_TO` | 選填，例：`info@symcio.tw` |
+| `PREVIEW_TO` | 預覽收件人，逗號分隔 |
+| `HUBSPOT_TOKEN` | HubSpot 私人應用程式 token，勾 `forms` 權限（讀表單提交） |
+
+設定完先手動跑一次：Actions → Newsletter → Run workflow → mode=send、force_date=當期日期、dry_run=true，看名單數是否正確。
+
+## 本機
 
 ```
-DRY_RUN=true node publish.mjs issues/2026-11-17.json   # 輸出 .out/issue-2026-11-17.html
+DRY_RUN=true FORCE_DATE=2026-12-01 node send.mjs preview
+DRY_RUN=true node publish.mjs issues/2026-11-17.json   # 舊路徑：只建 HubSpot 草稿（手動寄）
 ```
 
 ## 內容規則
 - `**粗體**` 會轉成品牌綠粗體；其他 HTML 一律跳脫
 - 數字、法規日期要能附出處；Bloomberg 一律寫「規劃整合」
+- Symcio 只量測，不寫「幫你修正／優化」
