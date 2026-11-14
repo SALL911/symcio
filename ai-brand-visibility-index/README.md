@@ -2,7 +2,7 @@
 
 > An open methodology for measuring how brands appear inside generative AI answer engines (ChatGPT, Claude, Gemini, Perplexity).
 
-Published and maintained by [Symcio](https://symcio.tw) — the AI-era SimilarWeb + SEMrush + Bloomberg.
+Published and maintained by [Symcio](https://symcio.tw) — a Taiwan-based AI visibility measurement service.
 
 ## Why this exists
 
@@ -22,7 +22,7 @@ It is measured across three dimensions:
 |--------|---------|--------------------|
 | **Exposure** | Mention Rate, Category Share, Context Density | SimilarWeb |
 | **Ranking** | Average Rank Position, Top-3 Share, Competitor Gap | SEMrush |
-| **Influence** | Sentiment Index, Narrative Ownership, ESG Alignment | Bloomberg |
+| **Influence** | Sentiment Index, Narrative Ownership, ESG Alignment | — |
 
 ## The ABVI formula
 
@@ -123,7 +123,7 @@ If you don't want to run this yourself, the managed service is at [symcio.tw](ht
 - Free Scan ($0) — 1 prompt × 4 engines
 - Full Audit ($299) — 20 prompts × 4 engines + competitor map + improvement PDF
 - Optimization ($1,999) — Audit + 90-day ranking tracking + implementation
-- Subscription ($12,000/year) — Daily tracking + ESG × Bloomberg data overlay
+- Subscription ($12,000/year) — Daily tracking + ESG disclosure overlay (third-party data client-supplied)
 
 ## Contributing
 
