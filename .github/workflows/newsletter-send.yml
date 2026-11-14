@@ -1,0 +1,60 @@
+name: Newsletter (Resend) — preview Fri, send Tue
+
+# 品牌治理雙週刊自動寄送。
+# - 週五 09:00（台北）：把下週二那期寄預覽給 PREVIEW_TO；沒期數檔或未核准會寄警示。
+# - 週二 09:00（台北）：issues/<今天>.json 存在且 status = "ready" 才寄給全體訂閱者。
+# 兩週一期由期數檔日期控制：沒有當天的期數檔就不寄。
+# 手動觸發預設 dry-run。
+
+on:
+  schedule:
+    - cron: "0 1 * * 5"   # 週五 09:00 Asia/Taipei → preview
+    - cron: "0 1 * * 2"   # 週二 09:00 Asia/Taipei → send
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "preview 或 send"
+        type: choice
+        options: [preview, send]
+        default: preview
+      force_date:
+        description: "指定期數日期 YYYY-MM-DD（補發用，可留空）"
+        required: false
+      dry_run:
+        description: "只產預覽，不寄信"
+        type: boolean
+        default: true
+
+concurrency:
+  group: newsletter-send
+  cancel-in-progress: false
+
+jobs:
+  newsletter:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: newsletter-automation
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Run
+        env:
+          MODE: ${{ github.event_name == 'schedule' && (github.event.schedule == '0 1 * * 5' && 'preview' || 'send') || inputs.mode }}
+          DRY_RUN: ${{ github.event_name == 'schedule' && 'false' || inputs.dry_run }}
+          FORCE_DATE: ${{ inputs.force_date }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_SEGMENT_ID: ${{ secrets.RESEND_SEGMENT_ID }}
+          NEWSLETTER_FROM: ${{ secrets.NEWSLETTER_FROM }}
+          NEWSLETTER_REPLY_TO: ${{ secrets.NEWSLETTER_REPLY_TO }}
+          PREVIEW_TO: ${{ secrets.PREVIEW_TO }}
+          HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_TOKEN }}
+        run: node send.mjs "$MODE"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: newsletter-out
+          path: newsletter-automation/.out/
+          if-no-files-found: ignore
