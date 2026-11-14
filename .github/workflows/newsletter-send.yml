@@ -51,6 +51,7 @@ jobs:
           NEWSLETTER_REPLY_TO: ${{ secrets.NEWSLETTER_REPLY_TO }}
           PREVIEW_TO: ${{ secrets.PREVIEW_TO }}
           HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_TOKEN }}
+          ATTIO_API_KEY: ${{ secrets.ATTIO_API_KEY }}
         run: node send.mjs "$MODE"
       - uses: actions/upload-artifact@v4
         if: always()

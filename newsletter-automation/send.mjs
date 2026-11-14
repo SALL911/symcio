@@ -18,6 +18,8 @@
 //   HUBSPOT_TOKEN         選填；有的話從 HubSpot 表單同步訂閱者（需 forms 權限）
 //   HUBSPOT_FORM_ID       預設 dedb5e0d-6df9-4f57-a2e9-b237c50db615
 //   FORCE_DATE            選填，覆寫「今天」（YYYY-MM-DD），手動補發用
+//   ATTIO_API_KEY         選填；有的話把訂閱者回寫 Attio（需 record + list 讀寫權限）
+//   ATTIO_LIST            預設 newsletter_subscribers
 
 import { readFile, readdir, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -106,6 +108,37 @@ async function syncToResend(emails) {
   return added;
 }
 
+// 訂閱者回寫 Attio（CRM 主檔）：依 email 建立或比對聯絡人，加入「雙週刊訂閱者」名單。
+// 名單成員 = 有行銷同意（來自 /subscribe 表單），外聯時以此判斷可否寄電子報。
+// 沒設 ATTIO_API_KEY 就略過；Attio 失敗只警告，不擋寄信。
+async function syncToAttio(emails) {
+  const key = process.env.ATTIO_API_KEY;
+  if (!key || !emails.length) return 0;
+  const list = process.env.ATTIO_LIST || "newsletter_subscribers";
+  const h = { Authorization: `Bearer ${key}`, "Content-Type": "application/json" };
+  let ok = 0;
+  for (const email of emails) {
+    try {
+      const p = await fetch("https://api.attio.com/v2/objects/people/records?matching_attribute=email_addresses", {
+        method: "PUT", headers: h,
+        body: JSON.stringify({ data: { values: { email_addresses: [email] } } }),
+      });
+      if (!p.ok) throw new Error(`people ${p.status} ${(await p.text()).slice(0, 200)}`);
+      const recordId = (await p.json()).data.id.record_id;
+      const e = await fetch(`https://api.attio.com/v2/lists/${list}/entries`, {
+        method: "PUT", headers: h,
+        body: JSON.stringify({ data: { parent_record_id: recordId, parent_object: "people", entry_values: {} } }),
+      });
+      if (!e.ok) throw new Error(`list ${e.status} ${(await e.text()).slice(0, 200)}`);
+      ok++;
+    } catch (err) {
+      console.warn(`Attio 同步失敗（${email}）：${err.message}`);
+    }
+    await new Promise((r) => setTimeout(r, 150));
+  }
+  return ok;
+}
+
 async function alreadySent(name) {
   const list = await must("GET", "/broadcasts");
   return (list.data || []).some((b) => b.name === name && b.status !== "draft");
@@ -155,6 +188,8 @@ async function send() {
   if (await alreadySent(name)) return console.log(`「${name}」已寄過，略過。`);
   const added = await syncToResend(subs);
   console.log(`同步到 Resend：新增 ${added} 人`);
+  const crm = await syncToAttio(subs);
+  if (process.env.ATTIO_API_KEY) console.log(`回寫 Attio「雙週刊訂閱者」：${crm}/${subs.length} 人`);
 
   const b = await must("POST", "/broadcasts", {
     segment_id: SEGMENT,

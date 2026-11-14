@@ -11,6 +11,7 @@
 
 - 訂閱入口：symcio.tw/subscribe（HubSpot 表單 `dedb5e0d-…`）
 - 寄送：Resend Broadcasts。HubSpot 本帳號不是 Marketing Hub Enterprise，API 不能寄行銷信
+- CRM：訂閱者每期寄送時回寫 Attio「雙週刊訂閱者」名單（= 有行銷同意的人）。名片、通訊錄匯入的聯絡人不在此名單，不會收到電子報
 - 取消訂閱：Resend 每封信自帶連結；同步時只新增聯絡人，不會把已取消的人加回來
 
 ## 新增一期
@@ -29,6 +30,7 @@
 | `NEWSLETTER_REPLY_TO` | 選填，例：`info@symcio.tw` |
 | `PREVIEW_TO` | 預覽收件人，逗號分隔 |
 | `HUBSPOT_TOKEN` | HubSpot 私人應用程式 token，勾 `forms` 權限（讀表單提交） |
+| `ATTIO_API_KEY` | 選填。Attio → Workspace settings → Developers 建 access token，給 Records、Lists 讀寫權限；寄送時把訂閱者回寫 Attio 名單「雙週刊訂閱者」 |
 
 設定完先手動跑一次：Actions → Newsletter → Run workflow → mode=send、force_date=當期日期、dry_run=true，看名單數是否正確。
 
