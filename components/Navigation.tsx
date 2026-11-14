@@ -44,6 +44,9 @@ export function Navigation() {
               {l.label}
             </Link>
           ))}
+          <Link href="/login" className="text-sm font-semibold text-ink hover:text-accent no-underline">
+            會員登入
+          </Link>
           <a
             href="https://discord.gg/jGWJr2Sd"
             target="_blank"
@@ -85,6 +88,13 @@ export function Navigation() {
                 {l.label}
               </Link>
             ))}
+            <Link
+              href="/login"
+              onClick={() => setOpen(false)}
+              className="rounded-card px-3 py-3 text-sm font-semibold text-ink no-underline hover:bg-surface-2"
+            >
+              會員登入 / 註冊
+            </Link>
             <a
               href="https://discord.gg/jGWJr2Sd"
               target="_blank"
