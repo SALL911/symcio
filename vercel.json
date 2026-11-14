@@ -2,5 +2,8 @@
   "buildCommand": "npm run build",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "regions": ["hnd1"]
+  "regions": ["hnd1"],
+  "crons": [
+    { "path": "/api/cron/member-sync", "schedule": "17 18 * * *" }
+  ]
 }
