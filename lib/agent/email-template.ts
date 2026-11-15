@@ -1,4 +1,5 @@
 import type { FakeReport } from "./fake-data";
+import { siteOrigin } from "@/lib/site-url";
 
 const INK = "#0B0F19";
 const ACCENT = "#FFD24A";
@@ -35,7 +36,7 @@ export function renderReportEmail(report: FakeReport): {
     )
     .join("");
 
-  const origin = process.env.NEXT_PUBLIC_SITE_URL || "https://symcio.tw";
+  const origin = siteOrigin();
   const checkoutUrl =
     `${origin}/api/checkout?product=audit` +
     `&brand=${encodeURIComponent(report.brand)}`;
