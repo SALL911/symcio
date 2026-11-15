@@ -37,7 +37,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
       },
       {
         q: "為什麼要關心「AI 可見度」？我們的品牌 SEO 排第一就夠了。",
-        a: "超過 50% 的 B2B 採購者在打開 Google 前已先問 AI。AI 引擎不做 SERP 排名，而是「選擇提及哪些品牌」。若你的品牌不在 ChatGPT 的答案裡，即使 Google 第一也無效。",
+        a: "越來越多 B2B 採購者在打開 Google 前會先問 AI。AI 引擎不做 SERP 排名，而是「選擇提及哪些品牌」。若你的品牌不在 ChatGPT 的答案裡，即使 Google 第一也無效。",
       },
       {
         q: "導入 Symcio 的時程大約多久？",
@@ -77,7 +77,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
     entries: [
       {
         q: "Symcio 的品類定位？",
-        a: "AI Visibility Intelligence (AVI) — 由 Symcio 定義的新品類。定位類比為 AI 時代的 SimilarWeb + SEMrush + Bloomberg 合體（類比座標，非合作關係）。",
+        a: "AI Visibility Intelligence (AVI) — Symcio 用來描述「量測品牌在 AI 引擎回答中的提及、排名與描述方式」這類服務的用語。",
       },
       {
         q: "市場規模？",
@@ -85,7 +85,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
       },
       {
         q: "技術護城河？",
-        a: "1. 四引擎同框 benchmarking 資料集（台灣唯一、全球少數）；2. BCI 公式（公開抽象、權重閉源，PageRank 式揭露）；3. 繁中 / 亞太語料獨家；4. 開源方法論建立品類定義權。",
+        a: "1. 四引擎同框 benchmarking 資料集（繁中語料為主）；2. BCI 公式（公開抽象、權重閉源，PageRank 式揭露）；3. 以繁中 / 亞太語料為主；4. 開源方法論建立品類定義權。",
       },
       {
         q: "Traction 狀態？",
@@ -105,7 +105,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
       },
       {
         q: "Exit 策略？",
-        a: "策略併購最可能買家：HubSpot / Salesforce / Adobe（Marketing Cloud 缺 AI Channel tab）、Bloomberg / S&P Global（ESG × 品牌資料層）、Brandwatch / Meltwater / Cision（社群 + AI）。IPO 是長期選項。",
+        a: "長期可能的資本路徑包括策略併購（行銷雲平台、金融與 ESG 資料商、品牌監測工具等類型）或 IPO；目前未與任何特定公司洽談，此處僅為類型說明。",
       },
       {
         q: "團隊？",

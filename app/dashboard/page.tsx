@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AI Visibility Dashboard — Symcio",
     description:
-      "台灣品牌跨四 AI 引擎能見度即時排行。Bloomberg for AI Visibility。",
+      "台灣品牌跨四 AI 引擎能見度排行，方法論公開。",
     type: "website",
   },
 };

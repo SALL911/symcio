@@ -2,7 +2,7 @@
  * BCI (Brand Capital Index) v1.0 canonical constants.
  *
  * Single source of truth for formula weights, dimension codes, and platform
- * weights. Aligned with Symcio Research SSRN whitepaper v1.0
+ * weights. Aligned with Symcio Research whitepaper v1.0 (SSRN upload pending)
  * (Huang, Chih-Chuan, 2026, ORCID 0009-0004-6472-4566).
  *
  * ============================================================================
