@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getStripe, STRIPE_PRODUCTS, type StripeProduct } from "@/lib/stripe/client";
+import { siteOrigin } from "@/lib/site-url";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const ORIGIN = process.env.NEXT_PUBLIC_SITE_URL || "https://symcio.tw";
+const ORIGIN = siteOrigin();
 
 const QuerySchema = z.object({
   product: z.enum(["audit", "optimization", "kit-upgrade"] as const).default("audit"),
