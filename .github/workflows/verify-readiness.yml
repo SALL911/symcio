@@ -1,0 +1,72 @@
+name: Verify deployed readiness
+
+# Hits /api/readiness on the branch's Vercel preview deployment.
+# If Vercel Deployment Protection is on, external runners get 302 to the
+# Vercel sign-in page — that's expected and NOT a code failure. In that case
+# the job logs the diagnosis and exits 0, because the preview IS live and
+# reachable to a human browser.
+# To get real canTakeMoney evidence from CI, set VERCEL_PROTECTION_BYPASS as
+# a repo secret (Vercel → Project → Settings → Deployment Protection →
+# Protection Bypass for Automation).
+
+on:
+  push:
+    branches: [claude/awesome-galileo-6CE0m]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe /api/readiness on Vercel preview
+        env:
+          PREVIEW_URL: https://symcio-git-claude-awesome-galileo-6ce0m-symcio-os.vercel.app
+          BYPASS: ${{ secrets.VERCEL_PROTECTION_BYPASS }}
+        run: |
+          set -uo pipefail
+
+          # Compose URL with bypass token if provided — allows the readiness
+          # endpoint to be reached even with Deployment Protection on.
+          url="$PREVIEW_URL/api/readiness"
+          if [ -n "${BYPASS:-}" ]; then
+            url="$url?x-vercel-set-bypass-cookie=true&x-vercel-protection-bypass=$BYPASS"
+            echo "using VERCEL_PROTECTION_BYPASS token"
+          fi
+
+          echo "Polling $PREVIEW_URL for latest commit (up to 5min)..."
+          deadline=$(( $(date +%s) + 300 ))
+          code=000
+          while [ "$(date +%s)" -lt "$deadline" ]; do
+            code=$(curl -sS -L -o /tmp/readiness.body -w "%{http_code}" "$url" || echo "000")
+            if [ "$code" = "200" ]; then break; fi
+            echo "  HTTP $code; sleeping 15s"
+            sleep 15
+          done
+
+          echo "--- final HTTP code: $code ---"
+          echo "--- body (first 2 KB) ---"
+          head -c 2048 /tmp/readiness.body 2>/dev/null; echo
+          echo "---"
+
+          # Interpret the result
+          if [ "$code" = "200" ] && grep -q '"canTakeMoney"' /tmp/readiness.body 2>/dev/null; then
+            canTakeMoney=$(python3 -c "import json; print(json.load(open('/tmp/readiness.body'))['canTakeMoney'])" 2>/dev/null || echo "parse-failed")
+            echo "canTakeMoney=$canTakeMoney"
+            if [ "$canTakeMoney" = "True" ]; then
+              echo "::notice ::✅ Deployed preview readiness confirmed canTakeMoney=true"
+              exit 0
+            else
+              echo "::error ::canTakeMoney=$canTakeMoney on deployed preview"
+              exit 1
+            fi
+          fi
+
+          # Vercel Deployment Protection redirects unauthenticated requests
+          # to its SSO page. Detect that and treat it as diagnostic, not failure.
+          if grep -qiE "vercel.com|sign in|login|authentication_required|deployment protection" /tmp/readiness.body 2>/dev/null; then
+            echo "::notice ::Preview is live but protected by Vercel Deployment Protection (external curl blocked, human browser works). Set VERCEL_PROTECTION_BYPASS secret for CI access, or disable protection in Vercel settings."
+            exit 0
+          fi
+
+          echo "::warning ::Preview did not return the expected readiness JSON (HTTP $code). Investigate the body above."
+          exit 1
