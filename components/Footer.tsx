@@ -114,7 +114,7 @@ export function Footer() {
               © 2026 Symcio · BrandOS · symcio.tw · BCI 方法論參考 ISO 10668 精神。
             </div>
             <div className="flex gap-4">
-              <a href="mailto:info@symcio.tw?subject=Privacy" className="hover:text-accent no-underline">隱私權</a>
+              <Link href="/privacy" className="hover:text-accent no-underline">隱私權政策</Link>
               <a href="mailto:info@symcio.tw?subject=Terms" className="hover:text-accent no-underline">服務條款</a>
               <a href="mailto:info@symcio.tw?subject=Security" className="hover:text-accent no-underline">資安回報</a>
             </div>
