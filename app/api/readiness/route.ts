@@ -53,6 +53,11 @@ export async function GET(): Promise<Response> {
       pubu: has("NEXT_PUBLIC_EBOOK_PUBU_URL"),
       readmoo: has("NEXT_PUBLIC_EBOOK_READMOO_URL"),
     },
+    tracking: {
+      metaPixel: has("NEXT_PUBLIC_META_PIXEL_ID"),
+      lineTag: has("NEXT_PUBLIC_LINE_TAG_ID"),
+      lineAddFriendUrl: has("NEXT_PUBLIC_LINE_ADD_FRIEND_URL"),
+    },
     kit: {
       apiKey: has("KIT_API_KEY"),
       formId: has("KIT_FORM_ID"),
@@ -74,6 +79,7 @@ export async function GET(): Promise<Response> {
     line: allOf(checks.line),
     meta: allOf(checks.meta),
     kit: checks.kit.apiKey,
+    adTracking: allOf(checks.tracking),
   };
 
   const anyPaymentReady = ready.stripe || ready.ecpay || ready.paypal;

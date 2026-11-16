@@ -14,6 +14,7 @@ import {
   type ScoringResult,
 } from "@/lib/scoring";
 import { getAttribution } from "@/lib/utm/capture";
+import { trackAdEvent } from "@/lib/tracking/events";
 
 const AuditReport = dynamic(() => import("./AuditReport"), { ssr: false });
 
@@ -133,6 +134,7 @@ export default function AuditForm() {
     setResult(r);
     const tier = bciTier(r.BCI);
     ga("report_view", { brand: r.brandName, bci: r.BCI, tier: tier.key });
+    trackAdEvent("Lead", { content_name: "brand_audit" });
 
     // Silent lead capture → leads 表（含 UTM 歸因）。Fire-and-forget，不擋 UI。
     try {

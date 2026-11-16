@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { socialProfiles } from "@/lib/social/links";
 
 export function Footer() {
   return (
@@ -56,6 +57,13 @@ export function Footer() {
               社群與聯絡
             </div>
             <ul className="mt-4 space-y-2 text-sm text-muted">
+              {socialProfiles().map((p) => (
+                <li key={p.key}>
+                  <a href={p.url} target="_blank" rel="noopener noreferrer" className="no-underline hover:text-accent">
+                    {p.label}
+                  </a>
+                </li>
+              ))}
               <li>
                 <a href="https://discord.gg/jGWJr2Sd" target="_blank" rel="noopener noreferrer" className="no-underline hover:text-accent">
                   Discord 社群

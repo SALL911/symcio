@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { getAttribution } from "@/lib/utm/capture";
+import { trackAdEvent } from "@/lib/tracking/events";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -41,6 +42,7 @@ export function FreeScanForm() {
         throw new Error(data.error || `HTTP ${res.status}`);
       }
       setStatus("success");
+      trackAdEvent("Lead", { content_name: "free_scan" });
     } catch (err) {
       setStatus("error");
       setError(err instanceof Error ? err.message : "未知錯誤");

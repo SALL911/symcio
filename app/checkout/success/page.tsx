@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { Route } from "next";
 import Link from "next/link";
 import { getStripe } from "@/lib/stripe/client";
+import { AdConversion } from "@/components/TrackingPixels";
 
 export const metadata: Metadata = {
   title: "付款成功 — Symcio",
@@ -120,8 +121,24 @@ export default async function CheckoutSuccess({
     return <EbookSuccess paid={false} />;
   }
   const { product, paid } = await resolveProduct(sessionId);
+  // 只有 Stripe 伺服器端驗證為已付款才送 Purchase；ECPay / PayPal 的瀏覽器返回頁
+  // 不是付款證明（ATM、超商代碼尚未繳費也會返回），不在此計轉換。
+  const conversion =
+    paid && sessionId ? (
+      <AdConversion event="Purchase" props={{ content_name: product }} dedupeKey={sessionId} />
+    ) : null;
   if (product === "ebook") {
-    return <EbookSuccess sessionId={sessionId} paid={paid} />;
+    return (
+      <>
+        {conversion}
+        <EbookSuccess sessionId={sessionId} paid={paid} />
+      </>
+    );
   }
-  return <AuditSuccess />;
+  return (
+    <>
+      {conversion}
+      <AuditSuccess />
+    </>
+  );
 }
