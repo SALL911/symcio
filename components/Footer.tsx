@@ -38,6 +38,7 @@ export function Footer() {
               <li><Link href="/tools" className="no-underline hover:text-accent">工具套件</Link></li>
               <li><Link href="/faq/enterprise" className="no-underline hover:text-accent">知識庫</Link></li>
               <li><Link href="/news" className="no-underline hover:text-accent">每週電子報</Link></li>
+              <li><Link href="/geo" className="no-underline hover:text-accent">研究與觀點</Link></li>
               <li>
                 <a
                   href="https://symcio-research.netlify.app"

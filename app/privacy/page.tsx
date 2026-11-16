@@ -159,6 +159,7 @@ export default function PrivacyPage() {
             <p>
               本網站使用下列工具。它們會在你的瀏覽器存放 Cookie 或類似識別碼。
               廣告追蹤工具會把你在本站的瀏覽與轉換行為回傳給該廣告平台，平台可能將其與你的平台帳號連結。
+              完成付款時，我們會由伺服器把訂單金額與經過雜湊（無法還原）的 email 回傳給 Meta，用於衡量廣告成效。
             </p>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[560px] border-collapse text-left text-sm">

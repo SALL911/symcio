@@ -27,3 +27,4 @@ User-agent: PerplexityBot
 Allow: /
 
 Sitemap: https://symcio.tw/sitemap.xml
+Sitemap: https://symcio.tw/geo-sitemap.xml
