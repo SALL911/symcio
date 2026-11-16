@@ -49,6 +49,43 @@ export async function send(params: SendParams): Promise<{ ok: boolean; id?: stri
   }
 }
 
+export function renderEbookDelivery(params: {
+  customerEmail: string;
+  downloadUrl: string;
+}): { subject: string; html: string } {
+  const subject = "[Symcio] 你的《BCI 品牌資本指數方法論》電子書下載連結";
+  const html = `<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"></head>
+<body style="margin:0;font-family:-apple-system,Segoe UI,Noto Sans TC,sans-serif;background:#f7f7f7;color:#0B0F19;">
+  <table width="100%" style="padding:32px 16px;"><tr><td align="center">
+    <table width="560" style="background:#fff;max-width:560px;">
+      <tr><td style="padding:24px 32px;border-bottom:1px solid #eee;">
+        <p style="margin:0;font-size:11px;letter-spacing:0.12em;color:#6B7280;text-transform:uppercase;">
+          Symcio · BCI eBook
+        </p>
+        <h1 style="margin:6px 0 0;font-size:22px;">感謝購買，電子書下載連結如下</h1>
+      </td></tr>
+      <tr><td style="padding:24px 32px;">
+        <p style="margin:0 0 16px;font-size:14px;line-height:1.6;">
+          你購買的《BCI 品牌資本指數方法論》電子書已可下載。點擊下方按鈕即可取得 PDF。
+        </p>
+        <a href="${params.downloadUrl}" style="display:inline-block;background:#FFD24A;color:#0B0F19;padding:12px 24px;font-size:15px;font-weight:600;text-decoration:none;border-radius:8px;">
+          下載電子書 PDF
+        </a>
+        <p style="margin:16px 0 0;font-size:13px;color:#6B7280;">
+          連結若失效或有任何問題，請來信
+          <a href="mailto:info@symcio.tw" style="color:#0B0F19;">info@symcio.tw</a>。
+        </p>
+      </td></tr>
+      <tr><td style="padding:16px 32px;border-top:1px solid #eee;color:#6B7280;font-size:11px;">
+        Symcio · <a href="https://symcio.tw" style="color:#6B7280;">symcio.tw</a>
+      </td></tr>
+    </table>
+  </td></tr></table>
+</body></html>`;
+  return { subject, html };
+}
+
 export function renderAuditConfirmation(params: {
   brandName: string;
   customerEmail: string;

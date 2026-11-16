@@ -1,0 +1,34 @@
+name: Verify production vs preview protection
+
+on:
+  push:
+    branches: [claude/awesome-galileo-6CE0m]
+  workflow_dispatch:
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe production vs preview
+        run: |
+          set +e  # don't exit on individual probe failure
+          for base in "https://symcio.tw" "https://symcio-git-claude-awesome-galileo-6ce0m-symcio-os.vercel.app"; do
+            echo "=== $base ==="
+            for path in "/" "/api/stripe/webhook" "/api/ecpay/callback"; do
+              # HEAD on homepage, POST on webhook paths
+              if [ "$path" = "/" ]; then
+                out=$(curl -sS -o /tmp/body -w "%{http_code}" -I "$base$path" --max-time 15)
+              else
+                out=$(curl -sS -o /tmp/body -w "%{http_code}" -X POST "$base$path" --max-time 15)
+              fi
+              first=$(head -c 120 /tmp/body | tr -d '\n')
+              echo "  $path → HTTP $out"
+              echo "    body-first-120: $first"
+            done
+            echo
+          done
+          echo "Interpretation:"
+          echo "  * '200 1|OK' → endpoint live and signature-verifying"
+          echo "  * '400' with JSON  → endpoint reachable, request malformed as expected"
+          echo "  * '200 <!DOCTYPE'  → Vercel SSO blocking the request"
+          echo "  * '404'            → endpoint not deployed yet on this domain"

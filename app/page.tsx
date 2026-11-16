@@ -204,6 +204,18 @@ export default function HomePage() {
             >
               免費品牌 AI 健檢 →
             </Link>
+            <Link
+              href="/ebook"
+              className="inline-flex items-center justify-center rounded-card bg-white px-7 py-3.5 text-sm font-bold text-black no-underline hover:bg-emerald-100 transition"
+            >
+              📘 BCI 方法論電子書 · NT$390
+            </Link>
+            <Link
+              href="/service"
+              className="inline-flex items-center justify-center rounded-card border border-white/30 bg-white/5 px-7 py-3.5 text-sm font-bold text-white no-underline backdrop-blur hover:border-emerald-300 hover:text-emerald-300"
+            >
+              成交系統 →
+            </Link>
             <a
               href="https://discord.gg/jGWJr2Sd"
               target="_blank"
