@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { getEcpayConfig, verifyCheckMacValue } from "@/lib/ecpay/client";
+import { getEcpayConfig, isEcpaySandbox, verifyCheckMacValue } from "@/lib/ecpay/client";
+import { sendPurchase } from "@/lib/meta/conversions";
 import { send as sendEmail, renderEbookDelivery } from "@/lib/email/resend";
 
 export const runtime = "nodejs";
@@ -29,6 +30,23 @@ export async function POST(req: Request): Promise<Response> {
       const from = process.env.RESEND_FROM_ADDRESS || "Symcio <info@symcio.tw>";
       const { subject, html } = renderEbookDelivery({ customerEmail: email, downloadUrl: fileUrl });
       await sendEmail({ from, to: email, subject, html, replyTo: "info@symcio.tw" });
+    }
+
+    // 回傳購買事件給 Meta 廣告。模擬付款（SimulatePaid=1）與測試特店不算真實成交，
+    // 除非設定了 META_CAPI_TEST_EVENT_CODE（事件只進「測試事件」分頁）。
+    const isRealPayment = params.SimulatePaid !== "1" && !isEcpaySandbox();
+    if (isRealPayment || process.env.META_CAPI_TEST_EVENT_CODE?.trim()) {
+      const site = process.env.NEXT_PUBLIC_SITE_URL || "https://symcio.tw";
+      const result = await sendPurchase({
+        orderId: params.MerchantTradeNo,
+        value: Number(params.TradeAmt),
+        currency: "TWD",
+        email: email || undefined,
+        fbp: params.CustomField3 || undefined,
+        contentName: product || undefined,
+        eventSourceUrl: `${site}/checkout/success`,
+      });
+      if (result.error) console.error("[ecpay] meta purchase event failed:", result.error);
     }
   }
 

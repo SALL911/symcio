@@ -31,6 +31,7 @@ export async function GET(req: Request): Promise<Response> {
     return NextResponse.json({ ok: false, error: "invalid-product" }, { status: 400 });
   }
   const email = new URL(req.url).searchParams.get("email") || undefined;
+  const fbp = /(?:^|;\s*)_fbp=([^;]+)/.exec(req.headers.get("cookie") ?? "")?.[1];
 
   const config = getEcpayConfig();
 
@@ -39,6 +40,7 @@ export async function GET(req: Request): Promise<Response> {
     product: product as EcpayProduct,
     origin: ORIGIN,
     email,
+    fbp,
   });
 
   return new NextResponse(autoSubmitForm(config.actionUrl, params), {

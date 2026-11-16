@@ -4,6 +4,9 @@ import { Suspense } from "react";
 import "./globals.css";
 import { PostHogProvider } from "@/components/PostHogProvider";
 import { UtmCapture } from "@/components/UtmCapture";
+import { FloatingSocial } from "@/components/FloatingSocial";
+import { TrackingPixels } from "@/components/TrackingPixels";
+import { socialProfiles } from "@/lib/social/links";
 
 export const metadata: Metadata = {
   title: "Symcio · BrandOS — AI 能見度的量化標準",
@@ -37,6 +40,11 @@ const ORGANIZATION_SCHEMA = {
   sameAs: [
     "https://github.com/sall911/symcio",
     "https://discord.gg/jGWJr2Sd",
+    "https://doi.org/10.5281/zenodo.20419081",
+    // chat / 加好友連結不是實體頁，不放進 sameAs
+    ...socialProfiles()
+      .filter((p) => p.key !== "line")
+      .map((p) => p.url),
   ],
 };
 
@@ -70,6 +78,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <PostHogProvider>
             <UtmCapture />
             {children}
+            <FloatingSocial />
+            <TrackingPixels />
           </PostHogProvider>
         </Suspense>
         {/* Start of HubSpot Embed Code */}

@@ -12,5 +12,7 @@
   <url><loc>https://symcio.tw/faq/investor/</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://symcio.tw/faq/security/</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://symcio.tw/faq/creator/</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://symcio.tw/geo</loc><priority>0.8</priority><changefreq>daily</changefreq></url>
+  <url><loc>https://symcio.tw/privacy</loc><priority>0.3</priority><changefreq>yearly</changefreq></url>
   <url><loc>https://symcio.tw/llms.txt</loc><priority>0.5</priority><changefreq>monthly</changefreq></url>
 </urlset>

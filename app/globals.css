@@ -27,3 +27,51 @@ a {
   background: #2A4D3A;
   color: #F7F6F3;
 }
+
+/* /geo/[slug] 文章內文（markdown 轉出的 HTML） */
+.geo-body {
+  @apply text-base leading-[1.85] text-ink;
+}
+.geo-body > * + * {
+  @apply mt-5;
+}
+.geo-body h2 {
+  @apply mt-10 text-2xl font-bold leading-snug;
+}
+.geo-body h3 {
+  @apply mt-8 text-xl font-semibold leading-snug;
+}
+.geo-body a {
+  @apply text-accent underline;
+}
+.geo-body ul {
+  @apply list-disc space-y-1.5 pl-6;
+}
+.geo-body ol {
+  @apply list-decimal space-y-1.5 pl-6;
+}
+.geo-body blockquote {
+  @apply border-l-2 border-accent pl-5 text-muted;
+}
+.geo-body code {
+  @apply rounded bg-line-soft px-1.5 py-0.5 font-mono text-[0.9em];
+}
+.geo-body pre {
+  @apply overflow-x-auto rounded-card bg-ink p-4 text-sm text-bg;
+}
+.geo-body pre code {
+  @apply bg-transparent p-0;
+}
+.geo-body table {
+  @apply block w-full overflow-x-auto border-collapse text-sm;
+}
+.geo-body th,
+.geo-body td {
+  @apply border border-line px-3 py-2 text-left align-top;
+}
+.geo-body th {
+  @apply bg-surface-2 font-semibold;
+}
+.geo-body hr {
+  @apply border-line;
+}

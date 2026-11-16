@@ -117,6 +117,8 @@ export function buildCheckoutParams(opts: {
   product: EcpayProduct;
   origin: string;
   email?: string;
+  /** 瀏覽器 _fbp cookie；付款成功後回傳給 Meta Conversions API 做事件比對 */
+  fbp?: string;
 }): Record<string, string> {
   const item = ECPAY_PRODUCTS[opts.product];
   const params: Record<string, string> = {
@@ -134,6 +136,10 @@ export function buildCheckoutParams(opts: {
     CustomField1: opts.product,
   };
   if (opts.email) params.CustomField2 = opts.email.slice(0, 50);
+  // 綠界 CustomField 上限 50 字元；格式不符就不帶，避免把任意 cookie 內容送進金流
+  if (opts.fbp && /^fb\.\d\.\d+\.\d+$/.test(opts.fbp) && opts.fbp.length <= 50) {
+    params.CustomField3 = opts.fbp;
+  }
   params.CheckMacValue = makeCheckMacValue(params, opts.config.hashKey, opts.config.hashIV);
   return params;
 }

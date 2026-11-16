@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { socialProfiles } from "@/lib/social/links";
 
 export function Footer() {
   return (
@@ -37,6 +38,7 @@ export function Footer() {
               <li><Link href="/tools" className="no-underline hover:text-accent">工具套件</Link></li>
               <li><Link href="/faq/enterprise" className="no-underline hover:text-accent">知識庫</Link></li>
               <li><Link href="/news" className="no-underline hover:text-accent">每週電子報</Link></li>
+              <li><Link href="/geo" className="no-underline hover:text-accent">研究與觀點</Link></li>
               <li>
                 <a
                   href="https://symcio-research.netlify.app"
@@ -56,6 +58,13 @@ export function Footer() {
               社群與聯絡
             </div>
             <ul className="mt-4 space-y-2 text-sm text-muted">
+              {socialProfiles().map((p) => (
+                <li key={p.key}>
+                  <a href={p.url} target="_blank" rel="noopener noreferrer" className="no-underline hover:text-accent">
+                    {p.label}
+                  </a>
+                </li>
+              ))}
               <li>
                 <a href="https://discord.gg/jGWJr2Sd" target="_blank" rel="noopener noreferrer" className="no-underline hover:text-accent">
                   Discord 社群
@@ -106,7 +115,7 @@ export function Footer() {
               © 2026 Symcio · BrandOS · symcio.tw · BCI 方法論參考 ISO 10668 精神。
             </div>
             <div className="flex gap-4">
-              <a href="mailto:info@symcio.tw?subject=Privacy" className="hover:text-accent no-underline">隱私權</a>
+              <Link href="/privacy" className="hover:text-accent no-underline">隱私權政策</Link>
               <a href="mailto:info@symcio.tw?subject=Terms" className="hover:text-accent no-underline">服務條款</a>
               <a href="mailto:info@symcio.tw?subject=Security" className="hover:text-accent no-underline">資安回報</a>
             </div>
