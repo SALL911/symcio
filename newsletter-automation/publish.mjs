@@ -2,7 +2,7 @@
 // Symcio 品牌治理雙週刊 → HubSpot 電子報草稿（只建草稿，永不自動寄出）
 //
 // 用法：
-//   node publish.mjs issues/2026-11-17.json        建立草稿
+//   node publish.mjs issues/2026-11-24.json        建立草稿
 //   DRY_RUN=true node publish.mjs issues/x.json    只輸出預覽 HTML 到 .out/
 //
 // 環境變數：
@@ -36,7 +36,7 @@ async function hs(method, url, body, isForm = false) {
 
 async function main() {
   const file = process.argv[2];
-  if (!file) throw new Error("請指定期數檔，例如 issues/2026-11-17.json");
+  if (!file) throw new Error("請指定期數檔，例如 issues/2026-11-24.json");
   const issue = JSON.parse(await readFile(file, "utf8"));
   validate(issue);
   const html = render(issue);

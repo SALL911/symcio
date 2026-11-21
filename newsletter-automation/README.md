@@ -16,7 +16,7 @@
 
 ## 新增一期
 
-1. 複製 `issues/2026-12-01.json`，檔名改成發刊日（週二），`status` 先設 `draft`
+1. 複製 `issues/2026-12-08.json`，檔名改成發刊日（週二），`status` 先設 `draft`
 2. 週五收到預覽信，確認內容
 3. 把 `status` 改成 `ready`，合併到 `main`
 
@@ -37,8 +37,8 @@
 ## 本機
 
 ```
-DRY_RUN=true FORCE_DATE=2026-12-01 node send.mjs preview
-DRY_RUN=true node publish.mjs issues/2026-11-17.json   # 舊路徑：只建 HubSpot 草稿（手動寄）
+DRY_RUN=true FORCE_DATE=2026-12-08 node send.mjs preview
+DRY_RUN=true node publish.mjs issues/2026-11-24.json   # 舊路徑：只建 HubSpot 草稿（手動寄）
 ```
 
 ## 內容規則
