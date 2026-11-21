@@ -14,6 +14,7 @@ import {
   type ScoringResult,
 } from "@/lib/scoring";
 import { getAttribution } from "@/lib/utm/capture";
+import { fbqTrack } from "@/lib/meta/pixel";
 
 const AuditReport = dynamic(() => import("./AuditReport"), { ssr: false });
 
@@ -114,6 +115,8 @@ export default function AuditForm() {
   async function onSubmit(ev: FormEvent<HTMLFormElement>) {
     ev.preventDefault();
     if (!form.industry || !form.companySize || !form.email) return;
+    // Meta Pixel：表單送出 = Lead（不帶品牌名等可識別資料）
+    fbqTrack("Lead", { content_name: "ai_visibility_audit" });
     ga("form_submit", {
       industry: form.industry,
       brand: form.brandNameZh,
