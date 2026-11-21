@@ -116,7 +116,10 @@ export default function AuditForm() {
     ev.preventDefault();
     if (!form.industry || !form.companySize || !form.email) return;
     // Meta Pixel：表單送出 = Lead（不帶品牌名等可識別資料）
-    fbqTrack("Lead", { content_name: "ai_visibility_audit" });
+    // event_id 同步送到 /api/audit-leads → Conversions API，兩邊去重
+    const metaEventId =
+      globalThis.crypto?.randomUUID?.() ?? `lead-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    fbqTrack("Lead", { content_name: "ai_visibility_audit" }, false, metaEventId);
     ga("form_submit", {
       industry: form.industry,
       brand: form.brandNameZh,
@@ -155,6 +158,7 @@ export default function AuditForm() {
           bci: r.BCI,
           tier: tier.key,
           attribution: getAttribution(),
+          meta_event_id: metaEventId,
         }),
         keepalive: true,
       }).catch(() => {

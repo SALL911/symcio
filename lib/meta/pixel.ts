@@ -10,11 +10,16 @@ export function fbqTrack(
   event: string,
   params: Record<string, unknown> = {},
   custom = false,
+  eventId?: string,
 ): void {
   if (typeof window === "undefined") return;
   try {
     const fbq = (window as unknown as { fbq?: Fbq }).fbq;
-    if (typeof fbq === "function") fbq(custom ? "trackCustom" : "track", event, params);
+    if (typeof fbq === "function") {
+      // eventID 與 Conversions API 的 event_id 相同時，Meta 端會去重
+      if (eventId) fbq(custom ? "trackCustom" : "track", event, params, { eventID: eventId });
+      else fbq(custom ? "trackCustom" : "track", event, params);
+    }
   } catch {
     /* ignore */
   }
