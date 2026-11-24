@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { verifyLineSignature, replyText } from "@/lib/line/client";
-import { replyForText, welcomeText } from "@/lib/marketing/reply";
+import { aiReplyForText, welcomeText } from "@/lib/marketing/reply";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -33,7 +33,7 @@ export async function POST(req: Request): Promise<Response> {
       if (!e.replyToken) return Promise.resolve();
       if (e.type === "follow") return replyText(e.replyToken, welcomeText());
       if (e.type === "message" && e.message?.type === "text") {
-        return replyText(e.replyToken, replyForText(e.message.text ?? ""));
+        return aiReplyForText(e.message.text ?? "").then((t) => replyText(e.replyToken!, t));
       }
       return Promise.resolve();
     }),

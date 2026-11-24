@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { verifyMetaSignature, verifyHandshake, sendMessage } from "@/lib/meta/client";
-import { replyForText } from "@/lib/marketing/reply";
+import { aiReplyForText } from "@/lib/marketing/reply";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -40,7 +40,8 @@ export async function POST(req: Request): Promise<Response> {
     for (const m of entry.messaging ?? []) {
       if (m.message?.is_echo) continue;
       if (m.sender?.id && m.message?.text) {
-        jobs.push(sendMessage(m.sender.id, replyForText(m.message.text)));
+        const senderId = m.sender.id;
+        jobs.push(aiReplyForText(m.message.text).then((t) => sendMessage(senderId, t)));
       }
     }
   }

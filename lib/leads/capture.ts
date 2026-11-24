@@ -1,8 +1,10 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { send as sendEmail } from "@/lib/email/resend";
 import { sendCapiEvent } from "@/lib/meta/capi";
+import { gradeLead, type GradeResult } from "@/lib/ai/grade";
+import { startFollowups } from "@/lib/followup/schedule";
 
-// 名單擷取的單一入口：Supabase 寫入 + Email 即時通知 + Meta Conversions API。
+// 名單擷取的單一入口：Supabase 寫入 + AI 分級 + Email 即時通知 + Meta Conversions API。
 // 設計原則：任何一條管道失敗都不能讓名單消失。
 // Supabase 未設定或寫入失敗時，只要通知信寄得出去，名單就還在信箱裡。
 
@@ -29,12 +31,15 @@ export type LeadInput = {
   attribution?: LeadAttribution;
   metaEventId?: string;
   metaContentName: string;
+  /** 是否寄確認信給名單本人並啟動跟進排程（已有自己確認流程的表單設 false） */
+  confirm?: boolean;
 };
 
 export type LeadResult = {
   ok: boolean;
   stored: boolean; // 已寫入 Supabase
   notified: boolean; // 已寄出通知信
+  grade?: string; // A / B / C
   error?: string;
 };
 
@@ -53,11 +58,13 @@ function esc(v: string): string {
     .replace(/"/g, "&quot;");
 }
 
-async function notify(lead: LeadInput, stored: boolean): Promise<boolean> {
+async function notify(lead: LeadInput, stored: boolean, g: GradeResult | null): Promise<boolean> {
   const to = process.env.LEAD_NOTIFY_EMAIL?.trim() || "info@symcio.tw";
   const from = process.env.RESEND_FROM_ADDRESS || "Symcio <info@symcio.tw>";
   const a = lead.attribution || {};
   const rows: [string, string][] = [
+    ["分級", g ? `${g.grade}（${g.intent}，${g.by === "ai" ? "AI" : "規則"}判定）` : ""],
+    ["摘要", g?.summary || ""],
     ["來源表單", lead.source],
     ["姓名", lead.name],
     ["公司 / 品牌", lead.company],
@@ -76,12 +83,13 @@ async function notify(lead: LeadInput, stored: boolean): Promise<boolean> {
         `<tr><td style="color:#6B7280;vertical-align:top;white-space:nowrap;">${esc(k)}</td><td>${esc(v)}</td></tr>`,
     )
     .join("")}</table>
+${g ? `<h3 style="font-size:14px;margin-top:20px;">建議下一步（內部參考，請勿直接轉寄）</h3><pre style="font-family:inherit;font-size:14px;white-space:pre-wrap;background:#F7F6F3;padding:12px;border-radius:8px;">${esc(g.script)}</pre>` : ""}
 <p style="font-size:12px;color:#6B7280;">直接回覆這封信即可回給對方。</p>
 </body></html>`;
   const res = await sendEmail({
     from,
     to,
-    subject: `[Symcio 新名單] ${lead.company || lead.name}（${lead.source}）`,
+    subject: `[Symcio 新名單${g ? `｜${g.grade} 級` : ""}] ${lead.company || lead.name}（${lead.source}）`,
     html,
     replyTo: lead.email,
   });
@@ -94,9 +102,11 @@ export async function captureLead(req: Request, lead: LeadInput): Promise<LeadRe
   let stored = false;
   let error: string | undefined;
 
+  let leadId: string | undefined;
+
   const sb = leadsSupabase();
   if (sb) {
-    const { error: dbErr } = await sb.from("leads").insert({
+    const { data: row, error: dbErr } = await sb.from("leads").insert({
       name: lead.name,
       company: lead.company,
       email: lead.email,
@@ -114,7 +124,8 @@ export async function captureLead(req: Request, lead: LeadInput): Promise<LeadRe
       fbclid: a.fbclid,
       gclid: a.gclid,
       li_fat_id: a.li_fat_id,
-    });
+    }).select("id").maybeSingle();
+    leadId = (row?.id as string | undefined) ?? undefined;
     if (dbErr) {
       console.error(`[leads] insert failed (${lead.source})`, dbErr);
       error = dbErr.message;
@@ -125,9 +136,44 @@ export async function captureLead(req: Request, lead: LeadInput): Promise<LeadRe
     error = "supabase-not-configured";
   }
 
-  // 通知信與 CAPI 互不依賴，平行送出
+  // 分級：規則一定有結果，AI 逾時或失敗時自動退回規則。失敗不影響名單擷取。
+  let grade: GradeResult | null = null;
+  try {
+    grade = await gradeLead({
+      source: lead.source,
+      name: lead.name,
+      company: lead.company,
+      email: lead.email,
+      notes: lead.notes,
+      utm_source: a.utm_source,
+    });
+  } catch (err) {
+    console.error("[leads] grading failed", err);
+  }
+
+  // 通知信、CAPI、分級回寫、確認信互不依賴，平行送出
   const [notified] = await Promise.all([
-    notify(lead, stored),
+    notify(lead, stored, grade),
+    sb && leadId && grade
+      ? sb
+          .from("leads")
+          .update({
+            grade: grade.grade,
+            intent: grade.intent,
+            ai_summary: grade.summary,
+            sales_script: grade.script,
+            graded_at: new Date().toISOString(),
+          })
+          .eq("id", leadId)
+          .then(({ error: e }) => {
+            if (e) console.error("[leads] grade write failed", e.message);
+          })
+      : Promise.resolve(),
+    lead.confirm
+      ? startFollowups(stored ? sb : null, { id: leadId, name: lead.name, company: lead.company, email: lead.email }).catch(
+          (err) => console.error("[leads] followup failed", err),
+        )
+      : Promise.resolve(),
     sendCapiEvent(req, {
       eventName: "Lead",
       eventId: lead.metaEventId,
@@ -138,5 +184,5 @@ export async function captureLead(req: Request, lead: LeadInput): Promise<LeadRe
   ]);
 
   const ok = stored || notified;
-  return { ok, stored, notified, error: ok ? undefined : error };
+  return { ok, stored, notified, grade: grade?.grade, error: ok ? undefined : error };
 }

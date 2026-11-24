@@ -38,6 +38,7 @@ export async function POST(req: Request) {
     attribution: parsed.attribution,
     metaEventId: parsed.meta_event_id,
     metaContentName: "service_consult",
+    confirm: true,
   });
   if (!result.ok) {
     return NextResponse.json({ ok: false, error: "lead-not-captured" }, { status: 503 });

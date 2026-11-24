@@ -23,6 +23,21 @@ export function MetaPixel() {
     fbqTrack("PageView");
   }, [pathname]);
 
+  // 結帳連結是伺服器轉址（/api/*/checkout），為了不拖慢轉址速度，
+  // InitiateCheckout 在點擊當下由瀏覽器送出。
+  useEffect(() => {
+    function onClick(e: MouseEvent) {
+      const a = (e.target as Element | null)?.closest?.("a[href]");
+      const href = a?.getAttribute("href") || "";
+      const m = href.match(/^\/api\/(?:(ecpay|paypal)\/)?checkout\?(.*)$/);
+      if (!m) return;
+      const product = new URLSearchParams(m[2]).get("product") || "audit";
+      fbqTrack("InitiateCheckout", { content_name: product, payment_gateway: m[1] || "stripe" });
+    }
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, []);
+
   return (
     <Script id="meta-pixel" strategy="afterInteractive">
         {`

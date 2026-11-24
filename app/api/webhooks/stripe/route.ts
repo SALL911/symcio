@@ -3,6 +3,7 @@ import type Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 import { getStripe } from "@/lib/stripe/client";
 import { fireRepositoryDispatch } from "@/lib/github/dispatch";
+import { sendCapiEvent } from "@/lib/meta/capi";
 import {
   send as sendEmail,
   renderAuditConfirmation,
@@ -30,6 +31,21 @@ const ORIGIN = process.env.NEXT_PUBLIC_SITE_URL || "https://symcio.tw";
  *   - payment_intent.payment_failed (retry logic)
  */
 
+/** 付款完成 → Meta Purchase。event_id 用 Stripe session id，與成功頁的瀏覽器 Pixel 去重。 */
+async function capiPurchase(session: Stripe.Checkout.Session, email: string | null, product: string) {
+  await sendCapiEvent(null, {
+    eventName: "Purchase",
+    eventId: session.id,
+    email: email || undefined,
+    sourceUrl: `${ORIGIN}/checkout/success`,
+    customData: {
+      value: (session.amount_total ?? 0) / 100,
+      currency: (session.currency || "usd").toUpperCase(),
+      content_name: product,
+    },
+  });
+}
+
 function supabaseAdmin() {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -48,8 +64,10 @@ async function handleCheckoutCompleted(
   const amountTotal = session.amount_total ?? 0;
   const priceUsd = amountTotal / 100;
   if (metadata.product === "kit-upgrade") {
+    await capiPurchase(session, email, "kit-upgrade");
     return handleKitUpgrade(session, email, priceUsd);
   }
+  await capiPurchase(session, email, metadata.product || "audit");
   const product: "audit" | "optimization" | "ebook" =
     metadata.product === "optimization"
       ? "optimization"
