@@ -70,12 +70,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <MetaPixel />
       </head>
       <body>
+        {/* 追蹤元件與頁面內容分開：只有追蹤器在 Suspense 裡，內容照常輸出成 HTML */}
         <Suspense fallback={null}>
-          <PostHogProvider>
-            <UtmCapture />
-            {children}
-          </PostHogProvider>
+          <PostHogProvider />
         </Suspense>
+        <UtmCapture />
+        {children}
         {/* Meta Pixel noscript fallback。用 innerHTML 避免 React 對 <img> 自動 preload 造成 PageView 重複計算 */}
         <noscript
           dangerouslySetInnerHTML={{
