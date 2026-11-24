@@ -3,6 +3,7 @@ import type { Route } from "next";
 import Link from "next/link";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
+import { ServiceLeadForm } from "@/components/ServiceLeadForm";
 
 export const metadata: Metadata = {
   title: "AI 自動獲客成交系統 — Symcio 服務方案",
@@ -47,8 +48,7 @@ const FLOW = [
 
 export default function ServicePage() {
   const ebookHref = "/ebook" as Route;
-  const contactHref =
-    "mailto:sall@symcio.tw?subject=我想導入%20AI%20自動獲客成交系統" as Route;
+  const auditHref = "/audit" as Route;
 
   return (
     <main className="min-h-screen bg-bg text-ink">
@@ -66,21 +66,21 @@ export default function ServicePage() {
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-muted">
             從陌生流量到即時現金流的完整管線：自動回覆獲客 → 免費診斷收名單 →
-            電子書即時成交 → 顧問方案向上銷售。Symcio 幫你一次搭好、上線即收款。
+            電子書即時成交 → 顧問方案向上銷售。Symcio 協助你把管線搭起來並接上金流。
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href={ebookHref}
+              href={auditHref}
               className="inline-block rounded-card bg-accent px-6 py-3 text-base font-semibold text-white no-underline hover:bg-accent-dim"
             >
-              先看成交範例：BCI 電子書 →
+              先做 3 分鐘免費診斷 →
             </Link>
-            <Link
-              href={contactHref}
+            <a
+              href="#consult"
               className="inline-block rounded-card border border-accent px-6 py-3 text-base font-semibold text-accent no-underline hover:bg-accent hover:text-white"
             >
               預約導入諮詢 →
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -115,13 +115,23 @@ export default function ServicePage() {
               </li>
             ))}
           </ol>
-          <div className="mt-10">
-            <Link
-              href={contactHref}
-              className="inline-block rounded-card bg-accent px-6 py-3 text-base font-semibold text-white no-underline hover:bg-accent-dim"
-            >
-              預約導入諮詢 →
+          <p className="mt-6 text-sm text-muted">
+            成交範例：
+            <Link href={ebookHref} className="text-accent underline">
+              BCI 電子書銷售頁
             </Link>
+          </p>
+        </div>
+      </section>
+
+      <section id="consult" className="border-b border-line scroll-mt-24">
+        <div className="mx-auto max-w-3xl px-6 py-16">
+          <h2 className="text-2xl font-bold">預約導入諮詢</h2>
+          <p className="mt-3 text-base text-muted">
+            留下聯絡方式與想解決的問題，我們會在 1 個工作天內回覆。
+          </p>
+          <div className="mt-8">
+            <ServiceLeadForm />
           </div>
         </div>
       </section>

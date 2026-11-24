@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { createClient } from "@supabase/supabase-js";
-import { sendCapiEvent } from "@/lib/meta/capi";
+import { captureLead, leadsSupabase } from "@/lib/leads/capture";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -43,13 +42,6 @@ const BodySchema = z.object({
   meta_event_id: z.string().trim().max(100).optional(),
 });
 
-function supa() {
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) return null;
-  return createClient(url, key, { auth: { persistSession: false } });
-}
-
 export async function POST(req: Request) {
   let parsed: z.infer<typeof BodySchema>;
   try {
@@ -59,70 +51,52 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: msg }, { status: 400 });
   }
 
-  const sb = supa();
-  if (!sb) {
-    return NextResponse.json({ ok: false, error: "supabase-not-configured" }, { status: 503 });
-  }
-
   const a = parsed.attribution || {};
   const notes = [
     `company_size=${parsed.company_size}`,
     `revenue=${parsed.revenue}`,
+    parsed.industry ? `industry=${parsed.industry}` : "",
+    parsed.title ? `title=${parsed.title}` : "",
     parsed.bci !== undefined ? `bci=${parsed.bci}` : "",
     parsed.tier ? `tier=${parsed.tier}` : "",
     parsed.website ? `website=${parsed.website}` : "",
   ].filter(Boolean).join("; ");
 
-  const { error } = await sb.from("leads").insert({
+  // Supabase + 通知信 + Meta CAPI。Supabase 沒設定時名單仍會進信箱，不再整筆遺失。
+  const result = await captureLead(req, {
+    source: "audit-form",
     name: parsed.contact_name || parsed.brand_name_zh,
     company: parsed.brand_name_zh,
     email: parsed.email,
-    source: "audit-form",
-    status: "new",
     notes,
-    utm_source: a.utm_source,
-    utm_medium: a.utm_medium,
-    utm_campaign: a.utm_campaign,
-    utm_content: a.utm_content,
-    utm_term: a.utm_term,
-    referrer: a.referrer,
-    first_landing_url: a.first_landing_url,
-    first_touch_at: a.first_touch_at ?? null,
-    fbclid: a.fbclid,
-    gclid: a.gclid,
-    li_fat_id: a.li_fat_id,
+    attribution: a,
+    metaEventId: parsed.meta_event_id,
+    metaContentName: "ai_visibility_audit",
   });
-  if (error) {
-    console.error("[api/audit-leads] insert failed", error);
-    return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+  if (!result.ok) {
+    return NextResponse.json({ ok: false, error: result.error || "lead-not-captured" }, { status: 503 });
   }
 
+  const sb = result.stored ? leadsSupabase() : null;
   // 若有 brand_name_zh 也同步 brands（status=prospect）— 後續 geo-audit-queue 會撿走
-  const { data: existing } = await sb
-    .from("brands")
-    .select("id")
-    .eq("name", parsed.brand_name_zh)
-    .maybeSingle();
-  if (!existing) {
-    await sb.from("brands").insert({
-      name: parsed.brand_name_zh,
-      name_en: parsed.brand_name_en || null,
-      domain: parsed.website || null,
-      industry: parsed.industry || "default",
-      market: "Taiwan",
-      status: "prospect",
-      primary_email: parsed.email,
-    });
+  if (sb) {
+    const { data: existing } = await sb
+      .from("brands")
+      .select("id")
+      .eq("name", parsed.brand_name_zh)
+      .maybeSingle();
+    if (!existing) {
+      await sb.from("brands").insert({
+        name: parsed.brand_name_zh,
+        name_en: parsed.brand_name_en || null,
+        domain: parsed.website || null,
+        industry: parsed.industry || "default",
+        market: "Taiwan",
+        status: "prospect",
+        primary_email: parsed.email,
+      });
+    }
   }
 
-  // Meta Conversions API：server-side Lead（未設 META_CAPI_ACCESS_TOKEN 時 no-op）
-  await sendCapiEvent(req, {
-    eventName: "Lead",
-    eventId: parsed.meta_event_id,
-    email: parsed.email,
-    fbclid: a.fbclid,
-    customData: { content_name: "ai_visibility_audit" },
-  });
-
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, stored: result.stored, notified: result.notified });
 }

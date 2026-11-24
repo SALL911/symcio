@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { STRIPE_PRODUCTS } from "@/lib/stripe/client";
+import { isEcpaySandbox } from "@/lib/ecpay/client";
+import { getPaypalConfig } from "@/lib/paypal/client";
 
 const PRICE_TWD = Math.round(STRIPE_PRODUCTS.ebook.amount / 100);
 
@@ -38,6 +40,9 @@ const BENEFITS = [
 
 export default function EbookPage() {
   const buyHref = "/api/checkout?product=ebook" as Route;
+  // 只顯示真的收得到錢的金流：綠界沙盒與未設定的 PayPal 對客人是死路
+  const showEcpay = !isEcpaySandbox();
+  const showPaypal = Boolean(getPaypalConfig());
 
   const productSchema = {
     "@context": "https://schema.org",
@@ -97,18 +102,22 @@ export default function EbookPage() {
               >
                 信用卡 / 海外付款（Stripe）→
               </Link>
-              <Link
-                href={"/api/ecpay/checkout?product=ebook" as Route}
-                className="mt-3 inline-block w-full rounded-card border border-accent px-6 py-3 text-center text-base font-semibold text-accent no-underline hover:bg-accent hover:text-white"
-              >
-                台幣付款 · 信用卡 / ATM / 超商（綠界）→
-              </Link>
-              <Link
-                href={"/api/paypal/checkout?product=ebook" as Route}
-                className="mt-3 inline-block w-full rounded-card border border-line px-6 py-3 text-center text-base font-semibold text-ink no-underline hover:border-accent hover:text-accent"
-              >
-                PayPal 付款 →
-              </Link>
+              {showEcpay && (
+                <Link
+                  href={"/api/ecpay/checkout?product=ebook" as Route}
+                  className="mt-3 inline-block w-full rounded-card border border-accent px-6 py-3 text-center text-base font-semibold text-accent no-underline hover:bg-accent hover:text-white"
+                >
+                  台幣付款 · 信用卡 / ATM / 超商（綠界）→
+                </Link>
+              )}
+              {showPaypal && (
+                <Link
+                  href={"/api/paypal/checkout?product=ebook" as Route}
+                  className="mt-3 inline-block w-full rounded-card border border-line px-6 py-3 text-center text-base font-semibold text-ink no-underline hover:border-accent hover:text-accent"
+                >
+                  PayPal 付款 →
+                </Link>
+              )}
               <p className="mt-3 text-xs text-muted">
                 安全結帳。付款完成後立即取得 PDF 下載連結，並寄送到你的 email。
               </p>
