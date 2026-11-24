@@ -23,14 +23,21 @@ export type CapiEvent = {
   email?: string;
   fbclid?: string;
   customData?: Record<string, unknown>;
+  /** 事件發生的頁面網址；req 為 null（金流 webhook）時使用 */
+  sourceUrl?: string;
 };
 
-/** 送一筆事件到 Conversions API。回傳是否送出成功；任何錯誤都吞掉只記 log。 */
-export async function sendCapiEvent(req: Request, ev: CapiEvent): Promise<boolean> {
+/**
+ * 送一筆事件到 Conversions API。回傳是否送出成功；任何錯誤都吞掉只記 log。
+ *
+ * req 傳 null 代表這次呼叫不是來自訪客的瀏覽器（例如 Stripe / 綠界的付款通知）：
+ * 此時不帶 IP、User-Agent、cookie，以免把金流商的伺服器當成買家，只靠雜湊 email 比對。
+ */
+export async function sendCapiEvent(req: Request | null, ev: CapiEvent): Promise<boolean> {
   const token = process.env.META_CAPI_ACCESS_TOKEN;
   if (!token) return false;
 
-  const h = req.headers;
+  const h = req ? req.headers : new Headers();
   const cookies = h.get("cookie");
   const now = Math.floor(Date.now() / 1000);
   const ip = (h.get("x-forwarded-for") || "").split(",")[0].trim() || undefined;
@@ -55,7 +62,7 @@ export async function sendCapiEvent(req: Request, ev: CapiEvent): Promise<boolea
         event_time: now,
         event_id: ev.eventId,
         action_source: "website",
-        event_source_url: h.get("referer") || undefined,
+        event_source_url: ev.sourceUrl || h.get("referer") || undefined,
         user_data,
         custom_data: ev.customData,
       },

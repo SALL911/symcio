@@ -5,6 +5,7 @@ import "./globals.css";
 import { PostHogProvider } from "@/components/PostHogProvider";
 import { UtmCapture } from "@/components/UtmCapture";
 import { MetaPixel } from "@/components/MetaPixel";
+import { FunnelBeacon } from "@/components/FunnelBeacon";
 import { META_PIXEL_ID } from "@/lib/meta/pixel";
 
 export const metadata: Metadata = {
@@ -75,6 +76,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <PostHogProvider />
         </Suspense>
         <UtmCapture />
+        <FunnelBeacon />
         {children}
         {/* Meta Pixel noscript fallback。用 innerHTML 避免 React 對 <img> 自動 preload 造成 PageView 重複計算 */}
         <noscript

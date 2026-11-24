@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { Route } from "next";
 import Link from "next/link";
 import { getStripe } from "@/lib/stripe/client";
+import { PurchasePixel } from "@/components/PurchasePixel";
 
 export const metadata: Metadata = {
   title: "付款成功 — Symcio",
@@ -11,19 +12,24 @@ export const metadata: Metadata = {
 async function resolveProduct(sessionId?: string): Promise<{
   product: "audit" | "optimization" | "ebook";
   paid: boolean;
+  value: number;
+  currency: string;
 }> {
-  if (!sessionId) return { product: "audit", paid: false };
+  const none = { product: "audit" as const, paid: false, value: 0, currency: "USD" };
+  if (!sessionId) return none;
   const stripe = getStripe();
-  if (!stripe) return { product: "audit", paid: false };
+  if (!stripe) return none;
   try {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
     const product = session.metadata?.product;
     return {
       product: product === "ebook" || product === "optimization" ? product : "audit",
       paid: session.payment_status === "paid",
+      value: (session.amount_total ?? 0) / 100,
+      currency: (session.currency || "usd").toUpperCase(),
     };
   } catch {
-    return { product: "audit", paid: false };
+    return none;
   }
 }
 
@@ -119,9 +125,24 @@ export default async function CheckoutSuccess({
   if (searchParams.product === "ebook" && !sessionId) {
     return <EbookSuccess paid={false} />;
   }
-  const { product, paid } = await resolveProduct(sessionId);
+  const { product, paid, value, currency } = await resolveProduct(sessionId);
+  // 只有 Stripe 確認已付款才送 Purchase，避免直接開成功頁就被計入轉換
+  const pixel =
+    sessionId && paid ? (
+      <PurchasePixel eventId={sessionId} value={value} currency={currency} product={product} />
+    ) : null;
   if (product === "ebook") {
-    return <EbookSuccess sessionId={sessionId} paid={paid} />;
+    return (
+      <>
+        {pixel}
+        <EbookSuccess sessionId={sessionId} paid={paid} />
+      </>
+    );
   }
-  return <AuditSuccess />;
+  return (
+    <>
+      {pixel}
+      <AuditSuccess />
+    </>
+  );
 }

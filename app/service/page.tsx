@@ -75,11 +75,8 @@ export default function ServicePage() {
             >
               先做 3 分鐘免費診斷 →
             </Link>
-            <a
-              href="#consult"
-              className="inline-block rounded-card border border-accent px-6 py-3 text-base font-semibold text-accent no-underline hover:bg-accent hover:text-white"
-            >
-              預約導入諮詢 →
+<a href="#consult" className="self-center text-sm text-muted underline hover:text-accent">
+              或直接預約導入諮詢
             </a>
           </div>
         </div>
