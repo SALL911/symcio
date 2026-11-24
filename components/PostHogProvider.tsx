@@ -7,10 +7,12 @@ import { ensurePostHog, posthog } from "@/lib/posthog/client";
 /**
  * PostHog 載入 + route change page view。
  *
- * 放在 layout.tsx 包 {children}，所有頁面自動追蹤。
+ * 放在 layout.tsx 當作 {children} 的「兄弟節點」，外層包 <Suspense>。
+ * 不可以用它包住 {children}：useSearchParams 會讓整棵子樹退回 client-side rendering，
+ * 結果是所有頁面的 HTML 沒有內容，搜尋引擎與 AI 爬蟲讀不到。
  * 不提供 React context — Experiment hook 直接讀 posthog 單例即可。
  */
-export function PostHogProvider({ children }: { children: React.ReactNode }) {
+export function PostHogProvider() {
   useEffect(() => {
     ensurePostHog();
   }, []);
@@ -30,5 +32,5 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
     }
   }, [pathname, searchParams]);
 
-  return <>{children}</>;
+  return null;
 }
