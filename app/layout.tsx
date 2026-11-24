@@ -4,6 +4,8 @@ import { Suspense } from "react";
 import "./globals.css";
 import { PostHogProvider } from "@/components/PostHogProvider";
 import { UtmCapture } from "@/components/UtmCapture";
+import { MetaPixel } from "@/components/MetaPixel";
+import { META_PIXEL_ID } from "@/lib/meta/pixel";
 
 export const metadata: Metadata = {
   title: "Symcio · BrandOS — AI 能見度的量化標準",
@@ -64,6 +66,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             gtag('config', 'G-QPB9W2885C');
           `}
         </Script>
+        {/* Meta Pixel — 放在 <head> 內既有程式碼下方 */}
+        <MetaPixel />
       </head>
       <body>
         <Suspense fallback={null}>
@@ -72,6 +76,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </PostHogProvider>
         </Suspense>
+        {/* Meta Pixel noscript fallback。用 innerHTML 避免 React 對 <img> 自動 preload 造成 PageView 重複計算 */}
+        <noscript
+          dangerouslySetInnerHTML={{
+            __html: `<img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1" />`,
+          }}
+        />
         {/* Start of HubSpot Embed Code */}
         <Script
           id="hs-script-loader"

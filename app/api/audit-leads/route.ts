@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@supabase/supabase-js";
+import { sendCapiEvent } from "@/lib/meta/capi";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -39,6 +40,7 @@ const BodySchema = z.object({
   bci: z.number().min(0).max(100).optional(),
   tier: z.string().trim().max(30).optional().default(""),
   attribution: AttributionSchema,
+  meta_event_id: z.string().trim().max(100).optional(),
 });
 
 function supa() {
@@ -112,6 +114,15 @@ export async function POST(req: Request) {
       primary_email: parsed.email,
     });
   }
+
+  // Meta Conversions API：server-side Lead（未設 META_CAPI_ACCESS_TOKEN 時 no-op）
+  await sendCapiEvent(req, {
+    eventName: "Lead",
+    eventId: parsed.meta_event_id,
+    email: parsed.email,
+    fbclid: a.fbclid,
+    customData: { content_name: "ai_visibility_audit" },
+  });
 
   return NextResponse.json({ ok: true });
 }
