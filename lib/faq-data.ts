@@ -1,12 +1,16 @@
 /**
- * FAQ knowledge base — 5 audience categories × 10 Q&A each.
+ * FAQ knowledge base — 5 audience categories × 約 20 Q&A each
+ * （精選題 + lib/faq-extended.ts 擴充題，依題目去重）。
  *
  * Drives app/faq/[category]/page.tsx and its FAQPage JSON-LD.
  * All content in 繁體中文 per CLAUDE.md § three.
  */
 
+import { FAQ_EXTENDED } from "./faq-extended";
+
 export type FaqCategoryKey =
   | "enterprise"
+  | "esg"
   | "investor"
   | "security"
   | "creator";
@@ -24,7 +28,7 @@ export interface FaqCategory {
   entries: FaqEntry[];
 }
 
-export const FAQ_CATEGORIES: FaqCategory[] = [
+const CURATED: FaqCategory[] = [
   {
     key: "enterprise",
     label: "企業決策者",
@@ -68,6 +72,13 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
         a: "寫信到 info@symcio.tw，我們 24 小時內回覆。專業版簽 1 年合約、企業版可客製化條款。支援美金電匯、新台幣月付、credit card recurring（經 Stripe）。",
       },
     ],
+  },
+  {
+    key: "esg",
+    label: "ESG 永續",
+    tagline: "ESG 負責人 / 永續長的常見問題",
+    audience: "ESG · CSO / 永續長",
+    entries: [],
   },
   {
     key: "investor",
@@ -214,6 +225,12 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
     ],
   },
 ];
+
+export const FAQ_CATEGORIES: FaqCategory[] = CURATED.map((c) => {
+  const seen = new Set(c.entries.map((e) => e.q));
+  const extra = FAQ_EXTENDED[c.key].filter((e) => !seen.has(e.q));
+  return { ...c, entries: [...c.entries, ...extra] };
+});
 
 export function findCategory(key: string): FaqCategory | undefined {
   return FAQ_CATEGORIES.find((c) => c.key === key);

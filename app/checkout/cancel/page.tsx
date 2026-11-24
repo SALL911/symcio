@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import type { Route } from "next";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "付款取消 — Symcio",
-  robots: { index: false, follow: false },
-};
+  description: "付款取消 — Symcio",
+  path: "/checkout/cancel",
+  noindex: true,
+});
 
 export default function CheckoutCancel() {
   return (

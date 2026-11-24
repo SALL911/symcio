@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "GEO Entity Builder | Symcio BrandOS",
   description:
     "自動產生品牌 Schema.org JSON-LD、Wikidata claims 草稿、robots.txt AI crawler 策略。讓 AI 正確認識你的品牌。",
-};
+  path: "/tools/entity-builder",
+});
 
 const STEPS = [
   {
@@ -44,7 +46,7 @@ export default function EntityBuilderPage() {
             Symcio
           </Link>
           <nav className="flex gap-5 text-sm text-muted">
-            <a href="/faq/" className="hover:text-accent no-underline">FAQ</a>
+            <a href="/faq" className="hover:text-accent no-underline">FAQ</a>
             <Link href="/pricing" className="hover:text-accent no-underline">定價</Link>
             <Link href="/about" className="hover:text-accent no-underline">關於</Link>
           </nav>

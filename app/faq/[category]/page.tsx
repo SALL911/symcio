@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { FAQ_CATEGORIES, findCategory } from "@/lib/faq-data";
+import { JsonLd } from "@/components/JsonLd";
+import { SITE_URL, breadcrumbSchema, pageMetadata } from "@/lib/seo";
 
 interface Props {
   params: { category: string };
@@ -16,15 +18,16 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: Props): Metadata {
   const cat = findCategory(params.category);
   if (!cat) return { title: "知識庫 — Symcio" };
-  return {
+  return pageMetadata({
     title: `${cat.label} FAQ — Symcio 知識庫`,
-    description: `${cat.tagline} · 10 組常見問答。Symcio BrandOS / BCI 方法論說明。`,
-    openGraph: {
-      title: `${cat.label} FAQ — Symcio`,
-      description: cat.tagline,
-      type: "article",
-    },
-  };
+    description: `${cat.tagline} · ${cat.entries.length} 組常見問答：${cat.entries
+      .slice(0, 2)
+      .map((e) => e.q)
+      .join(" ")}`.slice(0, 150),
+    path: `/faq/${cat.key}`,
+    ogTitle: `${cat.label} FAQ — Symcio`,
+    ogDescription: cat.tagline,
+  });
 }
 
 export default function FaqCategoryPage({ params }: Props) {
@@ -34,6 +37,8 @@ export default function FaqCategoryPage({ params }: Props) {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "@id": `${SITE_URL}/faq/${cat.key}#faq`,
+    inLanguage: "zh-Hant",
     mainEntity: cat.entries.map((e) => ({
       "@type": "Question",
       name: e.q,
@@ -46,9 +51,14 @@ export default function FaqCategoryPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-bg text-ink">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      <JsonLd
+        data={[
+          faqSchema,
+          breadcrumbSchema([
+            ["知識庫", "/faq"],
+            [`${cat.label} FAQ`, `/faq/${cat.key}`],
+          ]),
+        ]}
       />
 
       <Navigation />

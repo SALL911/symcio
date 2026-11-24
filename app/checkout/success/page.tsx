@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import type { Route } from "next";
 import Link from "next/link";
 import { getStripe } from "@/lib/stripe/client";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "付款成功 — Symcio",
-  robots: { index: false, follow: false },
-};
+  description: "付款成功 — Symcio",
+  path: "/checkout/success",
+  noindex: true,
+});
 
 async function resolveProduct(sessionId?: string): Promise<{
   product: "audit" | "optimization" | "ebook";

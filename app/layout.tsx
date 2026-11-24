@@ -2,14 +2,25 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Suspense } from "react";
 import "./globals.css";
-import { PostHogProvider } from "@/components/PostHogProvider";
+import { PostHogProvider, PostHogPageView } from "@/components/PostHogProvider";
+import { JsonLd } from "@/components/JsonLd";
+import { SITE_NAME, SITE_URL, WIKIDATA_URL, pageMetadata } from "@/lib/seo";
 import { UtmCapture } from "@/components/UtmCapture";
 
-export const metadata: Metadata = {
+// 全站預設值。刻意不設 canonical / og:url：子頁若漏設會繼承成「指向首頁」，
+// 等同叫 Google 不要索引該頁。每頁一律用 pageMetadata() 自帶 canonical。
+const { alternates: _alternates, ...rootDefaults } = pageMetadata({
   title: "Symcio · BrandOS — AI 能見度的量化標準",
   description:
     "3 分鐘看見 AI 怎麼描述你的品牌。跨 ChatGPT / Claude / Gemini / Perplexity 四引擎品牌曝光量化,ABVI 方法論開源公開。",
-  metadataBase: new URL("https://symcio.tw"),
+  path: "/",
+});
+if (rootDefaults.openGraph) delete (rootDefaults.openGraph as { url?: unknown }).url;
+
+export const metadata: Metadata = {
+  ...rootDefaults,
+  metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -18,39 +29,57 @@ export const metadata: Metadata = {
     ],
     shortcut: "/favicon.ico",
   },
-  openGraph: {
-    title: "Symcio · BrandOS",
-    description: "AI 能見度的量化標準。跨四引擎品牌曝光觀察指標,開源方法論。",
-    type: "website",
-    locale: "zh_TW",
-  },
+  // Google Search Console 驗證：在 Vercel 設定 NEXT_PUBLIC_GSC_VERIFICATION 後自動輸出 meta tag
+  ...(process.env.NEXT_PUBLIC_GSC_VERIFICATION
+    ? { verification: { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION } }
+    : {}),
 };
 
-const ORGANIZATION_SCHEMA = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Symcio · BrandOS",
-  alternateName: ["Symcio", "BrandOS"],
-  url: "https://symcio.tw",
-  description:
-    "AI 品牌曝光量化方法論與工具集。跨四引擎觀察性指標,開源公開。",
-  sameAs: [
-    "https://github.com/sall911/symcio",
-    "https://discord.gg/jGWJr2Sd",
-  ],
-};
+// Organization + WebSite 實體宣告。sameAs 指向 Wikidata，讓 AI 引擎把網站與知識圖譜實體對齊。
+const SITE_SCHEMA = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${SITE_URL}/#organization`,
+    name: "Symcio",
+    legalName: "全識股份有限公司",
+    alternateName: ["全識", "Symcio · BrandOS", "BrandOS"],
+    url: SITE_URL,
+    logo: `${SITE_URL}/symcio-logo.svg`,
+    description:
+      "Symcio 是台灣的 AI Visibility Intelligence（AVI）平台，量化品牌在 ChatGPT、Claude、Gemini、Perplexity 四大 AI 引擎中的曝光、排名與影響力。",
+    foundingLocation: { "@type": "Place", name: "Taiwan" },
+    areaServed: "TW",
+    knowsAbout: [
+      "AI Visibility Intelligence",
+      "Generative Engine Optimization",
+      "Brand valuation",
+      "ESG",
+      "TNFD",
+    ],
+    sameAs: [
+      WIKIDATA_URL,
+      "https://github.com/sall911/symcio",
+      "https://discord.gg/jGWJr2Sd",
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
+    name: SITE_NAME,
+    url: SITE_URL,
+    inLanguage: "zh-Hant",
+    publisher: { "@id": `${SITE_URL}/#organization` },
+  },
+];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-Hant">
       <head>
-        {/* Schema.org Organization */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(ORGANIZATION_SCHEMA),
-          }}
-        />
+        {/* Schema.org Organization + WebSite */}
+        <JsonLd data={SITE_SCHEMA} />
         {/* Google Analytics 4 */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-QPB9W2885C"
@@ -66,11 +95,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </Script>
       </head>
       <body>
+        <PostHogProvider>{children}</PostHogProvider>
+        {/* useSearchParams 只能在獨立 Suspense 內，否則整站 bailout 成 CSR（爬蟲讀到空白頁） */}
         <Suspense fallback={null}>
-          <PostHogProvider>
-            <UtmCapture />
-            {children}
-          </PostHogProvider>
+          <PostHogPageView />
+          <UtmCapture />
         </Suspense>
         {/* Start of HubSpot Embed Code */}
         <Script

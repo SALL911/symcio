@@ -10,7 +10,7 @@ const LINKS: { href: string; label: string }[] = [
   { href: "/service", label: "成交系統" },
   { href: "/pricing", label: "方案" },
   { href: "/ebook", label: "電子書" },
-  { href: "/faq/enterprise", label: "知識庫" },
+  { href: "/faq", label: "知識庫" },
   { href: "/news", label: "電子報" },
   { href: "/tools", label: "工具" },
   { href: "/about", label: "關於" },

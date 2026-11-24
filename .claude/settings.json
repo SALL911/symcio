@@ -1,0 +1,15 @@
+{
+  "extraKnownMarketplaces": {
+    "openseo": {
+      "source": {
+        "source": "github",
+        "repo": "every-app/open-seo"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "openseo@openseo": true
+  },
+  "enableAllProjectMcpServers": false,
+  "enabledMcpjsonServers": ["gsc"]
+}

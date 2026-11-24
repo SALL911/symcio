@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import Script from "next/script";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "訂閱品牌治理雙週刊 | Symcio BrandOS",
   description:
     "每兩週 3 分鐘，看懂 AI 怎麼介紹你的品牌。整理 AI 搜尋、外銷合規與 ESG 的變化，每期附一個當天就能做的動作。",
-  alternates: { canonical: "/subscribe" },
-};
+  path: "/subscribe",
+});
 
 const ITEMS = [
   {

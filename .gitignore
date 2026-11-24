@@ -9,3 +9,9 @@ dist/
 *.log
 .DS_Store
 *.tsbuildinfo
+
+# Google service-account keys (GSC MCP) — never commit
+*-sa.json
+*service-account*.json
+gsc-credentials.json
+.secrets/

@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import type { Route } from "next";
 import Link from "next/link";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "AI 自動獲客成交系統 — Symcio 服務方案",
   description:
     "Symcio 為你打造一套 AI 自動獲客行銷成交系統：BCI 電子書變現、Stripe / 綠界雙金流、LINE / Meta / Telegram 自動回覆導購，從陌生流量到即時現金流的完整管線。",
-};
+  path: "/service",
+});
 
 const MODULES = [
   {

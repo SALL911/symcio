@@ -35,7 +35,7 @@ export function Footer() {
               <li><Link href="/ebook" className="no-underline hover:text-accent">BCI 方法論電子書 · NT$390</Link></li>
               <li><Link href="/pricing" className="no-underline hover:text-accent">方案與定價</Link></li>
               <li><Link href="/tools" className="no-underline hover:text-accent">工具套件</Link></li>
-              <li><Link href="/faq/enterprise" className="no-underline hover:text-accent">知識庫</Link></li>
+              <li><Link href="/faq" className="no-underline hover:text-accent">知識庫</Link></li>
               <li><Link href="/news" className="no-underline hover:text-accent">每週電子報</Link></li>
               <li>
                 <a

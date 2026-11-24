@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import type { Route } from "next";
 import Link from "next/link";
 import { Navigation } from "@/components/Navigation";
@@ -14,11 +15,12 @@ const EXTERNAL_STORES = [
   { label: "Readmoo 讀墨", href: process.env.NEXT_PUBLIC_EBOOK_READMOO_URL },
 ].filter((s): s is { label: string; href: string } => Boolean(s.href));
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "BCI 品牌資本指數方法論 電子書 — Symcio",
   description:
     "Brand Capital Index (BCI) 完整方法論電子書。整合財務品牌價值、永續合規價值與 AI 可見度價值三大維度，付款後立即下載 PDF。",
-};
+  path: "/ebook",
+});
 
 const CHAPTERS = [
   "BCI 是什麼：為什麼 AI 時代品牌需要新的衡量座標",

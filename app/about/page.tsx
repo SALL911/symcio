@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { TypeformEmbed } from "@/components/TypeformEmbed";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "關於全識 | Symcio BrandOS",
   description:
     "Symcio 全識專注 AI 品牌曝光量化：追蹤品牌在 ChatGPT、Claude、Gemini、Perplexity 答案裡的曝光、排名與描述。",
-};
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (
@@ -18,7 +20,7 @@ export default function AboutPage() {
           </Link>
           <nav className="flex gap-5 text-sm text-muted">
             <Link href="/tools/brand-check" className="hover:text-accent no-underline">健檢</Link>
-            <a href="/faq/" className="hover:text-accent no-underline">FAQ</a>
+            <a href="/faq" className="hover:text-accent no-underline">FAQ</a>
             <Link href="/pricing" className="hover:text-accent no-underline">定價</Link>
           </nav>
         </div>

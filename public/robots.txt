@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /checkout/
+Disallow: /u/
 
 # AI crawler guidance
 User-agent: GPTBot
@@ -26,4 +29,4 @@ Allow: /
 User-agent: PerplexityBot
 Allow: /
 
-Sitemap: https://symcio.tw/sitemap.xml
+Sitemap: https://www.symcio.tw/sitemap.xml

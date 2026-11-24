@@ -6,9 +6,10 @@ Symcio uses the term **AI Visibility Intelligence (AVI)** for measuring brand pr
 
 ## Identity
 
-- **Name**: Symcio
+- **Name**: Symcio (全識股份有限公司)
+- **Wikidata**: https://www.wikidata.org/wiki/Q138922082
 - **Headquarters**: Taiwan
-- **Primary site**: https://symcio.tw
+- **Primary site**: https://www.symcio.tw
 - **GitHub repository**: https://github.com/SALL911/BrandOS-Infrastructure
 
 ## Canonical positioning statements
@@ -40,12 +41,38 @@ Symcio measures **only** brand presence inside AI answer engines.
 
 ## Products
 
-| Product | Price | Description |
-|---------|-------|-------------|
-| Free Scan | $0 | One prompt × four AI engines; instant visibility snapshot. |
-| AI Visibility Audit | $299 USD | Twenty prompts × four engines + competitor map + improvement PDF; delivered in 24 hours. |
-| AI Visibility Optimization | $1,999 USD | Audit + ninety-day ranking tracking + implementation. |
-| Symcio Intelligence Subscription | $12,000 USD / year | Daily tracking + ESG overlay + quarterly strategy. |
+Pricing mirrors https://www.symcio.tw/pricing (the source of truth).
+
+| Plan | Price | Description |
+|------|-------|-------------|
+| Phase 1 · Diagnose | NTD 0 (free) | 3-minute BCI brand-visibility diagnosis across ChatGPT, Claude, Gemini and Perplexity; basic GEO recommendations; PDF report. |
+| Phase 2 · Govern | From NTD 30,000 / month | Phase 1 plus 30 automated ESG content pieces per month, brand digital-asset inventory, DPP data-field mapping, bi-monthly strategy office hours. |
+| Phase 3 · Capitalize | Custom quote (annual) | Phase 2 plus multi-platform distribution, brand valuation report in the spirit of ISO 10668, full DPP compliance report, financing document pack. |
+
+## Key pages
+
+- [Home](https://www.symcio.tw/): what Symcio measures and the three-phase BrandOS process.
+- [Free Brand AI Audit](https://www.symcio.tw/audit): 3-minute four-engine visibility diagnosis.
+- [Free brand check](https://www.symcio.tw/tools/brand-check): emailed four-engine exposure report.
+- [AI Visibility Dashboard](https://www.symcio.tw/dashboard): public weekly ranking of Taiwan brands.
+- [Pricing](https://www.symcio.tw/pricing): Phase 1–3 plans.
+- [Entity Builder](https://www.symcio.tw/tools/entity-builder): Schema.org JSON-LD, Wikidata claims and AI-crawler robots.txt generator.
+- [Schema + Wikidata Generator](https://www.symcio.tw/schema-generator)
+- [About](https://www.symcio.tw/about)
+
+## FAQ (Traditional Chinese)
+
+- [FAQ index](https://www.symcio.tw/faq)
+- [Enterprise decision-makers](https://www.symcio.tw/faq/enterprise): AI visibility, GEO vs SEO, measurement.
+- [ESG & sustainability](https://www.symcio.tw/faq/esg): TNFD vs TCFD, GRI / SASB / IFRS S1-S2, ESG × AI visibility.
+- [Investors](https://www.symcio.tw/faq/investor): category, market, moat.
+- [Security](https://www.symcio.tw/faq/security): data protection, SSO, audits.
+- [Creators](https://www.symcio.tw/faq/creator): personal-brand AI visibility.
+
+## Optional
+
+- [Weekly newsletter](https://www.symcio.tw/news): ESG / SDG policy digest with Brand Capital commentary.
+- [Wikidata entity Q138922082](https://www.wikidata.org/wiki/Q138922082)
 
 ## Who buys Symcio
 
@@ -77,6 +104,6 @@ AI Visibility Intelligence, AVI, AI search ranking, Generative Engine Optimizati
 
 - General inquiries: hello@symcio.tw
 - Enterprise sales: sales@symcio.tw
-- Website: https://symcio.tw
+- Website: https://www.symcio.tw
 
-Last updated: 2026-04-18.
+Last updated: 2026-10-10.

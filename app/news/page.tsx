@@ -1,21 +1,20 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { sortedEntries } from "@/lib/news-data";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "電子報 · AI 整理的 ESG/SDG 重點附 Brand Capital 解讀 — Symcio",
   description:
     "Symcio 每週電子報:AI 整理的 ESG / SDG 監管與政策重點,搭配 BCI 品牌資本三軸(FBV / SCV / AIV)解讀。可訂閱、可隨時退訂。",
-  openGraph: {
-    title: "Symcio 每週電子報 · ESG/SDG × Brand Capital",
-    description:
-      "AI 整理的 ESG / SDG 重點,附 Symcio Brand Capital 解讀。每週發報。",
-    type: "website",
-  },
-};
+  path: "/news",
+  ogTitle: "Symcio 每週電子報 · ESG/SDG × Brand Capital",
+  ogDescription:
+    "AI 整理的 ESG / SDG 重點,附 Symcio Brand Capital 解讀。每週發報。",
+});
 
 function formatDate(iso: string): string {
   const d = new Date(iso + "T00:00:00Z");

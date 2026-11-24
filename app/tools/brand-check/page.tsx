@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { TypeformEmbed } from "@/components/TypeformEmbed";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "免費品牌 AI 健檢 | Symcio BrandOS",
   description:
     "30 秒看見你的品牌在 ChatGPT、Claude、Gemini、Perplexity 四引擎的真實曝光。填品牌名與 email，報告直接寄到你的信箱。",
-};
+  path: "/tools/brand-check",
+});
 
 export default function BrandCheckPage() {
   return (
@@ -17,7 +19,7 @@ export default function BrandCheckPage() {
             Symcio
           </Link>
           <nav className="flex gap-5 text-sm text-muted">
-            <a href="/faq/" className="hover:text-accent no-underline">FAQ</a>
+            <a href="/faq" className="hover:text-accent no-underline">FAQ</a>
             <Link href="/pricing" className="hover:text-accent no-underline">定價</Link>
             <Link href="/about" className="hover:text-accent no-underline">關於</Link>
           </nav>
