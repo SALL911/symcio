@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { siteOrigin } from "./site-url";
 
 /**
  * 全站 SEO / GEO 單一來源。
@@ -8,7 +9,9 @@ import type { Metadata } from "next";
  * 頁面若自己寫 openGraph 會遺失 layout 的 og:image，所以統一走這裡。
  */
 
-export const SITE_URL = "https://symcio.tw";
+// 正式站主網域是 www（apex 308 轉址到 www）。canonical / sitemap / og:url 必須指向最終網址，
+// 否則 Google 會把 canonical 視為轉址目標而忽略。統一走 lib/site-url.ts。
+export const SITE_URL = siteOrigin();
 export const SITE_NAME = "Symcio · BrandOS";
 export const OG_IMAGE = "/opengraph-image";
 export const WIKIDATA_URL = "https://www.wikidata.org/wiki/Q138922082";

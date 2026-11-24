@@ -1,0 +1,104 @@
+name: Verify production cash-flow
+
+# Verifies the LIVE production pipeline (www.symcio.tw):
+# 1. Polls /api/readiness until it returns 200 (post-deploy)
+# 2. Asserts canTakeMoney:true
+# 3. POSTs a properly-signed ECPay sandbox callback to /api/ecpay/callback
+#    and asserts the "1|OK" ack (end-to-end signature verification +
+#    delivery pipeline fired)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-production.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for production deploy
+        env:
+          BASE: https://www.symcio.tw
+        run: |
+          set -uo pipefail
+          echo "Polling $BASE/api/readiness for up to 8min…"
+          deadline=$(( $(date +%s) + 480 ))
+          while [ "$(date +%s)" -lt "$deadline" ]; do
+            code=$(curl -sS -L -o /tmp/r.json -w "%{http_code}" "$BASE/api/readiness" --max-time 15 || echo "000")
+            if [ "$code" = "200" ]; then
+              echo "✓ production serving /api/readiness"
+              break
+            fi
+            echo "  HTTP $code; sleeping 20s"
+            sleep 20
+          done
+
+      - name: Assert canTakeMoney and POST signed ECPay callback
+        env:
+          BASE: https://www.symcio.tw
+        run: |
+          set -uo pipefail
+          echo "--- /api/readiness ---"
+          curl -sS -L "$BASE/api/readiness" | python3 -m json.tool | tee /tmp/r.json
+          canTakeMoney=$(python3 -c "import json; print(json.load(open('/tmp/r.json'))['canTakeMoney'])")
+          echo "canTakeMoney=$canTakeMoney"
+          [ "$canTakeMoney" = "True" ] || { echo "::error ::canTakeMoney=$canTakeMoney on PRODUCTION"; exit 1; }
+          echo "::notice ::✅ PRODUCTION /api/readiness canTakeMoney=true"
+
+          echo
+          echo "--- POST signed ECPay callback ---"
+          python3 <<'PY'
+          import hashlib, urllib.parse, urllib.request, urllib.error, time, random, string, os
+
+          HASH_KEY = "5294y06JbISpM5x9"
+          HASH_IV  = "v77hoKGq4kWxNNIS"
+
+          def enc(v):
+              return urllib.parse.quote(str(v), safe="-_.!~*'()").replace("%20", "+").lower()
+          def check_mac(p):
+              items = sorted(p.items(), key=lambda kv: kv[0].lower())
+              joined = "&".join(f"{k}={v}" for k, v in items)
+              return hashlib.sha256(enc(f"HashKey={HASH_KEY}&{joined}&HashIV={HASH_IV}").encode()).hexdigest().upper()
+
+          trade_no = "PROD" + "".join(random.choice(string.ascii_letters + string.digits) for _ in range(14))[:14]
+          cb = {
+              "MerchantID": "2000132",
+              "MerchantTradeNo": trade_no,
+              "PaymentDate": time.strftime("%Y/%m/%d %H:%M:%S"),
+              "PaymentType": "Credit_CreditCard",
+              "PaymentTypeChargeFee": "10",
+              "RtnCode": "1",
+              "RtnMsg": "交易成功",
+              "SimulatePaid": "0",
+              "TradeAmt": "390",
+              "TradeDate": time.strftime("%Y/%m/%d %H:%M:%S"),
+              "TradeNo": "ECPAYTEST" + str(int(time.time())),
+              "CustomField1": "ebook",
+              "CustomField2": "ci-production-verify@symcio.tw",
+          }
+          cb["CheckMacValue"] = check_mac(cb)
+
+          body = urllib.parse.urlencode(cb).encode()
+          req = urllib.request.Request(
+              f"{os.environ['BASE']}/api/ecpay/callback",
+              data=body, method="POST",
+              headers={"Content-Type": "application/x-www-form-urlencoded",
+                       "User-Agent": "ECPay/1.0 (symcio-production-verify)"},
+          )
+          print(f"POST {os.environ['BASE']}/api/ecpay/callback")
+          print(f"  MerchantTradeNo={trade_no}  CheckMacValue={cb['CheckMacValue'][:16]}…")
+          try:
+              r = urllib.request.urlopen(req, timeout=30)
+              code, body = r.status, r.read().decode("utf-8", "replace")
+          except urllib.error.HTTPError as e:
+              code, body = e.code, e.read().decode("utf-8", "replace")
+
+          print(f"← HTTP {code}  body: {body[:200]!r}")
+          if code == 200 and body.strip() == "1|OK":
+              print("::notice ::✅ PRODUCTION ECPay pipeline verified end-to-end: signed callback → 1|OK")
+          else:
+              print(f"::error ::unexpected response HTTP {code}: {body[:200]}")
+              exit(1)
+          PY

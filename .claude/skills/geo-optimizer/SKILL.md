@@ -24,7 +24,8 @@ description: 優化 symcio.tw 的 Google 排名與 AI 引擎引用率（GEO）�
 ```bash
 npm run build && npx next start -p 3100 &
 node .claude/skills/geo-optimizer/scripts/audit.mjs http://localhost:3100 --md geo-audit.md
-# 線上版：node .claude/skills/geo-optimizer/scripts/audit.mjs https://symcio.tw
+# 線上版（主網域是 www；在有 HTTPS proxy 的環境要加 NODE_USE_ENV_PROXY=1）：
+# NODE_USE_ENV_PROXY=1 node .claude/skills/geo-optimizer/scripts/audit.mjs https://www.symcio.tw
 ```
 
 先處理 `high`，再 `med`。分數 < 90 不得合併（CI 會擋）。
@@ -35,7 +36,7 @@ node .claude/skills/geo-optimizer/scripts/audit.mjs http://localhost:3100 --md g
 - `detect_quick_wins`：位置 4–20、曝光高、CTR 低的 query → 改該頁 title / description / H1 對準 query。
 - `enhanced_search_analytics` 以 `page` 維度：曝光 > 0 但點擊 = 0 的頁面優先改 meta。
 - `index_inspect`：新頁或改版頁確認「已索引」；未索引則檢查 canonical / robots / sitemap。
-- 部署後 `submit_sitemap`：`https://symcio.tw/sitemap.xml`。
+- 部署後 `submit_sitemap`：`https://www.symcio.tw/sitemap.xml`。
 
 ### 3. 關鍵字與 AI 可見度（OpenSEO）
 

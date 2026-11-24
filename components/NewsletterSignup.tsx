@@ -1,75 +1,49 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 
-type Status = "idle" | "submitting" | "success" | "error";
+// Symcio 品牌治理雙週刊 — HubSpot 表單（訂閱者直接進 HubSpot）
+// 舊的 /api/newsletter/subscribe 保留給既有名單，不再從前端呼叫。
+const PORTAL_ID = "244117180";
+const FORM_ID = "dedb5e0d-6df9-4f57-a2e9-b237c50db615";
+const REGION = "na2";
+const EMBED_SRC = `https://js-${REGION}.hsforms.net/forms/embed/${PORTAL_ID}.js`;
 
 export function NewsletterSignup() {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<Status>("idle");
-  const [message, setMessage] = useState("");
+  const ref = useRef<HTMLDivElement>(null);
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (!email) return;
-    setStatus("submitting");
+  useEffect(() => {
+    const host = ref.current;
+    if (!host) return;
+    // 每次掛載都重新載入嵌入程式，確保站內換頁後表單也會出現
+    host.innerHTML = "";
+    const frame = document.createElement("div");
+    frame.className = "hs-form-frame";
+    frame.dataset.region = REGION;
+    frame.dataset.formId = FORM_ID;
+    frame.dataset.portalId = PORTAL_ID;
+    host.appendChild(frame);
 
-    try {
-      const res = await fetch("/api/newsletter/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      const data = await res.json().catch(() => ({}));
+    const script = document.createElement("script");
+    script.src = EMBED_SRC;
+    script.defer = true;
+    host.appendChild(script);
 
-      if (!res.ok) {
-        setStatus("error");
-        setMessage(data?.error || "訂閱失敗,請稍後再試。");
-        return;
-      }
-
-      setStatus("success");
-      setMessage(data?.message || "已收到你的訂閱,下次發報會寄到你的信箱。");
-      setEmail("");
-    } catch {
-      setStatus("error");
-      setMessage("網路錯誤,請稍後再試。");
-    }
-  }
+    return () => {
+      host.innerHTML = "";
+    };
+  }, []);
 
   return (
-    <form onSubmit={onSubmit} className="space-y-3">
-      <label htmlFor="newsletter-email" className="block text-sm font-medium text-ink">
-        訂閱 Symcio 每週電子報
-      </label>
+    <div className="space-y-3">
+      <p className="block text-sm font-medium text-ink">訂閱 Symcio 品牌治理雙週刊</p>
       <p className="text-xs text-muted">
-        每週一封,AI 整理的 ESG / SDG 重點 + Symcio Brand Capital 解讀。可隨時退訂。
+        每兩週一封,整理 AI 搜尋、ESG 與外銷合規的變化,附一個當天就能做的動作。可隨時退訂。
       </p>
-      <div className="flex flex-col gap-2 sm:flex-row">
-        <input
-          id="newsletter-email"
-          type="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@company.com"
-          disabled={status === "submitting"}
-          className="flex-1 rounded-card border border-line bg-bg px-4 py-2.5 text-sm text-ink placeholder:text-muted-dim focus:border-accent focus:outline-none"
-        />
-        <button
-          type="submit"
-          disabled={status === "submitting"}
-          className="rounded-card bg-accent px-5 py-2.5 text-sm font-semibold text-white no-underline hover:bg-accent-dim disabled:opacity-60"
-        >
-          {status === "submitting" ? "送出中…" : "訂閱"}
-        </button>
-      </div>
-      {status === "success" && (
-        <p className="text-xs text-accent">{message}</p>
-      )}
-      {status === "error" && (
-        <p className="text-xs text-rose-600">{message}</p>
-      )}
-    </form>
+      <div ref={ref} />
+      <p className="text-xs text-muted">
+        也可以到 <a href="/subscribe" className="text-accent">訂閱頁</a> 查看雙週刊內容。
+      </p>
+    </div>
   );
 }

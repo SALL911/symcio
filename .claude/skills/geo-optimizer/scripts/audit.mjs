@@ -14,7 +14,7 @@ const flag = (name) => {
   return i >= 0 ? args[i + 1] : undefined;
 };
 const BASE = (args.find((a) => /^https?:\/\//.test(a)) || "https://symcio.tw").replace(/\/$/, "");
-const CANONICAL_HOST = "https://symcio.tw";
+const CANONICAL_HOST = (process.env.CANONICAL_HOST || "https://www.symcio.tw").replace(/\/$/, "");
 const MAX_PAGES = 200;
 
 const AI_BOTS = ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "PerplexityBot", "Google-Extended"];

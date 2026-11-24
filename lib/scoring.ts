@@ -7,7 +7,7 @@
  * Weights imported from `lib/bci/constants.ts` (single source of truth).
  *
  * Note on SCV (Sustainability Compliance Value):
- * Per BCI v1.0 (Symcio Research SSRN paper), full SCV =
+ * Per BCI v1.0 (Symcio Research whitepaper; SSRN upload pending), full SCV =
  *   w₁·RCS + w₂·EDS + w₃·NCS = 0.40·RCS + 0.40·EDS + 0.20·NCS
  * The audit MVP below uses a TNFD LEAP nature-capital proxy only
  * (corresponds to the NCS sub-indicator, ~20% of full SCV). The full

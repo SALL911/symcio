@@ -1,14 +1,15 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@supabase/supabase-js";
+import { hasKitConfig, subscribeToKit } from "@/lib/kit/client";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 // 每週電子報訂閱端點。
-// 目前只把 email 寫進既有的 leads 表(source=newsletter),
-// 等選定外部寄信平台(Resend / Beehiiv / Mailchimp)後,
-// 在這裡 fan-out 同步到該平台的名單。
+// 寫入 Supabase leads 表(source=newsletter)作為 single source of truth,
+// 同時 fan-out 到 Kit (ConvertKit) 讓電子報平台立刻能寄 drip / campaign。
+// Kit 同步失敗不會讓訂閱整個失敗 —— Supabase 才是權威,之後可補推。
 //
 // Supabase 未設定時回 202(已收到),避免訂閱表單在前端顯示失敗,
 // 但 server log 會記下,以便日後手動補抓。
@@ -22,6 +23,19 @@ function supa() {
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) return null;
   return createClient(url, key, { auth: { persistSession: false } });
+}
+
+async function syncToKit(email: string): Promise<void> {
+  if (!hasKitConfig()) return;
+  const result = await subscribeToKit(email);
+  if (!result.ok) {
+    console.warn(
+      "[newsletter] kit sync failed email=%s status=%d err=%s",
+      email,
+      result.status,
+      result.error,
+    );
+  }
 }
 
 export async function POST(req: Request) {
@@ -39,6 +53,7 @@ export async function POST(req: Request) {
   const sb = supa();
   if (!sb) {
     console.warn("[newsletter] supabase not configured; email=%s", parsed.email);
+    await syncToKit(parsed.email);
     return NextResponse.json(
       { ok: true, message: "已收到訂閱,首期會寄到你的信箱。" },
       { status: 202 },
@@ -61,6 +76,8 @@ export async function POST(req: Request) {
       { status: 500 },
     );
   }
+
+  await syncToKit(parsed.email);
 
   return NextResponse.json({
     ok: true,

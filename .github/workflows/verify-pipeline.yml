@@ -1,0 +1,121 @@
+name: Verify deployed cash-flow pipeline
+
+# Autonomous end-to-end proof of the deployed ECPay pipeline:
+# 1. Build a properly-signed ECPay AIO success callback payload using the
+#    public sandbox credentials (same ones the deployed code uses by default).
+# 2. POST it to the deployed Preview's /api/ecpay/callback.
+# 3. Assert the server replies "1|OK" — which per ECPay's spec means the
+#    signature was verified and the delivery pipeline fired.
+#
+# Vercel Deployment Protection usually does NOT block POST to API webhook
+# routes (because real ECPay/Stripe/etc. need to reach them unauthenticated).
+# If it does, the step logs the body and exits with a clear diagnosis.
+
+on:
+  push:
+    branches: [claude/awesome-galileo-6CE0m]
+  workflow_dispatch:
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Vercel preview deploy
+        env:
+          PREVIEW_URL: https://symcio-git-claude-awesome-galileo-6ce0m-symcio-os.vercel.app
+        run: |
+          set -uo pipefail
+          echo "Waiting for Vercel preview to serve this commit (up to 4min)..."
+          deadline=$(( $(date +%s) + 240 ))
+          while [ "$(date +%s)" -lt "$deadline" ]; do
+            # Any non-5xx response means the deployment is up (even 302/401
+            # from Deployment Protection is "up"). Only 5xx or 0 means not ready.
+            code=$(curl -sS -o /dev/null -w "%{http_code}" "$PREVIEW_URL/api/ecpay/callback" -X POST || echo "000")
+            if [ -n "$code" ] && [ "$code" != "000" ] && [ "${code:0:1}" != "5" ]; then
+              echo "preview up (POST test → HTTP $code)"
+              break
+            fi
+            echo "  not up yet (HTTP $code); sleeping 15s"
+            sleep 15
+          done
+
+      - name: Build signed ECPay callback and POST to deployed /api/ecpay/callback
+        env:
+          PREVIEW_URL: https://symcio-git-claude-awesome-galileo-6ce0m-symcio-os.vercel.app
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import hashlib, urllib.parse, urllib.request, urllib.error, time, os, random, string
+
+          # Public ECPay sandbox credentials — same defaults the deployed code uses.
+          HASH_KEY = "5294y06JbISpM5x9"
+          HASH_IV  = "v77hoKGq4kWxNNIS"
+          MERCHANT = "2000132"
+
+          def ecpay_urlencode(v):
+              return urllib.parse.quote(str(v), safe="-_.!~*'()").replace("%20", "+").lower()
+
+          def check_mac(params, key, iv):
+              items = sorted(params.items(), key=lambda kv: kv[0].lower())
+              joined = "&".join(f"{k}={v}" for k, v in items)
+              raw = f"HashKey={key}&{joined}&HashIV={iv}"
+              return hashlib.sha256(ecpay_urlencode(raw).encode()).hexdigest().upper()
+
+          def rand_trade_no():
+              return "CI" + "".join(random.choice(string.ascii_letters + string.digits) for _ in range(16))[:16]
+
+          # Simulate a successful credit card payment callback (RtnCode=1)
+          trade_no = rand_trade_no()
+          cb_email = "ci-pipeline-test@symcio.tw"
+          cb = {
+              "MerchantID": MERCHANT,
+              "MerchantTradeNo": trade_no,
+              "PaymentDate": time.strftime("%Y/%m/%d %H:%M:%S"),
+              "PaymentType": "Credit_CreditCard",
+              "PaymentTypeChargeFee": "10",
+              "RtnCode": "1",
+              "RtnMsg": "交易成功",
+              "SimulatePaid": "0",
+              "TradeAmt": "390",
+              "TradeDate": time.strftime("%Y/%m/%d %H:%M:%S"),
+              "TradeNo": "ECPAYTEST" + str(int(time.time())),
+              "CustomField1": "ebook",
+              "CustomField2": cb_email,
+          }
+          cb["CheckMacValue"] = check_mac(cb, HASH_KEY, HASH_IV)
+
+          url = os.environ["PREVIEW_URL"] + "/api/ecpay/callback"
+          body = urllib.parse.urlencode(cb).encode()
+          req = urllib.request.Request(url, data=body, method="POST", headers={
+              "Content-Type": "application/x-www-form-urlencoded",
+              "User-Agent": "ECPay/1.0 (symcio-ci-verify)",
+          })
+          print(f"POST {url}")
+          print(f"  MerchantTradeNo={trade_no}  CheckMacValue={cb['CheckMacValue'][:16]}…")
+          try:
+              resp = urllib.request.urlopen(req, timeout=30)
+              code = resp.status
+              body_out = resp.read().decode("utf-8", "replace")
+          except urllib.error.HTTPError as e:
+              code = e.code
+              body_out = e.read().decode("utf-8", "replace")
+
+          print(f"← HTTP {code}")
+          print(f"  body: {body_out[:300]!r}")
+
+          if code == 200 and body_out.strip() == "1|OK":
+              print("::notice ::✅ DEPLOYED ECPay pipeline verified: signed callback → 1|OK ack from live preview")
+              # Delivery pipeline (Resend email send) was fired server-side —
+              # response arriving as 1|OK proves signature verification passed
+              # AND the code path through delivery completed.
+              exit(0)
+          elif code == 400 and "CheckMacValue" in body_out:
+              print("::error ::signature rejected — HashKey/IV drift between CI and server?")
+              exit(1)
+          elif code in (302, 401, 307) or "vercel" in body_out.lower() or "sign in" in body_out.lower():
+              print("::warning ::Vercel Deployment Protection blocked the webhook POST — rare, usually API routes are exempt. Enable 'Protection Bypass for Automation' with a URL-level bypass to let real ECPay webhooks through too (otherwise real production payments would also break).")
+              exit(1)
+          else:
+              print(f"::error ::unexpected response HTTP {code}: {body_out[:200]}")
+              exit(1)
+          PY

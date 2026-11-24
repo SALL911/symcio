@@ -49,6 +49,43 @@ export async function send(params: SendParams): Promise<{ ok: boolean; id?: stri
   }
 }
 
+export function renderEbookDelivery(params: {
+  customerEmail: string;
+  downloadUrl: string;
+}): { subject: string; html: string } {
+  const subject = "[Symcio] 你的《BCI 品牌資本指數方法論》電子書下載連結";
+  const html = `<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"></head>
+<body style="margin:0;font-family:-apple-system,Segoe UI,Noto Sans TC,sans-serif;background:#f7f7f7;color:#0B0F19;">
+  <table width="100%" style="padding:32px 16px;"><tr><td align="center">
+    <table width="560" style="background:#fff;max-width:560px;">
+      <tr><td style="padding:24px 32px;border-bottom:1px solid #eee;">
+        <p style="margin:0;font-size:11px;letter-spacing:0.12em;color:#6B7280;text-transform:uppercase;">
+          Symcio · BCI eBook
+        </p>
+        <h1 style="margin:6px 0 0;font-size:22px;">感謝購買，電子書下載連結如下</h1>
+      </td></tr>
+      <tr><td style="padding:24px 32px;">
+        <p style="margin:0 0 16px;font-size:14px;line-height:1.6;">
+          你購買的《BCI 品牌資本指數方法論》電子書已可下載。點擊下方按鈕即可取得 PDF。
+        </p>
+        <a href="${params.downloadUrl}" style="display:inline-block;background:#FFD24A;color:#0B0F19;padding:12px 24px;font-size:15px;font-weight:600;text-decoration:none;border-radius:8px;">
+          下載電子書 PDF
+        </a>
+        <p style="margin:16px 0 0;font-size:13px;color:#6B7280;">
+          連結若失效或有任何問題，請來信
+          <a href="mailto:info@symcio.tw" style="color:#0B0F19;">info@symcio.tw</a>。
+        </p>
+      </td></tr>
+      <tr><td style="padding:16px 32px;border-top:1px solid #eee;color:#6B7280;font-size:11px;">
+        Symcio · <a href="https://symcio.tw" style="color:#6B7280;">symcio.tw</a>
+      </td></tr>
+    </table>
+  </td></tr></table>
+</body></html>`;
+  return { subject, html };
+}
+
 export function renderAuditConfirmation(params: {
   brandName: string;
   customerEmail: string;
@@ -88,7 +125,60 @@ export function renderAuditConfirmation(params: {
         </p>
       </td></tr>
       <tr><td style="padding:16px 32px;border-top:1px solid #eee;color:#6B7280;font-size:11px;">
-        Symcio · Bloomberg 台灣授權代表 · <a href="https://symcio.tw" style="color:#6B7280;">symcio.tw</a>
+        Symcio 全識 · <a href="https://symcio.tw" style="color:#6B7280;">symcio.tw</a>
+      </td></tr>
+    </table>
+  </td></tr></table>
+</body></html>`;
+
+  return { subject, html };
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+/** Gumroad Starter Kit → VIP 專人建置升級（$260）付款確認信 */
+export function renderKitUpgradeConfirmation(params: {
+  gumroadEmail?: string;
+  bookingUrl?: string;
+}): { subject: string; html: string } {
+  const subject = "[Symcio] VIP Concierge Full Setup 升級確認 · 下一步：預約建置時段";
+  const booking = params.bookingUrl
+    ? `<a href="${escapeHtml(params.bookingUrl)}" style="display:inline-block;background:#0B0F19;color:#fff;padding:12px 20px;text-decoration:none;font-size:14px;">預約遠端建置時段 / Book your setup session</a>`
+    : "請直接回覆本信，提供兩個方便的遠端建置時段。";
+  const credit = params.gumroadEmail
+    ? `<p style="margin:0 0 16px;font-size:13px;color:#6B7280;">Gumroad 折抵帳號：${escapeHtml(params.gumroadEmail)}</p>`
+    : "";
+
+  const html = `<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"></head>
+<body style="margin:0;font-family:-apple-system,Segoe UI,Noto Sans TC,sans-serif;background:#f7f7f7;color:#0B0F19;">
+  <table width="100%" style="padding:32px 16px;"><tr><td align="center">
+    <table width="560" style="background:#fff;max-width:560px;">
+      <tr><td style="padding:24px 32px;border-bottom:1px solid #eee;">
+        <p style="margin:0;font-size:11px;letter-spacing:0.12em;color:#6B7280;text-transform:uppercase;">
+          Symcio · Starter Kit
+        </p>
+        <h1 style="margin:6px 0 0;font-size:22px;">VIP Concierge Full Setup 升級完成</h1>
+      </td></tr>
+      <tr><td style="padding:24px 32px;">
+        <p style="margin:0 0 16px;font-size:14px;line-height:1.6;">
+          已收到你的 $260 升級款（$39 Starter Kit 已全額折抵）。下一步請預約遠端建置時段，
+          並事先準備：GitHub 帳號、Vercel 帳號、HubSpot Super Admin 權限、欲綁定網域的 DNS 管理權限。
+        </p>
+        ${credit}
+        <p style="margin:0 0 16px;">${booking}</p>
+        <p style="margin:16px 0 0;font-size:13px;color:#6B7280;">
+          48 小時上線時程自建置時段開始、且上述權限備妥後起算。14 天訊息支援自上線日起算。
+        </p>
+      </td></tr>
+      <tr><td style="padding:16px 32px;border-top:1px solid #eee;color:#6B7280;font-size:11px;">
+        Symcio · <a href="https://symcio.tw" style="color:#6B7280;">symcio.tw</a> · 回覆本信即可聯絡
       </td></tr>
     </table>
   </td></tr></table>

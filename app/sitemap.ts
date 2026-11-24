@@ -21,6 +21,9 @@ const STATIC_ROUTES: Array<[string, number, MetadataRoute.Sitemap[number]["chang
   ["/about", 0.8, "monthly"],
   ["/faq", 0.9, "weekly"],
   ["/news", 0.7, "weekly"],
+  ["/service", 0.8, "monthly"],
+  ["/ebook", 0.8, "monthly"],
+  ["/subscribe", 0.6, "monthly"],
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

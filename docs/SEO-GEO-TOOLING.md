@@ -39,7 +39,7 @@ symcio.tw 的流量來源分兩條：Google 搜尋與 AI 答案引擎（ChatGPT 
 
 1. Search Console → 新增資源 → 網域 `symcio.tw`（DNS TXT 驗證，建議），或網址前置字元 → HTML tag。
 2. 若用 HTML tag：Vercel → Project → Settings → Environment Variables → `NEXT_PUBLIC_GSC_VERIFICATION=<content 值>` → Redeploy。
-3. Sitemaps → 提交 `https://symcio.tw/sitemap.xml`（或在 Claude Code 叫 `gsc` 的 `submit_sitemap`）。
+3. Sitemaps → 提交 `https://www.symcio.tw/sitemap.xml`（或在 Claude Code 叫 `gsc` 的 `submit_sitemap`）。
 
 ### 4. 日常使用
 

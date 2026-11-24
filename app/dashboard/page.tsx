@@ -10,8 +10,7 @@ export const metadata: Metadata = pageMetadata({
     "台灣品牌 AI 能見度指數（ABVI）公開排行榜。每週一更新,跨 ChatGPT / Claude / Gemini / Perplexity 四引擎量化。依循 ISO 10668。",
   path: "/dashboard",
   ogTitle: "AI Visibility Dashboard — Symcio",
-  ogDescription:
-    "台灣品牌跨四 AI 引擎能見度即時排行。Bloomberg for AI Visibility。",
+  ogDescription: "台灣品牌跨四 AI 引擎能見度排行，方法論公開。",
 });
 
 // 示意資料 — 正式版上線後改為從 /api/abvi 撈取。
