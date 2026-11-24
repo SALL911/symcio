@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getEcpayConfig, verifyCheckMacValue } from "@/lib/ecpay/client";
+import { getEcpayConfig, isEcpaySandbox, verifyCheckMacValue } from "@/lib/ecpay/client";
 import { send as sendEmail, renderEbookDelivery } from "@/lib/email/resend";
 
 export const runtime = "nodejs";
@@ -25,7 +25,10 @@ export async function POST(req: Request): Promise<Response> {
     const product = params.CustomField1;
     const email = params.CustomField2;
     const fileUrl = process.env.BCI_EBOOK_DOWNLOAD_URL?.trim();
-    if (product === "ebook" && email && fileUrl) {
+    // 沙盒金鑰是綠界公開文件上的值，任何人都能偽造簽章。
+    // 沙盒模式下只交付給自家網域（CI 驗證用），避免電子書被免費領走。
+    const deliverable = !isEcpaySandbox() || /@symcio\.tw$/i.test(email || "");
+    if (product === "ebook" && email && fileUrl && deliverable) {
       const from = process.env.RESEND_FROM_ADDRESS || "Symcio <info@symcio.tw>";
       const { subject, html } = renderEbookDelivery({ customerEmail: email, downloadUrl: fileUrl });
       await sendEmail({ from, to: email, subject, html, replyTo: "info@symcio.tw" });
