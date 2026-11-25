@@ -121,6 +121,13 @@ export default function EbookPage() {
               <p className="mt-3 text-xs text-muted">
                 安全結帳。付款完成後立即取得 PDF 下載連結，並寄送到你的 email。
               </p>
+              <p className="mt-2 text-xs text-muted">
+                電子書為數位內容，一經提供即不適用七日解除權。結帳即表示同意
+                <Link href={"/terms" as Route} className="text-accent underline">服務條款</Link>
+                與
+                <Link href={"/refund" as Route} className="text-accent underline">退款政策</Link>
+                。
+              </p>
               {(EXTERNAL_STORES.length > 0) && (
                 <p className="mt-4 text-xs text-muted">
                   也可在這些平台購買：
