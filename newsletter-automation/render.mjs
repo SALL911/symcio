@@ -21,7 +21,7 @@ export function validate(i) {
 }
 
 export function render(i, { footer = "hubspot" } = {}) {
-  const [y, m] = i.date.split("-");
+  const [y, m] = (i.date || "").split("-");
   const sections = i.sections.map((s) => `
   <tr><td style="padding:20px 32px 6px 32px;font-family:${SANS};">
     ${label(s.label)}
@@ -59,7 +59,7 @@ export function render(i, { footer = "hubspot" } = {}) {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:${C.card};border-top:5px solid ${C.green};">
   <tr><td style="padding:28px 32px 8px 32px;font-family:${SANS};">
     <div style="font-family:${MONO};font-size:12px;letter-spacing:2px;color:${C.gold};">SYMCIO 全識 · 品牌治理雙週刊</div>
-    <div style="font-size:13px;color:${C.muted};margin-top:4px;">第 ${esc(i.issueNo)} 期 · ${y} 年 ${Number(m)} 月</div>
+    <div style="font-size:13px;color:${C.muted};margin-top:4px;">${i.kicker ? esc(i.kicker) : `第 ${esc(i.issueNo)} 期 · ${y} 年 ${Number(m)} 月`}</div>
   </td></tr>
   <tr><td style="padding:12px 32px 20px 32px;font-family:${SANS};">
     <h1 style="margin:0;font-family:${SERIF};font-size:28px;line-height:1.35;color:${C.ink};">${rich(i.headline)}</h1>
@@ -75,7 +75,10 @@ export function render(i, { footer = "hubspot" } = {}) {
   </td></tr>
   <tr><td style="padding:20px 32px 26px 32px;font-family:${SANS};font-size:12px;line-height:1.7;color:${C.foot};">
     你收到這封信，是因為你訂閱了 Symcio 品牌治理雙週刊。<br>
-    ${footer === "resend"
+    ${footer === "welcome"
+      ? `雙週刊在隔週二 09:00 寄出。<br>Symcio 全識（籌備處）· info@symcio.tw<br>
+    不想再收到？直接回覆這封信「取消」，我們會把你移出名單。`
+      : footer === "resend"
       ? `Symcio 全識（籌備處）· info@symcio.tw<br>
     <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:${C.foot};">取消訂閱</a>`
       : `{{ site_settings.company_name }}<br>{{ site_settings.company_street_address_1 }} {{ site_settings.company_city }}<br>

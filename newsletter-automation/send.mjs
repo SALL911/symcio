@@ -7,6 +7,7 @@
 // 用法：
 //   node send.mjs preview   寄預覽給 PREVIEW_TO（下週二要發的那期）
 //   node send.mjs send      今天（台北時間）有 status=ready 的期數檔就寄給全體訂閱者
+//   node send.mjs welcome   把 HubSpot 表單新訂閱者同步到 Resend，並寄歡迎信（welcome.json）
 //   DRY_RUN=true            只輸出 HTML 與名單數，不呼叫任何寄信 API
 //
 // 環境變數：
@@ -89,15 +90,37 @@ async function hubspotSubscribers() {
   return [...emails];
 }
 
+// 歡迎信：只寄給「第一次同步進 Resend」的人，已存在（含已取消訂閱）的聯絡人不寄
+async function welcomeHtml() {
+  const w = JSON.parse(await readFile("welcome.json", "utf8"));
+  return { subject: w.subject, html: render(w, { footer: "welcome" }) };
+}
+
+async function sendWelcome(email, tpl) {
+  try {
+    const r = await must("POST", "/emails", {
+      from: FROM, to: [email], subject: tpl.subject, html: tpl.html,
+      reply_to: process.env.NEWSLETTER_REPLY_TO,
+    });
+    console.log(`歡迎信已寄出 → ${email.replace(/(.{2}).*@/, "$1***@")}（id ${r.id}）`);
+    return true;
+  } catch (e) {
+    console.warn(`歡迎信寄送失敗（${email.replace(/(.{2}).*@/, "$1***@")}）：${e.message}`);
+    return false;
+  }
+}
+
 // 只新增、不改動既有聯絡人（保留已取消訂閱者的狀態）
 async function syncToResend(emails) {
   let added = 0;
+  const tpl = await welcomeHtml();
   for (const email of emails) {
     const enc = encodeURIComponent(email);
     const got = await api("GET", `/contacts/${enc}`);
     if (got.status === 404) {
       await must("POST", "/contacts", { email });
       added++;
+      await sendWelcome(email, tpl);
     } else if (!got.ok) {
       throw new Error(`Resend 查詢聯絡人失敗 ${got.status}`);
     }
@@ -204,7 +227,28 @@ async function send() {
   console.log(`已寄出（broadcast id ${b.id}）`);
 }
 
-(MODE === "preview" ? preview() : send()).catch((e) => {
+async function welcome() {
+  const tpl = await welcomeHtml();
+  await mkdir(".out", { recursive: true });
+  await writeFile(path.join(".out", "welcome.html"), tpl.html);
+  const subs = await hubspotSubscribers();
+  console.log(`HubSpot 表單訂閱者：${subs.length} 人`);
+  if (DRY) return console.log(`DRY_RUN：歡迎信預覽寫入 .out/welcome.html（主旨：${tpl.subject}），未同步、未寄出。`);
+  const missing = Object.entries({ RESEND_API_KEY: KEY, RESEND_SEGMENT_ID: SEGMENT, NEWSLETTER_FROM: FROM })
+    .filter(([, v]) => !v).map(([k]) => k);
+  // 每小時排程：尚未設定 Secrets 時不報錯，避免每小時寄失敗通知
+  if (missing.length) return console.log(`::warning::缺少 ${missing.join(", ")}，略過歡迎信。`);
+  if (!process.env.HUBSPOT_TOKEN) return console.log("::warning::缺少 HUBSPOT_TOKEN，無法讀取訂閱者，略過。");
+  const added = await syncToResend(subs);
+  console.log(`新訂閱者：${added} 人（已寄歡迎信）`);
+}
+
+const MODES = { preview, send, welcome };
+if (!MODES[MODE]) {
+  console.error(`未知模式：${MODE}（可用：${Object.keys(MODES).join(" / ")}）`);
+  process.exit(1);
+}
+MODES[MODE]().catch((e) => {
   console.error(e.message || e);
   process.exit(1);
 });

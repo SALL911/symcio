@@ -6,6 +6,7 @@
 |---|---|
 | 每週五 09:00 | 把下週二那期寄**預覽**給 `PREVIEW_TO`。沒有期數檔、或 `status` 不是 `ready`，會寄警示信 |
 | 每週二 09:00 | `issues/<當天日期>.json` 存在且 `"status": "ready"` → 同步訂閱者並寄給全體 |
+| 每小時 :23 | 讀 HubSpot 表單新訂閱者 → 加入 Resend → 寄**歡迎信**（`welcome.json`）。已在名單內（含已取消）的人不寄 |
 
 兩週一期由期數檔日期控制：沒有當天的檔案就不寄。重複觸發不會重寄（同名 broadcast 已寄就略過）。
 
@@ -13,6 +14,12 @@
 - 寄送：Resend Broadcasts。HubSpot 本帳號不是 Marketing Hub Enterprise，API 不能寄行銷信
 - CRM：訂閱者每期寄送時回寫 Attio「雙週刊訂閱者」名單（= 有行銷同意的人）。名片、通訊錄匯入的聯絡人不在此名單，不會收到電子報
 - 取消訂閱：Resend 每封信自帶連結；同步時只新增聯絡人，不會把已取消的人加回來
+
+## 歡迎信
+
+- 內容在 `welcome.json`（欄位同期數檔，另有 `kicker`），改文案只改這個檔
+- 預覽：`DRY_RUN=true node send.mjs welcome` → `.out/welcome.html`
+- 單封寄送沒有 Resend 退訂連結，頁尾請對方回信「取消」；收到後在 Resend 把該聯絡人設為 unsubscribed
 
 ## 新增一期
 

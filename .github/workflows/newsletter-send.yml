@@ -3,6 +3,7 @@ name: Newsletter (Resend) — preview Fri, send Tue
 # 品牌治理雙週刊自動寄送。
 # - 週五 09:00（台北）：把下週二那期寄預覽給 PREVIEW_TO；沒期數檔或未核准會寄警示。
 # - 週二 09:00（台北）：issues/<今天>.json 存在且 status = "ready" 才寄給全體訂閱者。
+# - 每小時：HubSpot 表單新訂閱者同步到 Resend，並寄歡迎信（welcome.json）。
 # 兩週一期由期數檔日期控制：沒有當天的期數檔就不寄。
 # 手動觸發預設 dry-run。
 
@@ -10,12 +11,13 @@ on:
   schedule:
     - cron: "0 1 * * 5"   # 週五 09:00 Asia/Taipei → preview
     - cron: "0 1 * * 2"   # 週二 09:00 Asia/Taipei → send
+    - cron: "23 * * * *"  # 每小時 → welcome：新訂閱者 1 小時內收到歡迎信
   workflow_dispatch:
     inputs:
       mode:
         description: "preview 或 send"
         type: choice
-        options: [preview, send]
+        options: [preview, send, welcome]
         default: preview
       force_date:
         description: "指定期數日期 YYYY-MM-DD（補發用，可留空）"
@@ -42,7 +44,7 @@ jobs:
           node-version: "20"
       - name: Run
         env:
-          MODE: ${{ github.event_name == 'schedule' && (github.event.schedule == '0 1 * * 5' && 'preview' || 'send') || inputs.mode }}
+          MODE: ${{ github.event_name == 'schedule' && (github.event.schedule == '0 1 * * 5' && 'preview' || (github.event.schedule == '0 1 * * 2' && 'send' || 'welcome')) || inputs.mode }}
           DRY_RUN: ${{ github.event_name == 'schedule' && 'false' || inputs.dry_run }}
           FORCE_DATE: ${{ inputs.force_date }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
