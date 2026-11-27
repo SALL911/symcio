@@ -17,7 +17,7 @@ on:
       mode:
         description: "preview 或 send"
         type: choice
-        options: [preview, send, welcome]
+        options: [preview, send, welcome, welcome-preview]
         default: preview
       force_date:
         description: "指定期數日期 YYYY-MM-DD（補發用，可留空）"
@@ -54,6 +54,8 @@ jobs:
           PREVIEW_TO: ${{ secrets.PREVIEW_TO }}
           HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_TOKEN }}
           ATTIO_API_KEY: ${{ secrets.ATTIO_API_KEY }}
+          # 歡迎信閘門：預設關閉，確認內容後在 Settings → Variables 設為 true
+          WELCOME_ENABLED: ${{ vars.WELCOME_ENABLED }}
         run: node send.mjs "$MODE"
       - uses: actions/upload-artifact@v4
         if: always()

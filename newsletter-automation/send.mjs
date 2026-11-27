@@ -120,7 +120,7 @@ async function syncToResend(emails) {
     if (got.status === 404) {
       await must("POST", "/contacts", { email });
       added++;
-      await sendWelcome(email, tpl);
+      if (String(process.env.WELCOME_ENABLED).toLowerCase() === "true") await sendWelcome(email, tpl);
     } else if (!got.ok) {
       throw new Error(`Resend 查詢聯絡人失敗 ${got.status}`);
     }
@@ -234,6 +234,10 @@ async function welcome() {
   const subs = await hubspotSubscribers();
   console.log(`HubSpot 表單訂閱者：${subs.length} 人`);
   if (DRY) return console.log(`DRY_RUN：歡迎信預覽寫入 .out/welcome.html（主旨：${tpl.subject}），未同步、未寄出。`);
+  // 發信閘門：Sall 確認歡迎信內容後，才在 repo Variables 設 WELCOME_ENABLED=true
+  if (String(process.env.WELCOME_ENABLED).toLowerCase() !== "true") {
+    return console.log("WELCOME_ENABLED 未開啟，略過歡迎信（Settings → Variables → WELCOME_ENABLED=true 後啟用）。");
+  }
   const missing = Object.entries({ RESEND_API_KEY: KEY, RESEND_SEGMENT_ID: SEGMENT, NEWSLETTER_FROM: FROM })
     .filter(([, v]) => !v).map(([k]) => k);
   // 每小時排程：尚未設定 Secrets 時不報錯，避免每小時寄失敗通知
@@ -243,7 +247,18 @@ async function welcome() {
   console.log(`新訂閱者：${added} 人（已寄歡迎信）`);
 }
 
-const MODES = { preview, send, welcome };
+// 只把歡迎信寄給 PREVIEW_TO，給 Sall 開閘門前確認
+async function welcomePreview() {
+  const tpl = await welcomeHtml();
+  await mkdir(".out", { recursive: true });
+  await writeFile(path.join(".out", "welcome.html"), tpl.html);
+  const to = (process.env.PREVIEW_TO || "").split(",").map((x) => x.trim()).filter(Boolean);
+  if (DRY || !to.length) return console.log(DRY ? "DRY_RUN，未寄出。" : "未設定 PREVIEW_TO，未寄出。");
+  const r = await must("POST", "/emails", { from: FROM, to, subject: `【預覽】${tpl.subject}`, html: tpl.html, reply_to: process.env.NEWSLETTER_REPLY_TO });
+  console.log(`歡迎信預覽已寄出（id ${r.id}）→ ${to.join(", ")}`);
+}
+
+const MODES = { preview, send, welcome, "welcome-preview": welcomePreview };
 if (!MODES[MODE]) {
   console.error(`未知模式：${MODE}（可用：${Object.keys(MODES).join(" / ")}）`);
   process.exit(1);

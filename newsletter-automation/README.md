@@ -17,6 +17,8 @@
 
 ## 歡迎信
 
+- **預設不寄**：Settings → Secrets and variables → Actions → Variables 新增 `WELCOME_ENABLED` = `true` 才啟用（先在 Actions 手動跑 mode=welcome-preview、dry_run=false，用 `PREVIEW_TO` 收信確認內容再開）
+
 - 內容在 `welcome.json`（欄位同期數檔，另有 `kicker`），改文案只改這個檔
 - 預覽：`DRY_RUN=true node send.mjs welcome` → `.out/welcome.html`
 - 單封寄送沒有 Resend 退訂連結，頁尾請對方回信「取消」；收到後在 Resend 把該聯絡人設為 unsubscribed
