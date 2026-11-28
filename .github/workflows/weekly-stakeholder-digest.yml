@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: stakeholder-automation
+        working-directory: src/brandos/stakeholder
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -38,5 +38,5 @@ jobs:
         if: always()
         with:
           name: digest-previews
-          path: stakeholder-automation/.out/
+          path: src/brandos/stakeholder/.out/
           if-no-files-found: ignore

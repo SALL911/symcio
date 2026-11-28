@@ -19,9 +19,9 @@ delete process.env.ECPAY_HASH_IV;
 delete process.env.ECPAY_MODE;
 
 const { getEcpayConfig, buildCheckoutParams, verifyCheckMacValue, makeCheckMacValue, isEcpaySandbox } =
-  await import("../lib/ecpay/client.ts").catch(async () => {
+  await import("../src/lib/payments/ecpay/client.ts").catch(async () => {
     // tsx not available — fall back to compiled JS if present
-    return await import("../lib/ecpay/client.js");
+    return await import("../src/lib/payments/ecpay/client.js");
   });
 
 const RED = "\x1b[31m", GREEN = "\x1b[32m", DIM = "\x1b[2m", RESET = "\x1b[0m";

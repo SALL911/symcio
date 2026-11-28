@@ -45,12 +45,12 @@ Symcio works on one question:
 
 | 模組 | 位置 | 說明 |
 |---|---|---|
-| 名單分級與話術 | `lib/ai/grade.ts` | 規則一定有結果；設了 `GEMINI_API_KEY` 才加上 AI 摘要與話術，AI 最多調整一級 |
-| 私訊 AI 回覆 | `lib/marketing/reply.ts`、`lib/ai/guardrails.ts` | LINE / Meta / Telegram 共用。AI 草稿須通過紅線檢查，否則退回固定範本；`AI_REPLY_ENABLED=false` 可關閉 |
-| 跟進信 | `lib/followup/`、`/api/cron/followups` | D0 確認信一律寄；D2 / D5 需 `FOLLOWUP_SEQUENCE_ENABLED=true`。名單狀態改為已聯絡後自動停止 |
+| 名單分級與話術 | `src/brandos/ai/grade.ts` | 規則一定有結果；設了 `GEMINI_API_KEY` 才加上 AI 摘要與話術，AI 最多調整一級 |
+| 私訊 AI 回覆 | `src/brandos/marketing/reply.ts`、`src/brandos/ai/guardrails.ts` | LINE / Meta / Telegram 共用。AI 草稿須通過紅線檢查，否則退回固定範本；`AI_REPLY_ENABLED=false` 可關閉 |
+| 跟進信 | `src/brandos/followup/`、`/api/cron/followups` | D0 確認信一律寄；D2 / D5 需 `FOLLOWUP_SEQUENCE_ENABLED=true`。名單狀態改為已聯絡後自動停止 |
 | 內部後台 | `/admin`、`/admin/leads` | Basic Auth（`ADMIN_USER` / `ADMIN_PASSWORD`）；未設定時後台關閉 |
-| 漏斗事件 | `components/FunnelBeacon.tsx`、`/api/track` | 只記路徑與分頁層級隨機 ID，不存 IP 或 email |
-| Meta 事件 | `lib/meta/`、`components/PurchasePixel.tsx` | PageView、Lead、InitiateCheckout、Purchase；Lead 與 Purchase 同時走 Pixel 與 Conversions API 並以 event_id 去重 |
+| 漏斗事件 | `src/components/FunnelBeacon.tsx`、`/api/track` | 只記路徑與分頁層級隨機 ID，不存 IP 或 email |
+| Meta 事件 | `src/brandos/meta/`、`src/components/PurchasePixel.tsx` | PageView、Lead、InitiateCheckout、Purchase；Lead 與 Purchase 同時走 Pixel 與 Conversions API 並以 event_id 去重 |
 
 資料表由 `BrandOS-Infrastructure` 的 migration `20261124000000_acquisition_funnel.sql` 建立，需先套用。
 
@@ -67,3 +67,19 @@ npm run dev                  # http://localhost:3000/service 與 http://localhos
 ```bash
 curl -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/followups
 ```
+
+## 目錄結構
+
+| 路徑 | 內容 |
+|------|------|
+| `src/app/` | Next.js App Router 頁面；API 端點在 `src/app/api/`（Next.js 規定路由必須位於 `app/` 之下） |
+| `src/components/` | 共用 React 元件 |
+| `src/brandos/` | 內容生成、LINE / Meta / Telegram / SMS 回覆、跟進信、電子報（`newsletter/`）、利害關係人週報（`stakeholder/`） |
+| `src/symcio/` | BCI 評分、Schema / Wikidata 產生器、生態系資料 |
+| `src/lib/` | 共用基礎設施：金流（`payments/`）、名單、後台、分析、UTM |
+| `src/types/` | 型別宣告與資料模型合約 |
+| `tests/` | 測試腳本（`node tests/<name>.mjs`） |
+| `scripts/` | 維運檢查腳本 |
+| `docs/` | 規格、方法論與參考資料 |
+
+Import 一律使用 `@/` 別名，對應 `src/`。

@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(**/node_modules/**)",
+      "Read(**/dist/**)",
+      "Read(**/build/**)",
+      "Read(**/temp/**)",
+      "Read(**/scratch/**)",
+      "Read(**/*.m4a)",
+      "Read(**/*.mp3)",
+      "Read(**/*.mp4)",
+      "Read(**/*.zip)",
+      "Read(**/*.tar.gz)",
+      "Read(**/.env*)"
+    ]
+  }
+}
