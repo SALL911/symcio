@@ -42,6 +42,14 @@ const TOOLS = [
     cta: "開始填寫",
     free: true,
   },
+  {
+    code: "05",
+    name: "Compliance Pre-Audit",
+    desc: "輸入公司、品類與目標市場，2 分鐘產出 EU ESPR / DPP / CSRD、IFRS S1 / S2、TNFD 等永續合規曝險評估，完整報告寄到信箱。",
+    href: "/tools/compliance-audit",
+    cta: "開始評估",
+    free: true,
+  },
 ];
 
 export default function ToolsPage() {
