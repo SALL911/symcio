@@ -4,8 +4,8 @@ PR #9 · 分支 `claude/awesome-galileo-6CE0m` · 最新 commit `be5892e`
 
 ## 01 · 速度 < 0.2s 目標 ✅
 
-**驗證工具**：`scripts/checkout-speed-test.mjs`
-執行：`BASE_URL=http://localhost:3000 node scripts/checkout-speed-test.mjs`
+**驗證工具**：`tests/checkout-speed-test.mjs`
+執行：`BASE_URL=http://localhost:3000 node tests/checkout-speed-test.mjs`
 門檻：median < 200ms（可用 `THRESHOLD_MS` 覆寫），50 samples + 5 warmup。
 
 ### 測量結果

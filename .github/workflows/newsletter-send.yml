@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: newsletter-automation
+        working-directory: src/brandos/newsletter
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -61,5 +61,5 @@ jobs:
         if: always()
         with:
           name: newsletter-out
-          path: newsletter-automation/.out/
+          path: src/brandos/newsletter/.out/
           if-no-files-found: ignore
